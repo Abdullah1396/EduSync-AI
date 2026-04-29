@@ -3,82 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | المنصة الذكية</title>
+    <title>EduSync AI | مستقبل التعلم الذكي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #22d3ee; --bg: #020617; --card: #1e293b; }
-        * { box-sizing: border-box; }
-        body { background-color: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; min-height: 100vh; }
+        :root { --primary: #22d3ee; --bg: #020617; --card: #1e293b; --accent: #818cf8; }
+        body { background-color: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; }
         
-        /* الهيدر */
-        .header { text-align: center; padding: 20px; border: 1px solid var(--primary); border-radius: 15px; background: var(--card); margin-bottom: 15px; box-shadow: 0 0 15px rgba(34, 211, 238, 0.2); }
-        .header h1 { margin: 0; color: var(--primary); font-size: 1.8rem; }
+        /* الهيدر مع الشعار */
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; background: var(--card); border-bottom: 2px solid var(--primary); }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-img { width: 50px; height: 50px; border-radius: 10px; border: 1px solid var(--primary); box-shadow: 0 0 10px var(--primary); }
+        
+        /* منطقة رفع الملفات */
+        .upload-section { background: rgba(34, 211, 238, 0.05); padding: 30px; margin: 20px 5%; border: 2px dashed var(--primary); border-radius: 20px; text-align: center; }
+        .upload-btn { background: var(--primary); color: #020617; padding: 12px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; font-size: 1.1rem; }
+        
+        /* الأدوات الذكية */
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 5%; }
+        .tool-card { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid #334155; position: relative; overflow: hidden; cursor: pointer; }
+        .tool-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .tool-card h3 { color: var(--primary); margin-top: 0; }
+        .status { font-size: 0.8rem; color: #94a3b8; }
 
-        /* شبكة الإحصائيات - مرتبة للجوال */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .stat-card { background: var(--card); padding: 15px; border-radius: 12px; border: 1px solid #334155; text-align: center; }
-        .stat-card h3 { color: var(--primary); margin: 0; font-size: 1.2rem; }
-        .stat-card p { margin: 5px 0 0; font-size: 0.7rem; color: #94a3b8; }
+        /* المحاكي الذكي */
+        #processing { display: none; margin: 20px 5%; text-align: center; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 10px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* منطقة الشات - تاخذ باقي المساحة */
-        .chat-container { background: var(--card); border-radius: 15px; border: 1px solid var(--primary); flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 350px; }
-        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #0f172a; font-size: 0.9rem; }
-        .msg { padding: 10px; border-radius: 10px; max-width: 85%; line-height: 1.4; }
-        .bot-msg { background: #1e293b; border-right: 3px solid var(--primary); align-self: flex-start; }
-        .user-msg { background: var(--primary); color: #020617; align-self: flex-end; font-weight: bold; }
-
-        .chat-input { padding: 10px; background: var(--card); display: flex; gap: 8px; }
-        input { flex: 1; background: #020617; border: 1px solid #334155; border-radius: 8px; padding: 10px; color: white; font-family: 'Cairo'; font-size: 0.9rem; }
-        button { background: var(--primary); border: none; padding: 0 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-
-        .footer-tag { text-align: center; font-size: 0.7rem; color: #475569; margin-top: 10px; }
+        /* النتائج */
+        .result-box { display: none; background: #0f172a; padding: 20px; border-radius: 15px; margin: 20px 5%; border: 1px solid var(--accent); }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>EduSync AI</h1>
-        <div style="font-size: 0.8rem; color: #94a3b8;">نظام المساعدة الأكاديمي الذكي - KKU</div>
-    </div>
-
-    <div class="stats-grid">
-        <div class="stat-card"><h3>1.2K</h3><p>طالب</p></div>
-        <div class="stat-card"><h3>98%</h3><p>دقة</p></div>
-    </div>
-
-    <div class="chat-container">
-        <div style="padding: 10px; border-bottom: 1px solid #334155; font-size: 0.8rem; display: flex; justify-content: space-between;">
-            <span>🤖 المساعد الذكي</span>
-            <span style="color: #22c55e;">● متصل</span>
-        </div>
-        <div class="chat-messages" id="chatArea">
-            <div class="msg bot-msg">أهلاً عبدالله! نظام EduSync جاهز لمساعدتك في جامعة الملك خالد. اسألني عن أي شيء في منهجك.</div>
-        </div>
-        <div class="chat-input">
-            <input type="text" id="userInput" placeholder="اكتب سؤالك هنا...">
-            <button onclick="processChat()">إرسال</button>
+<div class="header">
+    <div class="logo-area">
+        <img src="https://raw.githubusercontent.com/Abdullah1396/EduSync-AI/main/image.png" class="logo-img" alt="Logo">
+        <div>
+            <h1 style="font-size: 1.5rem; margin: 0;">EduSync AI</h1>
+            <span style="font-size: 0.8rem; color: var(--primary);">بوابة جامعة الملك خالد للذكاء الاصطناعي</span>
         </div>
     </div>
+</div>
 
-    <div class="footer-tag">جميع الحقوق محفوظة - مشروع تخرج 2026</div>
+<div class="upload-section" id="dropZone">
+    <h2 style="margin-top: 0;">مرحباً دكتور، ارفع منهجك (PDF)</h2>
+    <p>سيقوم نظام Gemini 1.5 Pro بتحليل المحتوى فوراً</p>
+    <input type="file" id="fileInput" hidden accept=".pdf">
+    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">اختيار ملف المنهج</button>
+</div>
 
-    <script>
-        function processChat() {
-            const input = document.getElementById('userInput');
-            const chat = document.getElementById('chatArea');
-            if(!input.value.trim()) return;
+<div id="processing">
+    <div class="loader"></div>
+    <p id="processText">جاري استخراج المفاهيم الأساسية من الملف...</p>
+</div>
 
-            chat.innerHTML += `<div class="msg user-msg">${input.value}</div>`;
-            const userText = input.value;
-            input.value = "";
-            chat.scrollTop = chat.scrollHeight;
+<div class="tools-grid">
+    <div class="tool-card" onclick="showTool('اختبار ذكي')">
+        <h3>📝 اختبارات قصيرة</h3>
+        <p>توليد أسئلة MCQ وصح وخطأ آلياً بناءً على المنهج.</p>
+        <span class="status">الحالة: جاهز للتحليل</span>
+    </div>
+    <div class="tool-card" onclick="showTool('خريطة ذهنية')">
+        <h3>🧠 خرائط ذهنية</h3>
+        <p>تحويل المحتوى المعقد إلى هيكل شجري بصري.</p>
+        <span class="status">الحالة: جاهز للتحليل</span>
+    </div>
+    <div class="tool-card" onclick="showTool('بطاقات مذاكرة')">
+        <h3>🗂️ بطاقات Flashcards</h3>
+        <p>تجهيز أهم المصطلحات والتعاريف للمراجعة السريعة.</p>
+        <span class="status">الحالة: جاهز للتحليل</span>
+    </div>
+</div>
 
+<div class="result-box" id="resultBox">
+    <h3 id="resultTitle" style="color: var(--accent);"></h3>
+    <div id="resultContent"></div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const processing = document.getElementById('processing');
+    const resultBox = document.getElementById('resultBox');
+
+    fileInput.onchange = function() {
+        if(this.files[0]) {
+            processing.style.display = 'block';
+            document.getElementById('processText').innerText = "جاري تحليل " + this.files[0].name + " عبر نماذج Gemini...";
             setTimeout(() => {
-                let reply = "جاري تحليل " + userText + " ومقارنته بالمناهج المرفقة... النتائج دقيقة بنسبة 99%.";
-                chat.innerHTML += `<div class="msg bot-msg">${reply}</div>`;
-                chat.scrollTop = chat.scrollHeight;
-            }, 1000);
+                processing.style.display = 'none';
+                alert("تم تحليل المنهج بنجاح! يمكنك الآن اختيار الأداة المطلوبة.");
+            }, 3000);
         }
-    </script>
+    };
+
+    function showTool(name) {
+        if(!fileInput.files[0]) {
+            alert("يرجى رفع ملف المنهج أولاً");
+            return;
+        }
+        resultBox.style.display = 'block';
+        document.getElementById('resultTitle').innerText = "نتائج " + name;
+        
+        if(name === 'اختبار ذكي') {
+            document.getElementById('resultContent').innerHTML = "1. ما هو المفهوم الأساسي للوحدة الأولى؟<br>[أ] الخيار الأول [ب] الخيار الثاني...<br><br>2. صح أم خطأ: يعتبر الذكاء الاصطناعي أداة مساعدة...";
+        } else if(name === 'خريطة ذهنية') {
+            document.getElementById('resultContent').innerHTML = "🌳 المنهج الرئيسي <br> ┗ 📂 الفصل الأول: الأساسيات <br> ┗ 📂 الفصل الثاني: التطبيقات العمليّة";
+        } else {
+            document.getElementById('resultContent').innerHTML = "🎴 البطاقة 1: المصطلح الأكاديمي -> التعريف المستخلص من الـ PDF";
+        }
+        resultBox.scrollIntoView();
+    }
+</script>
+
 </body>
 </html>
