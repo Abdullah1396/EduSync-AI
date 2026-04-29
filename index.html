@@ -3,45 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | المنصة التعليمية الشاملة</title>
+    <title>EduSync AI | المنصة التعليمية المتكاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --accent: #f43f5e; --purple: #a855f7; }
+        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --accent: #f43f5e; }
         * { box-sizing: border-box; transition: 0.3s; }
-        body { background: radial-gradient(circle at top, #1e293b 0%, #020617 100%); color: white; font-family: 'Cairo', sans-serif; margin: 0; min-height: 100vh; overflow-x: hidden; }
+        body { background: radial-gradient(circle at top, #1e293b 0%, #020617 100%); color: white; font-family: 'Cairo', sans-serif; margin: 0; min-height: 100vh; }
 
         /* الهيدر */
         .header { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
         .logo-box { display: flex; align-items: center; gap: 12px; }
-        .logo-img { width: 45px; height: 45px; border-radius: 10px; border: 1px solid var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .logo-img { width: 45px; height: 45px; border-radius: 10px; border: 1px solid var(--primary); }
         .brand-en { font-weight: 700; color: var(--primary); font-size: 1.2rem; }
 
-        /* القائمة الجانبية */
-        .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; border-left: 1px solid var(--primary); z-index: 2000; padding: 40px 20px; transition: 0.4s; }
-        .sidebar.active { right: 0; }
-        .nav-item { padding: 15px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #cbd5e1; font-weight: 600; }
-        .nav-item:hover { color: var(--primary); background: rgba(34, 211, 238, 0.05); }
-
-        /* الحاوية */
+        /* المحتوى */
         .container { padding: 30px 20px; max-width: 900px; margin: auto; }
         .section { display: none; animation: fadeIn 0.4s ease; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* كروت الميزات */
-        .grid-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
-        .f-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; cursor: pointer; }
-        .f-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .f-card i { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+        /* منطقة الرفع الاحترافية */
+        .upload-card { background: var(--card); border-radius: 25px; padding: 40px; border: 1px solid rgba(34, 211, 238, 0.2); text-align: center; margin-bottom: 30px; }
+        .drop-zone { border: 2px dashed rgba(34, 211, 238, 0.4); border-radius: 20px; padding: 40px 20px; background: rgba(34, 211, 238, 0.02); cursor: pointer; margin-bottom: 20px; }
+        .drop-zone:hover { border-color: var(--primary); background: rgba(34, 211, 238, 0.05); }
+        .drop-zone i { font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; }
 
-        /* أدوات الرفع والأزرار */
-        .tool-box { background: var(--card); border-radius: 25px; padding: 30px; border: 1px solid #1e293b; margin-top: 20px; text-align: center; }
-        .btn-action { background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 15px; }
+        /* أزرار الخدمات */
+        .grid-services { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
+        .s-card { background: #1e293b; padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border: 1px solid transparent; }
+        .s-card:hover { border-color: var(--primary); transform: scale(1.05); }
+        .s-card i { font-size: 1.8rem; margin-bottom: 10px; display: block; color: var(--primary); }
+
+        .btn-action { background: var(--primary); color: #000; border: none; padding: 18px; border-radius: 15px; font-weight: 700; width: 100%; cursor: pointer; font-size: 1.1rem; }
         
-        /* إحصائيات الدكتور */
-        .stats-bar { display: flex; align-items: flex-end; gap: 10px; height: 120px; margin-top: 20px; }
-        .bar { flex: 1; background: var(--accent); border-radius: 5px; position: relative; }
+        /* القائمة الجانبية */
+        .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; border-left: 1px solid var(--primary); z-index: 2000; padding: 40px 20px; }
+        .sidebar.active { right: 0; }
+        .nav-item { padding: 15px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; align-items: center; gap: 12px; }
     </style>
 </head>
 <body>
@@ -49,8 +48,8 @@
 <div class="sidebar" id="sidebar">
     <div style="text-align: left; font-size: 2rem; cursor: pointer;" onclick="toggleMenu()">×</div>
     <div class="nav-item" onclick="showSec('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
-    <div class="nav-item" onclick="showSec('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب الذكية</div>
-    <div class="nav-item" onclick="showSec('doctor')"><i class="fa-solid fa-chart-pie"></i> لوحة تحكم الأستاذ</div>
+    <div class="nav-item" onclick="showSec('student')"><i class="fa-solid fa-user-graduate"></i> بوابة الطالب</div>
+    <div class="nav-item" onclick="showSec('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
 </div>
 
 <header class="header">
@@ -67,63 +66,45 @@
 <div class="container">
     <div id="home" class="section active">
         <h2 style="text-align:center;">مرحباً بك في مستقبل التعليم 🚀</h2>
-        <div class="grid-features">
-            <div class="f-card" onclick="showSec('student')" style="border-bottom: 4px solid var(--primary);">
-                <i class="fa-solid fa-microphone-lines" style="color:var(--primary)"></i>
-                <span>البودكاست</span>
+        <div class="upload-card">
+            <h3>ابدأ برفع ملف المنهج</h3>
+            <div class="drop-zone" onclick="document.getElementById('mainFile').click()">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <p id="mainText">ارفع ملف الـ PDF لتحليله بالذكاء الاصطناعي</p>
+                <input type="file" id="mainFile" hidden accept=".pdf">
             </div>
-            <div class="f-card" onclick="showSec('quiz')" style="border-bottom: 4px solid #fbbf24;">
-                <i class="fa-solid fa-pen-to-square" style="color:#fbbf24"></i>
-                <span>الاختبارات</span>
-            </div>
-            <div class="f-card" onclick="showSec('cards')" style="border-bottom: 4px solid #34d399;">
-                <i class="fa-solid fa-layer-group" style="color:#34d399"></i>
-                <span>البطاقات</span>
-            </div>
-            <div class="f-card" onclick="showSec('maps')" style="border-bottom: 4px solid var(--purple);">
-                <i class="fa-solid fa-diagram-project" style="color:var(--purple)"></i>
-                <span>الخرائط</span>
+            <div class="grid-services">
+                <div class="s-card" onclick="showSec('student')"><i class="fa-solid fa-microphone"></i>بودكاست</div>
+                <div class="s-card" onclick="showSec('student')"><i class="fa-solid fa-spell-check"></i>اختبارات</div>
+                <div class="s-card" onclick="showSec('student')"><i class="fa-solid fa-brain"></i>خرائط</div>
+                <div class="s-card" onclick="showSec('student')"><i class="fa-solid fa-copy"></i>بطاقات</div>
             </div>
         </div>
     </div>
 
     <div id="student" class="section">
-        <div class="tool-box">
-            <i class="fa-solid fa-podcast" style="font-size:3rem; color:var(--primary)"></i>
-            <h3>صانع البودكاست (Audio Overview)</h3>
-            <p style="color:#94a3b8">ارفع المنهج وسيقوم AI بتحويله لحوار يشرح المادة</p>
-            <input type="file" id="pdf1" hidden>
-            <button class="btn-action" onclick="alert('جاري توليد حوار البودكاست...')">إنشاء بودكاست المنهج</button>
-        </div>
-    </div>
-
-    <div id="quiz" class="section">
-        <div class="tool-box">
-            <i class="fa-solid fa-robot" style="font-size:3rem; color:#fbbf24"></i>
-            <h3>مولد الاختبارات الذكي</h3>
-            <p style="color:#94a3b8">سيقوم الذكاء الاصطناعي بإنشاء أسئلة MCQs من ملفك</p>
-            <button class="btn-action" style="background:#fbbf24">بدء اختبار تجريبي</button>
-        </div>
-    </div>
-
-    <div id="maps" class="section">
-        <div class="tool-box">
-            <i class="fa-solid fa-brain" style="font-size:3rem; color:var(--purple)"></i>
-            <h3>الخرائط الذهنية الآلية</h3>
-            <p style="color:#94a3b8">تحويل النصوص المعقدة إلى هيكل بصري سهل الحفظ</p>
-            <button class="btn-action" style="background:var(--purple); color:#fff">توليد الخريطة الذهنية</button>
+        <div class="upload-card">
+            <h2>🎓 لوحة تحكم الطالب</h2>
+            <p>ارفع ملفك لاختيار الخدمة المطلوبة</p>
+            <div class="drop-zone" onclick="document.getElementById('stuFile').click()">
+                <i class="fa-solid fa-file-pdf"></i>
+                <p id="stuText">اضغط هنا لرفع المحاضرة أو الكتاب</p>
+                <input type="file" id="stuFile" hidden accept=".pdf">
+            </div>
+            <button class="btn-action" onclick="processAI()">بدء المعالجة الذكية</button>
         </div>
     </div>
 
     <div id="doctor" class="section">
-        <div class="tool-box">
-            <h3 style="color:var(--accent)">📊 لوحة مراقبة الاستيعاب</h3>
-            <div class="stats-bar">
-                <div class="bar" style="height: 80%"></div>
-                <div class="bar" style="height: 35%"></div>
-                <div class="bar" style="height: 90%"></div>
+        <div class="upload-card">
+            <h2 style="color:var(--accent)">👨‍🏫 بوابة الأستاذ الجامعي</h2>
+            <p>ارفع بيانات الطلاب لإصدار تقرير الاستيعاب</p>
+            <div class="drop-zone" style="border-color: var(--accent)" onclick="document.getElementById('docFile').click()">
+                <i class="fa-solid fa-chart-bar" style="color:var(--accent)"></i>
+                <p id="docText">ارفع ملف الإحصائيات (Excel/PDF)</p>
+                <input type="file" id="docFile" hidden>
             </div>
-            <p style="margin-top:20px;">الطلاب يحتاجون تركيز أكثر على "الشابتر 2"</p>
+            <button class="btn-action" style="background:var(--accent); color:#fff">توليد تقرير الاستيعاب</button>
         </div>
     </div>
 </div>
@@ -132,10 +113,25 @@
     function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSec(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        const target = document.getElementById(id);
-        if(target) target.classList.add('active');
+        document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
         window.scrollTo(0,0);
+    }
+
+    // لتغيير النص عند اختيار ملف
+    document.getElementById('mainFile').onchange = function() { 
+        if(this.files[0]) document.getElementById('mainText').innerText = "✅ جاهز: " + this.files[0].name; 
+    };
+    document.getElementById('stuFile').onchange = function() { 
+        if(this.files[0]) document.getElementById('stuText').innerText = "✅ تم اختيار المنهج"; 
+    };
+    document.getElementById('docFile').onchange = function() { 
+        if(this.files[0]) document.getElementById('docText').innerText = "✅ تم اختيار بيانات الطلاب"; 
+    };
+
+    function processAI() {
+        if(!document.getElementById('stuFile').files[0]) return alert("ارفع الملف أولاً يا بطل!");
+        alert("جاري تحليل المنهج عبر Gemini 1.5 Pro لتوليد البودكاست والأسئلة...");
     }
 </script>
 
