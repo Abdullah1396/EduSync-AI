@@ -3,42 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | المنصة التعليمية المتكاملة</title>
+    <title>EduSync AI | المنصة التعليمية الشاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --accent: #f43f5e; }
+        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --accent: #f43f5e; --purple: #a855f7; }
         * { box-sizing: border-box; transition: 0.3s; }
         body { background: radial-gradient(circle at top, #1e293b 0%, #020617 100%); color: white; font-family: 'Cairo', sans-serif; margin: 0; min-height: 100vh; overflow-x: hidden; }
 
         /* الهيدر */
-        .header { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
         .logo-box { display: flex; align-items: center; gap: 12px; }
-        .logo-img { width: 45px; height: 45px; border-radius: 10px; border: 1px solid var(--primary); }
-        .brand-en { font-weight: 700; color: var(--primary); font-size: 1.2rem; display: block; }
-        .brand-ar { font-size: 0.75rem; color: #94a3b8; }
+        .logo-img { width: 45px; height: 45px; border-radius: 10px; border: 1px solid var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .brand-en { font-weight: 700; color: var(--primary); font-size: 1.2rem; }
 
         /* القائمة الجانبية */
         .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; border-left: 1px solid var(--primary); z-index: 2000; padding: 40px 20px; transition: 0.4s; }
         .sidebar.active { right: 0; }
-        .nav-item { padding: 15px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #cbd5e1; }
+        .nav-item { padding: 15px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #cbd5e1; font-weight: 600; }
         .nav-item:hover { color: var(--primary); background: rgba(34, 211, 238, 0.05); }
 
-        /* المحتوى */
-        .container { padding: 30px 20px; max-width: 800px; margin: auto; }
-        .section { display: none; animation: fadeIn 0.5s ease; }
+        /* الحاوية */
+        .container { padding: 30px 20px; max-width: 900px; margin: auto; }
+        .section { display: none; animation: fadeIn 0.4s ease; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* الكروت */
-        .card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; text-align: center; }
-        .upload-zone { border: 2px dashed rgba(34, 211, 238, 0.3); border-radius: 15px; padding: 30px; cursor: pointer; margin: 20px 0; }
-        .btn-main { background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; font-size: 1rem; }
+        /* كروت الميزات */
+        .grid-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
+        .f-card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; cursor: pointer; }
+        .f-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .f-card i { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+
+        /* أدوات الرفع والأزرار */
+        .tool-box { background: var(--card); border-radius: 25px; padding: 30px; border: 1px solid #1e293b; margin-top: 20px; text-align: center; }
+        .btn-action { background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 15px; }
         
         /* إحصائيات الدكتور */
-        .stats-grid { display: flex; align-items: flex-end; gap: 10px; height: 150px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 10px; margin-top: 20px; }
-        .bar { flex: 1; background: var(--accent); border-radius: 5px 5px 0 0; position: relative; }
-        .bar::after { content: attr(label); position: absolute; bottom: -25px; width: 100%; font-size: 0.7rem; text-align: center; color: #94a3b8; }
+        .stats-bar { display: flex; align-items: flex-end; gap: 10px; height: 120px; margin-top: 20px; }
+        .bar { flex: 1; background: var(--accent); border-radius: 5px; position: relative; }
     </style>
 </head>
 <body>
@@ -46,16 +49,16 @@
 <div class="sidebar" id="sidebar">
     <div style="text-align: left; font-size: 2rem; cursor: pointer;" onclick="toggleMenu()">×</div>
     <div class="nav-item" onclick="showSec('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
-    <div class="nav-item" onclick="showSec('student')"><i class="fa-solid fa-user-graduate"></i> بوابة الطالب (بودكاست)</div>
-    <div class="nav-item" onclick="showSec('doctor')"><i class="fa-solid fa-chart-line"></i> بوابة الدكتور (تقارير)</div>
+    <div class="nav-item" onclick="showSec('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب الذكية</div>
+    <div class="nav-item" onclick="showSec('doctor')"><i class="fa-solid fa-chart-pie"></i> لوحة تحكم الأستاذ</div>
 </div>
 
 <header class="header">
-    <div onclick="toggleMenu()" style="cursor:pointer; font-size: 1.5rem; color: var(--primary);"><i class="fa-solid fa-bars-staggered"></i></div>
+    <div onclick="toggleMenu()" style="cursor:pointer; color: var(--primary); font-size: 1.4rem;"><i class="fa-solid fa-bars-staggered"></i></div>
     <div class="logo-box">
-        <div class="brand-title">
-            <span class="brand-en">EduSync AI</span>
-            <span class="brand-ar">المزامنة التعليمية الذكية</span>
+        <div style="text-align:right">
+            <span class="brand-en">EduSync AI</span><br>
+            <span style="font-size:0.7rem; color:#94a3b8">المزامنة التعليمية الذكية</span>
         </div>
         <img src="1A9FCFDC-779E-4D60-9CC7-32F9D6705596.png" class="logo-img" onerror="this.src='https://i.ibb.co/v4S8L8Y/logo.png'">
     </div>
@@ -63,45 +66,64 @@
 
 <div class="container">
     <div id="home" class="section active">
-        <h1 style="text-align:center;">مرحباً بك في <span style="color:var(--primary)">EduSync</span></h1>
-        <div class="card" onclick="showSec('student')" style="cursor:pointer">
-            <i class="fa-solid fa-microphone-lines" style="font-size:3rem; color:var(--primary)"></i>
-            <h3>بوابة الطالب</h3>
-            <p>حول منهجك لبودكاست ذكي وتلخيص فوري</p>
-        </div>
-        <div class="card" onclick="showSec('doctor')" style="cursor:pointer; border-right: 5px solid var(--accent)">
-            <i class="fa-solid fa-chalkboard-user" style="font-size:3rem; color:var(--accent)"></i>
-            <h3>بوابة الأستاذ</h3>
-            <p>لوحة بيانات لمتابعة استيعاب الطلاب للمنهج</p>
+        <h2 style="text-align:center;">مرحباً بك في مستقبل التعليم 🚀</h2>
+        <div class="grid-features">
+            <div class="f-card" onclick="showSec('student')" style="border-bottom: 4px solid var(--primary);">
+                <i class="fa-solid fa-microphone-lines" style="color:var(--primary)"></i>
+                <span>البودكاست</span>
+            </div>
+            <div class="f-card" onclick="showSec('quiz')" style="border-bottom: 4px solid #fbbf24;">
+                <i class="fa-solid fa-pen-to-square" style="color:#fbbf24"></i>
+                <span>الاختبارات</span>
+            </div>
+            <div class="f-card" onclick="showSec('cards')" style="border-bottom: 4px solid #34d399;">
+                <i class="fa-solid fa-layer-group" style="color:#34d399"></i>
+                <span>البطاقات</span>
+            </div>
+            <div class="f-card" onclick="showSec('maps')" style="border-bottom: 4px solid var(--purple);">
+                <i class="fa-solid fa-diagram-project" style="color:var(--purple)"></i>
+                <span>الخرائط</span>
+            </div>
         </div>
     </div>
 
     <div id="student" class="section">
-        <div class="card">
-            <h2>🎙️ صانع البودكاست التعليمي</h2>
-            <p>ارفع ملف المادة (PDF) لتحويله لشرح صوتي حواري</p>
-            <div class="upload-zone" onclick="document.getElementById('fin').click()">
-                <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary)"></i>
-                <p id="fName">اضغط لرفع المنهج</p>
-                <input type="file" id="fin" hidden accept=".pdf">
-            </div>
-            <button class="btn-main" onclick="alert('جاري توليد حوار البودكاست عبر Gemini...')">إنشاء Audio Overview</button>
+        <div class="tool-box">
+            <i class="fa-solid fa-podcast" style="font-size:3rem; color:var(--primary)"></i>
+            <h3>صانع البودكاست (Audio Overview)</h3>
+            <p style="color:#94a3b8">ارفع المنهج وسيقوم AI بتحويله لحوار يشرح المادة</p>
+            <input type="file" id="pdf1" hidden>
+            <button class="btn-action" onclick="alert('جاري توليد حوار البودكاست...')">إنشاء بودكاست المنهج</button>
+        </div>
+    </div>
+
+    <div id="quiz" class="section">
+        <div class="tool-box">
+            <i class="fa-solid fa-robot" style="font-size:3rem; color:#fbbf24"></i>
+            <h3>مولد الاختبارات الذكي</h3>
+            <p style="color:#94a3b8">سيقوم الذكاء الاصطناعي بإنشاء أسئلة MCQs من ملفك</p>
+            <button class="btn-action" style="background:#fbbf24">بدء اختبار تجريبي</button>
+        </div>
+    </div>
+
+    <div id="maps" class="section">
+        <div class="tool-box">
+            <i class="fa-solid fa-brain" style="font-size:3rem; color:var(--purple)"></i>
+            <h3>الخرائط الذهنية الآلية</h3>
+            <p style="color:#94a3b8">تحويل النصوص المعقدة إلى هيكل بصري سهل الحفظ</p>
+            <button class="btn-action" style="background:var(--purple); color:#fff">توليد الخريطة الذهنية</button>
         </div>
     </div>
 
     <div id="doctor" class="section">
-        <div class="card">
-            <h2 style="color:var(--accent)">📊 تقارير الاستيعاب</h2>
-            <p>تحليل AI لمدى فهم الطلاب للفصول الأخيرة</p>
-            <div class="stats-grid">
-                <div class="bar" style="height: 85%" label="فصل 1"></div>
-                <div class="bar" style="height: 40%" label="فصل 2"></div>
-                <div class="bar" style="height: 95%" label="فصل 3"></div>
-                <div class="bar" style="height: 60%" label="فصل 4"></div>
+        <div class="tool-box">
+            <h3 style="color:var(--accent)">📊 لوحة مراقبة الاستيعاب</h3>
+            <div class="stats-bar">
+                <div class="bar" style="height: 80%"></div>
+                <div class="bar" style="height: 35%"></div>
+                <div class="bar" style="height: 90%"></div>
             </div>
-            <p style="margin-top:40px; font-size:0.9rem; background:rgba(244,63,94,0.1); padding:10px; border-radius:10px;">
-                ⚠️ <b>تنبيه الذكاء الاصطناعي:</b> الطلاب يواجهون صعوبة في الفصل الثاني، يُنصح بإعادة شرح المفاهيم الأساسية.
-            </p>
+            <p style="margin-top:20px;">الطلاب يحتاجون تركيز أكثر على "الشابتر 2"</p>
         </div>
     </div>
 </div>
@@ -110,12 +132,11 @@
     function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSec(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        toggleMenu(); window.scrollTo(0,0);
+        const target = document.getElementById(id);
+        if(target) target.classList.add('active');
+        document.getElementById('sidebar').classList.remove('active');
+        window.scrollTo(0,0);
     }
-    document.getElementById('fin').onchange = function() {
-        if(this.files[0]) document.getElementById('fName').innerText = "✅ جاهز: " + this.files[0].name;
-    };
 </script>
 
 </body>
