@@ -3,112 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | المنصة الأكاديمية الشاملة</title>
+    <title>EduSync AI | المنصة المتكاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #22d3ee; --bg: #020617; --card: #1e293b; --accent: #f43f5e; }
-        body { background-color: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; }
-        .header { display: flex; align-items: center; justify-content: center; padding: 15px; background: var(--card); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
-        .logo-img { width: 50px; height: 50px; margin-left: 10px; filter: drop-shadow(0 0 8px var(--primary)); }
+        :root { --primary: #22d3ee; --bg: #020617; --card: #1e293b; --doctor: #f43f5e; }
+        * { box-sizing: border-box; transition: 0.3s; }
+        body { background-color: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; overflow-x: hidden; }
+
+        /* الهيدر العلوي */
+        .top-bar { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: var(--card); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-img { width: 45px; height: 45px; filter: drop-shadow(0 0 5px var(--primary)); }
+        .menu-toggle { font-size: 1.5rem; color: var(--primary); cursor: pointer; }
+
+        /* القائمة الجانبية (الخطوط الثلاثة) */
+        .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; border-left: 1px solid var(--primary); z-index: 2000; padding: 30px 20px; }
+        .sidebar.active { right: 0; }
+        .sidebar-item { padding: 15px; border-bottom: 1px solid #334155; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .sidebar-item:hover { color: var(--primary); }
+
+        /* شاشة اختيار الدور (دكتور / طالب) */
+        .entrance-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; padding: 20px; }
+        .role-cards { display: grid; grid-template-columns: 1fr; gap: 20px; width: 100%; max-width: 500px; }
+        .role-card { background: var(--card); border: 2px solid #334155; border-radius: 20px; padding: 30px; text-align: center; cursor: pointer; }
+        .role-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .role-card i { font-size: 3rem; color: var(--primary); margin-bottom: 15px; }
+
+        /* الأقسام الرئيسية */
+        .section { display: none; padding: 20px; max-width: 800px; margin: auto; }
+        .section.active { display: block; }
+
+        /* أداة تلخيص البودكاست */
+        .podcast-box { background: rgba(34, 211, 238, 0.05); border: 1px solid var(--primary); border-radius: 15px; padding: 20px; margin-top: 20px; }
+        .audio-upload { border: 2px dashed #334155; padding: 20px; border-radius: 10px; cursor: pointer; }
+
+        /* أزرار الإجراءات */
+        .btn-main { background: var(--primary); color: #020617; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; width: 100%; margin-top: 15px; cursor: pointer; }
         
-        .container { max-width: 900px; margin: auto; padding: 20px; }
-        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
-        .tab-btn { background: var(--card); border: 1px solid #334155; color: white; padding: 10px 20px; border-radius: 12px; cursor: pointer; white-space: nowrap; }
-        .tab-btn.active { border-color: var(--primary); background: rgba(34, 211, 238, 0.1); color: var(--primary); font-weight: bold; }
-        
-        .main-display { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid #334155; min-height: 450px; }
-        
-        /* تقارير الدكتور */
-        .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .report-card { background: #0f172a; padding: 15px; border-radius: 15px; border-right: 4px solid var(--primary); }
-        .alert-card { border-right-color: var(--accent); }
-        
-        canvas { max-width: 100%; margin-top: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 10px; }
-        
-        .upload-area { border: 2px dashed var(--primary); padding: 30px; text-align: center; border-radius: 15px; margin-bottom: 20px; }
-        .btn-action { background: var(--primary); color: #000; border: none; padding: 10px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        /* التنبيهات */
+        .ai-badge { background: var(--primary); color: #000; font-size: 0.7rem; padding: 2px 8px; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <img src="https://raw.githubusercontent.com/Abdullah1396/EduSync-AI/main/image.png" class="logo-img">
-    <h1 style="margin:0; font-size: 1.2rem;">EduSync AI - KKU</h1>
+<div class="sidebar" id="sidebar">
+    <div style="text-align: left; font-size: 1.5rem;" onclick="toggleMenu()">×</div>
+    <div class="sidebar-item" onclick="showAppSection('home')"><i class="fa-solid fa-home"></i> الرئيسية</div>
+    <div class="sidebar-item" onclick="showAppSection('podcast')"><i class="fa-solid fa-microphone"></i> تلخيص بودكاست</div>
+    <div class="sidebar-item" onclick="showAppSection('quiz')"><i class="fa-solid fa-book-open"></i> الاختبارات</div>
+    <div class="sidebar-item" onclick="showAppSection('doctor-dash')"><i class="fa-solid fa-chart-line"></i> تقارير الدكتور</div>
+</div>
+
+<div class="top-bar">
+    <div class="menu-toggle" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
+    <div class="logo-area">
+        <h1 style="font-size: 1.2rem; margin: 0;">EduSync AI</h1>
+        <img src="https://raw.githubusercontent.com/Abdullah1396/EduSync-AI/main/image.png" class="logo-img">
+    </div>
 </div>
 
 <div class="container">
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="showSection('student')">👨‍🎓 واجهة الطالب</button>
-        <button class="tab-btn" onclick="showSection('doctor')">👨‍🏫 تقارير الدكتور (AI)</button>
-    </div>
-
-    <div id="studentSection" class="main-display">
-        <div class="upload-area">
-            <h3>رفع منهج الـ PDF</h3>
-            <button class="btn-action">اختر الملف</button>
-        </div>
-        <div id="studentTools" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-            <div style="text-align:center; padding:10px; background:#0f172a; border-radius:10px;">📝 اختبار</div>
-            <div style="text-align:center; padding:10px; background:#0f172a; border-radius:10px;">🧠 خريطة</div>
-            <div style="text-align:center; padding:10px; background:#0f172a; border-radius:10px;">🗂️ بطاقات</div>
-        </div>
-        <p style="margin-top:20px; color:#94a3b8; font-size:0.9rem;">* الطالب هنا يذاكر ويختبر نفسه، والبيانات تُرسل تلقائياً للدكتور.</p>
-    </div>
-
-    <div id="doctorSection" class="main-display" style="display:none;">
-        <h2 style="color:var(--primary); margin-top:0;">📊 لوحة تحليل الأداء الأكاديمي</h2>
-        <p>تقرير ذكي مبني على تفاعل 150 طالب مع المنهج:</p>
-        
-        <div class="report-grid">
-            <div class="report-card">
-                <small>متوسط درجات الطلاب</small>
-                <h3 style="margin:5px 0;">82%</h3>
-            </div>
-            <div class="report-card alert-card">
-                <small>أصعب فصل (يحتاج مراجعة)</small>
-                <h3 style="margin:5px 0; color:var(--accent);">الفصل الثالث</h3>
+    
+    <div id="home" class="section active">
+        <div class="entrance-screen">
+            <img src="https://raw.githubusercontent.com/Abdullah1396/EduSync-AI/main/image.png" style="width: 100px; margin-bottom: 20px;">
+            <h2 style="text-align: center;">مرحباً بك في EduSync<br><small style="color: var(--primary); font-size: 0.9rem;">بوابة جامعة الملك خالد للذكاء الاصطناعي</small></h2>
+            <div class="role-cards">
+                <div class="role-card" onclick="showAppSection('student-main')">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <h3>واجهة الطالب</h3>
+                    <p>اختبارات، خرائط، وبودكاست</p>
+                </div>
+                <div class="role-card" onclick="showAppSection('doctor-dash')" style="border-right: 5px solid var(--doctor);">
+                    <i class="fa-solid fa-user-tie" style="color: var(--doctor);"></i>
+                    <h3>واجهة الدكتور</h3>
+                    <p>رفع المناهج والتقارير</p>
+                </div>
             </div>
         </div>
+    </div>
 
-        <canvas id="performanceChart" height="150"></canvas>
-
-        <div style="margin-top:20px; background:rgba(34, 211, 238, 0.1); padding:15px; border-radius:10px; font-size:0.9rem;">
-            <b>💡 توصية Gemini للدكتور:</b> الطلاب يواجهون صعوبة في فهم "الشبكات العصبية". نقترح تخصيص 15 دقيقة في المحاضرة القادمة لتبسيط هذا المفهوم.
+    <div id="podcast" class="section">
+        <h2>🎙️ تلخيص البودكاست والمحاضرات <span class="ai-badge">Gemini AI</span></h2>
+        <p>ارفع ملف المحاضرة الصوتي وسيقوم النظام بتحويله لملخص نصي وأسئلة مذاكرة.</p>
+        <div class="podcast-box">
+            <div class="audio-upload" onclick="alert('جاري اختيار ملف الصوت...')">
+                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color: var(--primary);"></i>
+                <p>اسحب ملف الصوت هنا (MP3, WAV)</p>
+            </div>
+            <button class="btn-main" onclick="processPodcast()">بدء التلخيص الذكي</button>
+        </div>
+        <div id="podcastResult" style="margin-top:20px; display:none; background:#0f172a; padding:15px; border-radius:10px;">
+            <h4 style="color:var(--primary);">الملخص المستخرج:</h4>
+            <p style="font-size: 0.9rem; line-height: 1.6;">تم تحليل المحاضرة: تتحدث المادة عن أساسيات معالجة اللغات الطبيعية وتطبيقاتها في التعليم الذكي...</p>
         </div>
     </div>
+
+    <div id="student-main" class="section">
+        <h2>👨‍🎓 لوحة تحكم الطالب</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="role-card" style="padding: 15px;" onclick="showAppSection('quiz')">📝 الاختبارات</div>
+            <div class="role-card" style="padding: 15px;">🧠 الخريطة الذهنية</div>
+        </div>
+        <button class="btn-main" onclick="showAppSection('home')">العودة للرئيسية</button>
+    </div>
+
+    <div id="doctor-dash" class="section">
+        <h2 style="color: var(--doctor);">📊 تقارير الأداء الأكاديمي</h2>
+        <div style="background: #0f172a; padding: 20px; border-radius: 15px; border: 1px solid var(--doctor);">
+            <p>إحصائيات تفاعل الطلاب مع منهجك:</p>
+            <div style="height: 150px; background: rgba(244, 63, 94, 0.1); border-radius: 10px; display: flex; align-items: flex-end; justify-content: space-around; padding: 10px;">
+                <div style="width: 30px; height: 60%; background: var(--doctor); border-radius: 5px;"></div>
+                <div style="width: 30px; height: 90%; background: var(--doctor); border-radius: 5px;"></div>
+                <div style="width: 30px; height: 40%; background: var(--doctor); border-radius: 5px;"></div>
+            </div>
+            <p style="font-size: 0.8rem; margin-top: 10px;">💡 توصية: الطلاب يحتاجون مراجعة في الفصل الثاني.</p>
+        </div>
+        <button class="btn-main" style="background: var(--doctor); color: white;" onclick="showAppSection('home')">العودة</button>
+    </div>
+
 </div>
 
 <script>
-    function showSection(section) {
-        document.getElementById('studentSection').style.display = section === 'student' ? 'block' : 'none';
-        document.getElementById('doctorSection').style.display = section === 'doctor' ? 'block' : 'none';
-        
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
-
-        if(section === 'doctor') {
-            initChart();
-        }
+    function toggleMenu() {
+        document.getElementById('sidebar').classList.toggle('active');
     }
 
-    function initChart() {
-        const ctx = document.getElementById('performanceChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'],
-                datasets: [{
-                    label: 'تفاعل الطلاب مع المنهج',
-                    data: [40, 65, 50, 90],
-                    borderColor: '#22d3ee',
-                    tension: 0.4
-                }]
-            },
-            options: {
-                scales: { y: { beginAtZero: true, grid: { color: '#334155' } } }
-            }
-        });
+    function showAppSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('sidebar').classList.remove('active');
+        window.scrollTo(0,0);
+    }
+
+    function processPodcast() {
+        alert("جاري رفع الصوت وتحليله عبر خوارزميات EduSync...");
+        setTimeout(() => {
+            document.getElementById('podcastResult').style.display = 'block';
+        }, 2000);
     }
 </script>
 
