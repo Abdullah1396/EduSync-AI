@@ -71,14 +71,58 @@
             border: 1px solid var(--line);
             border-radius: 20px;
             padding: 25px;
+            margin-bottom: 50px;
         }
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .feature-item i { color: var(--primary); font-size: 1.4rem; margin-top: 5px; }
         .feature-item h4 { font-size: 0.95rem; margin-bottom: 5px; color: #fff; }
         .feature-item p { font-size: 0.8rem; color: #94a3b8; line-height: 1.6; }
+
+        /* --- تصميم الشات بوت الجديد --- */
+        .chat-launcher {
+            position: fixed; bottom: 20px; left: 20px;
+            width: 60px; height: 60px; background: var(--primary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: var(--bg); cursor: pointer;
+            box-shadow: 0 5px 20px rgba(34, 211, 238, 0.4); z-index: 3000;
+        }
+        .chat-window {
+            position: fixed; bottom: 90px; left: 20px;
+            width: 320px; height: 450px; background: var(--card);
+            border: 1px solid var(--primary); border-radius: 20px;
+            display: none; flex-direction: column; z-index: 3000;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .chat-window.active { display: flex; }
+        .chat-header { background: var(--primary); color: var(--bg); padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; font-size: 0.85rem; }
+        .chat-msg { margin-bottom: 15px; padding: 10px; border-radius: 10px; max-width: 80%; }
+        .bot-msg { background: var(--line); align-self: flex-start; border-bottom-right-radius: 0; }
+        .chat-footer { padding: 10px; border-top: 1px solid var(--line); display: flex; gap: 5px; }
+        .chat-input { background: var(--bg); border: 1px solid var(--line); color: white; padding: 8px; border-radius: 5px; flex: 1; font-family: 'Cairo'; }
     </style>
 </head>
 <body>
+
+<div class="chat-launcher" onclick="toggleChat()">
+    <i class="fa-solid fa-comment-dots"></i>
+</div>
+
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <span>مساعد EduSync 🤖</span>
+        <i class="fa-solid fa-chevron-down" style="cursor:pointer" onclick="toggleChat()"></i>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <div class="chat-msg bot-msg">مرحباً يا بطل! أنا مساعدك الذكي. كيف يمكنني مساعدتك في مذاكرتك اليوم؟</div>
+    </div>
+    <div class="chat-footer">
+        <input type="text" class="chat-input" placeholder="اسألني أي شيء..." id="chatInput">
+        <button onclick="sendMsg()" style="background:var(--primary); border:none; padding:8px 12px; border-radius:5px; cursor:pointer">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
 
 <div class="sidebar" id="sidebar">
     <div class="close-menu" onclick="toggleMenu()">×</div>
@@ -111,38 +155,9 @@
 
         <div class="about-app">
             <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h3>
-            
-            <div class="feature-item">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <div>
-                    <h4>قوة الذكاء الاصطناعي</h4>
-                    <p>يعتمد التطبيق على محركات ذكاء اصطناعي متطورة لتحليل المناهج الدراسية مهما بلغت درجة تعقيدها، واستخراج المعلومات الجوهرية منها بدقة فائقة.</p>
-                </div>
-            </div>
-
-            <div class="feature-item">
-                <i class="fa-solid fa-headphones-simple"></i>
-                <div>
-                    <h4>التعلم السمعي (Podcast)</h4>
-                    <p>حوّل كتبك ودروسك إلى بودكاست تعليمي ممتع؛ لتمكنك من المذاكرة أثناء ممارسة الرياضة أو في طريقك للجامعة، مما يوفر الوقت ويزيد التركيز.</p>
-                </div>
-            </div>
-
-            <div class="feature-item">
-                <i class="fa-solid fa-chart-pie"></i>
-                <div>
-                    <h4>تحليل الفجوات المعرفية</h4>
-                    <p>يساعد الدكاترة في معرفة الأجزاء التي لم يستوعبها الطلاب بدقة، مما يسهل عملية إعادة الشرح والتركيز على نقاط الضعف الحقيقية.</p>
-                </div>
-            </div>
-
-            <div class="feature-item">
-                <i class="fa-solid fa-file-shield"></i>
-                <div>
-                    <h4>أتمتة الاختبارات والخرائط</h4>
-                    <p>وداعاً لإضاعة الوقت في تلخيص الدروس؛ التطبيق يبني لك خرائط ذهنية واختبارات تجريبية ذكية فور رفع الملف مباشرة.</p>
-                </div>
-            </div>
+            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><h4>قوة الذكاء الاصطناعي</h4><p>تحليل المناهج واستخراج المعلومات الجوهرية بدقة فائقة.</p></div></div>
+            <div class="feature-item"><i class="fa-solid fa-headphones-simple"></i><div><h4>التعلم السمعي (Podcast)</h4><p>حوّل دروسك إلى بودكاست تعليمي ممتع للمذاكرة في أي وقت.</p></div></div>
+            <div class="feature-item"><i class="fa-solid fa-chart-pie"></i><div><h4>تحليل الفجوات المعرفية</h4><p>يساعد الدكاترة في معرفة نقاط ضعف الطلاب بدقة.</p></div></div>
         </div>
     </div>
 
@@ -154,10 +169,10 @@
             <input type="file" id="fIn" hidden accept=".pdf">
         </div>
         <div class="tools-grid">
-            <div class="tool-btn" onclick="alert('جاري إنشاء بودكاست المنهج...')"><i class="fa-solid fa-microphone"></i><span>بودكاست</span></div>
-            <div class="tool-btn" onclick="alert('جاري توليد الأسئلة...')"><i class="fa-solid fa-check-double"></i><span>اختبارات</span></div>
-            <div class="tool-btn" onclick="alert('جاري رسم الخريطة الذهنية...')"><i class="fa-solid fa-brain"></i><span>خرائط</span></div>
-            <div class="tool-btn" onclick="alert('جاري تجهيز بطاقات المراجعة...')"><i class="fa-solid fa-layer-group"></i><span>بطاقات</span></div>
+            <div class="tool-btn" onclick="alert('جاري إنشاء بودكاست...')"><i class="fa-solid fa-microphone"></i><span>بودكاست</span></div>
+            <div class="tool-btn" onclick="alert('جاري توليد اختبار...')"><i class="fa-solid fa-check-double"></i><span>اختبارات</span></div>
+            <div class="tool-btn" onclick="alert('جاري رسم الخريطة...')"><i class="fa-solid fa-brain"></i><span>خرائط</span></div>
+            <div class="tool-btn" onclick="alert('جاري تجهيز البطاقات...')"><i class="fa-solid fa-layer-group"></i><span>بطاقات</span></div>
         </div>
     </div>
 
@@ -186,6 +201,7 @@
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
+        window.scrollTo(0,0);
     }
     
     function tryOtherImages(img) {
@@ -195,6 +211,22 @@
             this.src = "https://img.icons8.com/neon/96/artificial-intelligence.png";
             this.onerror = null;
         };
+    }
+
+    // وظائف الشات بوت
+    function toggleChat() { document.getElementById('chatWindow').classList.toggle('active'); }
+    function sendMsg() {
+        let input = document.getElementById('chatInput');
+        let body = document.getElementById('chatBody');
+        if(input.value.trim() !== "") {
+            body.innerHTML += `<div class="chat-msg" style="background:var(--primary); color:var(--bg); align-self:flex-end; border-bottom-left-radius:0; margin-right:auto; padding:10px; border-radius:10px; margin-bottom:15px; max-width:80%;">${input.value}</div>`;
+            setTimeout(() => {
+                body.innerHTML += `<div class="chat-msg bot-msg">أنا الآن في وضع التجربة، قريباً سأتمكن من تحليل ملفاتك والإجابة بدقة! 🧠</div>`;
+                body.scrollTop = body.scrollHeight;
+            }, 1000);
+            input.value = "";
+            body.scrollTop = body.scrollHeight;
+        }
     }
 
     document.getElementById('fIn').onchange = function() {
