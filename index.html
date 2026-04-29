@@ -3,144 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | صانع البودكاست التعليمي</title>
+    <title>EduSync AI | المنصة التعليمية المتكاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --glass: rgba(30, 41, 59, 0.7); --accent: #f43f5e; }
-        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --accent: #f43f5e; }
+        * { box-sizing: border-box; transition: 0.3s; }
+        body { background: radial-gradient(circle at top, #1e293b 0%, #020617 100%); color: white; font-family: 'Cairo', sans-serif; margin: 0; min-height: 100vh; overflow-x: hidden; }
+
+        /* الهيدر */
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        .logo-box { display: flex; align-items: center; gap: 12px; }
+        .logo-img { width: 45px; height: 45px; border-radius: 10px; border: 1px solid var(--primary); }
+        .brand-en { font-weight: 700; color: var(--primary); font-size: 1.2rem; display: block; }
+        .brand-ar { font-size: 0.75rem; color: #94a3b8; }
+
+        /* القائمة الجانبية */
+        .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; border-left: 1px solid var(--primary); z-index: 2000; padding: 40px 20px; transition: 0.4s; }
+        .sidebar.active { right: 0; }
+        .nav-item { padding: 15px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #cbd5e1; }
+        .nav-item:hover { color: var(--primary); background: rgba(34, 211, 238, 0.05); }
+
+        /* المحتوى */
+        .container { padding: 30px 20px; max-width: 800px; margin: auto; }
+        .section { display: none; animation: fadeIn 0.5s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* الكروت */
+        .card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; text-align: center; }
+        .upload-zone { border: 2px dashed rgba(34, 211, 238, 0.3); border-radius: 15px; padding: 30px; cursor: pointer; margin: 20px 0; }
+        .btn-main { background: var(--primary); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; font-size: 1rem; }
         
-        body { 
-            background: radial-gradient(circle at top, #1e293b 0%, #020617 100%);
-            color: white; font-family: 'Cairo', sans-serif; margin: 0; min-height: 100vh;
-        }
-
-        /* هيدر احترافي */
-        .header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 15px 5%; background: var(--glass); backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(34, 211, 238, 0.2); position: sticky; top: 0; z-index: 1000;
-        }
-        .logo-box { display: flex; align-items: center; gap: 15px; }
-        .logo-img { width: 50px; height: 50px; border-radius: 12px; border: 1px solid var(--primary); box-shadow: 0 0 15px rgba(34, 211, 238, 0.3); }
-        .brand-title { line-height: 1.1; text-align: right; }
-        .brand-en { font-weight: 700; color: var(--primary); font-size: 1.3rem; }
-        .brand-ar { font-size: 0.8rem; color: #94a3b8; }
-
-        /* منطقة المحتوى */
-        .main-container { padding: 40px 20px; max-width: 800px; margin: auto; }
-        .hero-section { text-align: center; margin-bottom: 40px; }
-        .hero-section h1 { font-size: 2rem; background: linear-gradient(to left, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
-        
-        /* كرت الرفع الاحترافي */
-        .upload-card {
-            background: var(--card); border-radius: 24px; padding: 40px;
-            border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-            text-align: center;
-        }
-        .drop-zone {
-            border: 2px dashed rgba(34, 211, 238, 0.3); border-radius: 20px;
-            padding: 50px 20px; background: rgba(34, 211, 238, 0.02); cursor: pointer;
-            margin-bottom: 25px;
-        }
-        .drop-zone:hover { border-color: var(--primary); background: rgba(34, 211, 238, 0.05); }
-        .drop-zone i { font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; }
-
-        /* الأزرار */
-        .btn-convert {
-            background: var(--primary); color: #020617; border: none; width: 100%;
-            padding: 18px; border-radius: 15px; font-weight: 700; font-size: 1.1rem;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
-        }
-        .btn-convert:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34, 211, 238, 0.2); }
-
-        /* مشغل البودكاست (يظهر بعد التحويل) */
-        #podcastResult {
-            display: none; margin-top: 30px; padding: 25px; background: rgba(255,255,255,0.03);
-            border-radius: 20px; border: 1px solid var(--primary); animation: slideUp 0.5s ease;
-        }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .loading-shimmer { display: none; color: var(--primary); margin: 20px 0; font-weight: 600; }
+        /* إحصائيات الدكتور */
+        .stats-grid { display: flex; align-items: flex-end; gap: 10px; height: 150px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 10px; margin-top: 20px; }
+        .bar { flex: 1; background: var(--accent); border-radius: 5px 5px 0 0; position: relative; }
+        .bar::after { content: attr(label); position: absolute; bottom: -25px; width: 100%; font-size: 0.7rem; text-align: center; color: #94a3b8; }
     </style>
 </head>
 <body>
 
+<div class="sidebar" id="sidebar">
+    <div style="text-align: left; font-size: 2rem; cursor: pointer;" onclick="toggleMenu()">×</div>
+    <div class="nav-item" onclick="showSec('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
+    <div class="nav-item" onclick="showSec('student')"><i class="fa-solid fa-user-graduate"></i> بوابة الطالب (بودكاست)</div>
+    <div class="nav-item" onclick="showSec('doctor')"><i class="fa-solid fa-chart-line"></i> بوابة الدكتور (تقارير)</div>
+</div>
+
 <header class="header">
-    <div style="font-size: 1.5rem; color: var(--primary); cursor: pointer;"><i class="fa-solid fa-bars-staggered"></i></div>
+    <div onclick="toggleMenu()" style="cursor:pointer; font-size: 1.5rem; color: var(--primary);"><i class="fa-solid fa-bars-staggered"></i></div>
     <div class="logo-box">
         <div class="brand-title">
-            <span class="brand-en">EduSync AI</span><br>
+            <span class="brand-en">EduSync AI</span>
             <span class="brand-ar">المزامنة التعليمية الذكية</span>
         </div>
-        <img src="https://raw.githubusercontent.com/Abdullah1396/EduSync-AI/main/1A9FCFDC-779E-4D60-9CC7-32F9D6705596.png" class="logo-img" onerror="this.src='https://i.ibb.co/v4S8L8Y/logo.png'">
+        <img src="1A9FCFDC-779E-4D60-9CC7-32F9D6705596.png" class="logo-img" onerror="this.src='https://i.ibb.co/v4S8L8Y/logo.png'">
     </div>
 </header>
 
-<main class="main-container">
-    <div class="hero-section">
-        <h1>صانع البودكاست التعليمي 🎧</h1>
-        <p style="color: #94a3b8;">ارفع ملف المنهج (PDF) وسيقوم الذكاء الاصطناعي بتحويله إلى حوار يشرح لك المادة</p>
+<div class="container">
+    <div id="home" class="section active">
+        <h1 style="text-align:center;">مرحباً بك في <span style="color:var(--primary)">EduSync</span></h1>
+        <div class="card" onclick="showSec('student')" style="cursor:pointer">
+            <i class="fa-solid fa-microphone-lines" style="font-size:3rem; color:var(--primary)"></i>
+            <h3>بوابة الطالب</h3>
+            <p>حول منهجك لبودكاست ذكي وتلخيص فوري</p>
+        </div>
+        <div class="card" onclick="showSec('doctor')" style="cursor:pointer; border-right: 5px solid var(--accent)">
+            <i class="fa-solid fa-chalkboard-user" style="font-size:3rem; color:var(--accent)"></i>
+            <h3>بوابة الأستاذ</h3>
+            <p>لوحة بيانات لمتابعة استيعاب الطلاب للمنهج</p>
+        </div>
     </div>
 
-    <div class="upload-card">
-        <div class="drop-zone" onclick="document.getElementById('fileIn').click()">
-            <i class="fa-solid fa-file-pdf"></i>
-            <h3 id="fileName">اضغط هنا لرفع ملف المنهج</h3>
-            <p style="color: #64748b; font-size: 0.85rem;">ندعم ملفات PDF حتى حجم 25MB</p>
-            <input type="file" id="fileIn" hidden accept=".pdf">
-        </div>
-
-        <button class="btn-convert" onclick="startAI()">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> إنشاء Audio Overview (NotebookLM)
-        </button>
-
-        <div class="loading-shimmer" id="loader">
-            <i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحليل المنهج وتوليد الحوار الصوتي...
-        </div>
-
-        <div id="podcastResult">
-            <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
-                <div style="background:var(--primary); color:#000; padding:10px; border-radius:10px;"><i class="fa-solid fa-play"></i></div>
-                <div style="text-align:right;">
-                    <p style="margin:0; font-weight:700;">شرح المنهج بصوت سارة وخالد</p>
-                    <p style="margin:0; font-size:0.8rem; color:#94a3b8;">مدة البودكاست: 04:32 دقيقة</p>
-                </div>
+    <div id="student" class="section">
+        <div class="card">
+            <h2>🎙️ صانع البودكاست التعليمي</h2>
+            <p>ارفع ملف المادة (PDF) لتحويله لشرح صوتي حواري</p>
+            <div class="upload-zone" onclick="document.getElementById('fin').click()">
+                <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary)"></i>
+                <p id="fName">اضغط لرفع المنهج</p>
+                <input type="file" id="fin" hidden accept=".pdf">
             </div>
-            <audio controls style="width: 100%;">
-                <source src="#" type="audio/mpeg">
-            </audio>
+            <button class="btn-main" onclick="alert('جاري توليد حوار البودكاست عبر Gemini...')">إنشاء Audio Overview</button>
         </div>
     </div>
-</main>
+
+    <div id="doctor" class="section">
+        <div class="card">
+            <h2 style="color:var(--accent)">📊 تقارير الاستيعاب</h2>
+            <p>تحليل AI لمدى فهم الطلاب للفصول الأخيرة</p>
+            <div class="stats-grid">
+                <div class="bar" style="height: 85%" label="فصل 1"></div>
+                <div class="bar" style="height: 40%" label="فصل 2"></div>
+                <div class="bar" style="height: 95%" label="فصل 3"></div>
+                <div class="bar" style="height: 60%" label="فصل 4"></div>
+            </div>
+            <p style="margin-top:40px; font-size:0.9rem; background:rgba(244,63,94,0.1); padding:10px; border-radius:10px;">
+                ⚠️ <b>تنبيه الذكاء الاصطناعي:</b> الطلاب يواجهون صعوبة في الفصل الثاني، يُنصح بإعادة شرح المفاهيم الأساسية.
+            </p>
+        </div>
+    </div>
+</div>
 
 <script>
-    const fileIn = document.getElementById('fileIn');
-    const fileName = document.getElementById('fileName');
-    const loader = document.getElementById('loader');
-    const podcastResult = document.getElementById('podcastResult');
-
-    fileIn.onchange = function() {
-        if(this.files[0]) {
-            fileName.innerText = "✅ تم اختيار: " + this.files[0].name;
-            fileName.style.color = "#22d3ee";
-        }
+    function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+    function showSec(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        toggleMenu(); window.scrollTo(0,0);
     }
-
-    function startAI() {
-        if(!fileIn.files[0]) {
-            alert("يا بطل، ارفع ملف الـ PDF أولاً!");
-            return;
-        }
-        loader.style.display = "block";
-        podcastResult.style.display = "none";
-        
-        setTimeout(() => {
-            loader.style.display = "none";
-            podcastResult.style.display = "block";
-            alert("تم توليد البودكاست بنجاح! يمكنك الآن الاستماع لشرح المنهج.");
-        }, 3500);
-    }
+    document.getElementById('fin').onchange = function() {
+        if(this.files[0]) document.getElementById('fName').innerText = "✅ جاهز: " + this.files[0].name;
+    };
 </script>
 
 </body>
