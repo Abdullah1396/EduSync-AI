@@ -63,6 +63,19 @@
         .stats-sim { display: flex; align-items: flex-end; gap: 10px; height: 100px; margin: 20px 0; }
         .bar { flex: 1; background: var(--danger); border-radius: 3px; position: relative; }
         .bar::after { content: attr(label); position: absolute; bottom: -22px; font-size: 0.7rem; width: 100%; text-align: center; }
+
+        /* قسم شرح فوائد التطبيق */
+        .about-app {
+            margin-top: 30px;
+            background: rgba(34, 211, 238, 0.03);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 25px;
+        }
+        .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
+        .feature-item i { color: var(--primary); font-size: 1.4rem; margin-top: 5px; }
+        .feature-item h4 { font-size: 0.95rem; margin-bottom: 5px; color: #fff; }
+        .feature-item p { font-size: 0.8rem; color: #94a3b8; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -89,8 +102,48 @@
     
     <div id="home" class="section active">
         <h2 style="text-align:center; margin-bottom:20px;">مرحباً بك في EduSync 🚀</h2>
-        <div class="tool-btn" style="width:100%; margin-bottom:15px;" onclick="showSec('student')">دخول بوابة الطالب</div>
-        <div class="tool-btn" style="width:100%; border-color:var(--danger)" onclick="showSec('doctor')">دخول بوابة الدكتور</div>
+        <div class="tool-btn" style="width:100%; margin-bottom:15px; background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">
+            <i class="fa-solid fa-user-graduate"></i> دخول بوابة الطالب
+        </div>
+        <div class="tool-btn" style="width:100%; border-color:var(--danger); margin-bottom: 30px;" onclick="showSec('doctor')">
+            <i class="fa-solid fa-user-tie" style="color:var(--danger)"></i> دخول بوابة الدكتور
+        </div>
+
+        <div class="about-app">
+            <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h3>
+            
+            <div class="feature-item">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <div>
+                    <h4>قوة الذكاء الاصطناعي</h4>
+                    <p>يعتمد التطبيق على محركات ذكاء اصطناعي متطورة لتحليل المناهج الدراسية مهما بلغت درجة تعقيدها، واستخراج المعلومات الجوهرية منها بدقة فائقة.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <i class="fa-solid fa-headphones-simple"></i>
+                <div>
+                    <h4>التعلم السمعي (Podcast)</h4>
+                    <p>حوّل كتبك ودروسك إلى بودكاست تعليمي ممتع؛ لتمكنك من المذاكرة أثناء ممارسة الرياضة أو في طريقك للجامعة، مما يوفر الوقت ويزيد التركيز.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <i class="fa-solid fa-chart-pie"></i>
+                <div>
+                    <h4>تحليل الفجوات المعرفية</h4>
+                    <p>يساعد الدكاترة في معرفة الأجزاء التي لم يستوعبها الطلاب بدقة، مما يسهل عملية إعادة الشرح والتركيز على نقاط الضعف الحقيقية.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <i class="fa-solid fa-file-shield"></i>
+                <div>
+                    <h4>أتمتة الاختبارات والخرائط</h4>
+                    <p>وداعاً لإضاعة الوقت في تلخيص الدروس؛ التطبيق يبني لك خرائط ذهنية واختبارات تجريبية ذكية فور رفع الملف مباشرة.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="student" class="section">
@@ -135,7 +188,6 @@
         document.getElementById('sidebar').classList.remove('active');
     }
     
-    // حل مشكلة الشعار إذا فشل التحميل المحلي
     function tryOtherImages(img) {
         const githubRaw = "https://raw.githubusercontent.com/abdullah1396/EduSync-AI/main/1A9FCFDC-779E-4D60-9099-327FB21D028E.png";
         img.src = githubRaw;
