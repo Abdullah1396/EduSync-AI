@@ -41,13 +41,19 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* منطقة الرفع */
+        /* منطقة الرفع وتحسين التحميل */
         .upload-card {
             border: 2px dashed rgba(34, 211, 238, 0.5); border-radius: 20px;
             padding: 40px 20px; text-align: center; background: rgba(15, 23, 42, 0.5);
-            margin-bottom: 30px; cursor: pointer;
+            margin-bottom: 30px; cursor: pointer; position: relative;
         }
         .upload-card i { font-size: 3rem; color: var(--primary); margin-bottom: 15px; }
+        
+        .ai-loader {
+            display: none; height: 4px; width: 100%; background: var(--line);
+            border-radius: 10px; margin-top: 15px; overflow: hidden;
+        }
+        .ai-progress { height: 100%; width: 0%; background: var(--primary); transition: 0.5s; box-shadow: 0 0 10px var(--primary); }
 
         /* شبكة الأدوات */
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -58,27 +64,15 @@
         .tool-btn:hover { border-color: var(--primary); transform: translateY(-3px); }
         .tool-btn i { font-size: 1.8rem; color: var(--primary); margin-bottom: 8px; display: block; }
 
-        /* تقارير الدكتور */
+        /* تقارير الدكتور والتنبيهات */
         .report-card { background: var(--card); border-right: 4px solid var(--danger); padding: 20px; border-radius: 10px; margin-top: 20px; }
+        .ai-alert { background: rgba(244, 63, 94, 0.1); border: 1px solid var(--danger); padding: 15px; border-radius: 10px; margin-top: 15px; font-size: 0.8rem; display: flex; gap: 10px; align-items: center; }
+
         .stats-sim { display: flex; align-items: flex-end; gap: 10px; height: 100px; margin: 20px 0; }
         .bar { flex: 1; background: var(--danger); border-radius: 3px; position: relative; }
         .bar::after { content: attr(label); position: absolute; bottom: -22px; font-size: 0.7rem; width: 100%; text-align: center; }
 
-        /* قسم شرح فوائد التطبيق */
-        .about-app {
-            margin-top: 30px;
-            background: rgba(34, 211, 238, 0.03);
-            border: 1px solid var(--line);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 50px;
-        }
-        .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
-        .feature-item i { color: var(--primary); font-size: 1.4rem; margin-top: 5px; }
-        .feature-item h4 { font-size: 0.95rem; margin-bottom: 5px; color: #fff; }
-        .feature-item p { font-size: 0.8rem; color: #94a3b8; line-height: 1.6; }
-
-        /* --- تصميم الشات بوت الجديد --- */
+        /* الشات بوت */
         .chat-launcher {
             position: fixed; bottom: 20px; left: 20px;
             width: 60px; height: 60px; background: var(--primary);
@@ -88,7 +82,7 @@
         }
         .chat-window {
             position: fixed; bottom: 90px; left: 20px;
-            width: 320px; height: 450px; background: var(--card);
+            width: 320px; height: 400px; background: var(--card);
             border: 1px solid var(--primary); border-radius: 20px;
             display: none; flex-direction: column; z-index: 3000;
             overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -97,47 +91,28 @@
         .chat-header { background: var(--primary); color: var(--bg); padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
         .chat-body { flex: 1; padding: 15px; overflow-y: auto; font-size: 0.85rem; }
         .chat-msg { margin-bottom: 15px; padding: 10px; border-radius: 10px; max-width: 80%; }
-        .bot-msg { background: var(--line); align-self: flex-start; border-bottom-right-radius: 0; }
-        .chat-footer { padding: 10px; border-top: 1px solid var(--line); display: flex; gap: 5px; }
-        .chat-input { background: var(--bg); border: 1px solid var(--line); color: white; padding: 8px; border-radius: 5px; flex: 1; font-family: 'Cairo'; }
+        .bot-msg { background: var(--line); align-self: flex-start; }
     </style>
 </head>
 <body>
 
-<div class="chat-launcher" onclick="toggleChat()">
-    <i class="fa-solid fa-comment-dots"></i>
-</div>
-
+<div class="chat-launcher" onclick="toggleChat()"><i class="fa-solid fa-comment-dots"></i></div>
 <div class="chat-window" id="chatWindow">
-    <div class="chat-header">
-        <span>مساعد EduSync 🤖</span>
-        <i class="fa-solid fa-chevron-down" style="cursor:pointer" onclick="toggleChat()"></i>
-    </div>
-    <div class="chat-body" id="chatBody">
-        <div class="chat-msg bot-msg">مرحباً يا بطل! أنا مساعدك الذكي. كيف يمكنني مساعدتك في مذاكرتك اليوم؟</div>
-    </div>
-    <div class="chat-footer">
-        <input type="text" class="chat-input" placeholder="اسألني أي شيء..." id="chatInput">
-        <button onclick="sendMsg()" style="background:var(--primary); border:none; padding:8px 12px; border-radius:5px; cursor:pointer">
-            <i class="fa-solid fa-paper-plane"></i>
-        </button>
-    </div>
+    <div class="chat-header"><span>مساعد EduSync 🤖</span><i class="fa-solid fa-chevron-down" onclick="toggleChat()"></i></div>
+    <div class="chat-body" id="chatBody"><div class="chat-msg bot-msg">مرحباً! ارفع ملفاتك وسأساعدك في تلخيصها فوراً.</div></div>
 </div>
 
 <div class="sidebar" id="sidebar">
     <div class="close-menu" onclick="toggleMenu()">×</div>
     <div class="sidebar-item" onclick="showSec('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSec('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
-    <div class="sidebar-item" onclick="showSec('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور (التقارير)</div>
+    <div class="sidebar-item" onclick="showSec('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
 </div>
 
 <header class="top-bar">
     <div class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
     <div class="logo-area">
-        <div class="brand-text">
-            <span>EduSync AI</span><br>
-            <span style="font-size:0.6rem; color:#94a3b8">المزامنة التعليمية الذكية</span>
-        </div>
+        <div class="brand-text"><span>EduSync AI</span><br><span style="font-size:0.6rem; color:#94a3b8">المزامنة التعليمية الذكية</span></div>
         <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img" id="mainLogo" onerror="tryOtherImages(this)">
     </div>
 </header>
@@ -146,18 +121,12 @@
     
     <div id="home" class="section active">
         <h2 style="text-align:center; margin-bottom:20px;">مرحباً بك في EduSync 🚀</h2>
-        <div class="tool-btn" style="width:100%; margin-bottom:15px; background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">
-            <i class="fa-solid fa-user-graduate"></i> دخول بوابة الطالب
-        </div>
-        <div class="tool-btn" style="width:100%; border-color:var(--danger); margin-bottom: 30px;" onclick="showSec('doctor')">
-            <i class="fa-solid fa-user-tie" style="color:var(--danger)"></i> دخول بوابة الدكتور
-        </div>
-
-        <div class="about-app">
-            <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h3>
-            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><h4>قوة الذكاء الاصطناعي</h4><p>تحليل المناهج واستخراج المعلومات الجوهرية بدقة فائقة.</p></div></div>
-            <div class="feature-item"><i class="fa-solid fa-headphones-simple"></i><div><h4>التعلم السمعي (Podcast)</h4><p>حوّل دروسك إلى بودكاست تعليمي ممتع للمذاكرة في أي وقت.</p></div></div>
-            <div class="feature-item"><i class="fa-solid fa-chart-pie"></i><div><h4>تحليل الفجوات المعرفية</h4><p>يساعد الدكاترة في معرفة نقاط ضعف الطلاب بدقة.</p></div></div>
+        <div class="tool-btn" style="width:100%; margin-bottom:15px; background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">دخول بوابة الطالب</div>
+        <div class="tool-btn" style="width:100%; border-color:var(--danger); margin-bottom: 25px;" onclick="showSec('doctor')">دخول بوابة الدكتور</div>
+        
+        <div style="background: rgba(34, 211, 238, 0.03); border: 1px solid var(--line); border-radius: 15px; padding: 20px;">
+            <h4 style="color: var(--primary); font-size: 0.9rem; margin-bottom: 10px;">لماذا EduSync؟</h4>
+            <p style="font-size: 0.8rem; color: #94a3b8; line-height: 1.6;">نوفر لك أدوات معالجة اللغات الطبيعية (NLP) لتحويل المناهج إلى تجربة تعليمية تفاعلية، مع تقارير ذكية للدكاترة لمتابعة الاستيعاب اللحظي.</p>
         </div>
     </div>
 
@@ -166,6 +135,7 @@
         <div class="upload-card" onclick="document.getElementById('fIn').click()">
             <i class="fa-solid fa-cloud-arrow-up"></i>
             <p id="fStatus">ارفع المنهج (PDF) هنا</p>
+            <div class="ai-loader" id="aiLoader"><div class="ai-progress" id="aiProgress"></div></div>
             <input type="file" id="fIn" hidden accept=".pdf">
         </div>
         <div class="tools-grid">
@@ -183,8 +153,14 @@
             <p id="docStatus">ارفع بيانات الطلاب لإصدار التقارير</p>
             <input type="file" id="docFile" hidden>
         </div>
+        
+        <div class="ai-alert">
+            <i class="fa-solid fa-robot"></i>
+            <span>تنبيه AI: تم اكتشاف تدني في استيعاب "الفصل 2" لدى 40% من الطلاب.</span>
+        </div>
+
         <div class="report-card">
-            <h4>📊 ملخص استيعاب الدفعة (AI)</h4>
+            <h4>📊 ملخص استيعاب الدفعة</h4>
             <div class="stats-sim">
                 <div class="bar" style="height: 80%" label="فصل 1"></div>
                 <div class="bar" style="height: 35%; background: #fbbf24;" label="فصل 2"></div>
@@ -197,44 +173,42 @@
 
 <script>
     function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+    function toggleChat() { document.getElementById('chatWindow').classList.toggle('active'); }
+    
     function showSec(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
-        window.scrollTo(0,0);
     }
     
+    // محاكاة تحليل الذكاء الاصطناعي عند الرفع
+    document.getElementById('fIn').onchange = function() {
+        if(this.files[0]) {
+            let status = document.getElementById('fStatus');
+            let loader = document.getElementById('aiLoader');
+            let progress = document.getElementById('aiProgress');
+            
+            status.innerText = "جاري تحليل الملف بالذكاء الاصطناعي...";
+            loader.style.display = "block";
+            
+            let width = 0;
+            let interval = setInterval(() => {
+                if(width >= 100) {
+                    clearInterval(interval);
+                    status.innerText = "✅ تم التحليل! الأدوات جاهزة للاستخدام";
+                } else {
+                    width += 5;
+                    progress.style.width = width + "%";
+                }
+            }, 100);
+        }
+    };
+
     function tryOtherImages(img) {
         const githubRaw = "https://raw.githubusercontent.com/abdullah1396/EduSync-AI/main/1A9FCFDC-779E-4D60-9099-327FB21D028E.png";
         img.src = githubRaw;
-        img.onerror = function() {
-            this.src = "https://img.icons8.com/neon/96/artificial-intelligence.png";
-            this.onerror = null;
-        };
+        img.onerror = function() { this.src = "https://img.icons8.com/neon/96/artificial-intelligence.png"; };
     }
-
-    // وظائف الشات بوت
-    function toggleChat() { document.getElementById('chatWindow').classList.toggle('active'); }
-    function sendMsg() {
-        let input = document.getElementById('chatInput');
-        let body = document.getElementById('chatBody');
-        if(input.value.trim() !== "") {
-            body.innerHTML += `<div class="chat-msg" style="background:var(--primary); color:var(--bg); align-self:flex-end; border-bottom-left-radius:0; margin-right:auto; padding:10px; border-radius:10px; margin-bottom:15px; max-width:80%;">${input.value}</div>`;
-            setTimeout(() => {
-                body.innerHTML += `<div class="chat-msg bot-msg">أنا الآن في وضع التجربة، قريباً سأتمكن من تحليل ملفاتك والإجابة بدقة! 🧠</div>`;
-                body.scrollTop = body.scrollHeight;
-            }, 1000);
-            input.value = "";
-            body.scrollTop = body.scrollHeight;
-        }
-    }
-
-    document.getElementById('fIn').onchange = function() {
-        if(this.files[0]) document.getElementById('fStatus').innerText = "✅ جاهز: " + this.files[0].name;
-    };
-    document.getElementById('docFile').onchange = function() {
-        if(this.files[0]) document.getElementById('docStatus').innerText = "✅ تم تحميل البيانات";
-    };
 </script>
 
 </body>
