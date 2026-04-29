@@ -3,116 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | مستقبل التعلم الذكي</title>
+    <title>EduSync AI | المنصة الأكاديمية الشاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --primary: #22d3ee; --bg: #020617; --card: #1e293b; --accent: #818cf8; }
-        body { background-color: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        :root { --primary: #22d3ee; --bg: #020617; --card: #1e293b; --accent: #f43f5e; }
+        body { background-color: var(--bg); color: white; font-family: 'Cairo', sans-serif; margin: 0; }
+        .header { display: flex; align-items: center; justify-content: center; padding: 15px; background: var(--card); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        .logo-img { width: 50px; height: 50px; margin-left: 10px; filter: drop-shadow(0 0 8px var(--primary)); }
         
-        /* الهيدر مع الشعار */
-        .header { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; background: var(--card); border-bottom: 2px solid var(--primary); }
-        .logo-area { display: flex; align-items: center; gap: 15px; }
-        .logo-img { width: 50px; height: 50px; border-radius: 10px; border: 1px solid var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .container { max-width: 900px; margin: auto; padding: 20px; }
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .tab-btn { background: var(--card); border: 1px solid #334155; color: white; padding: 10px 20px; border-radius: 12px; cursor: pointer; white-space: nowrap; }
+        .tab-btn.active { border-color: var(--primary); background: rgba(34, 211, 238, 0.1); color: var(--primary); font-weight: bold; }
         
-        /* منطقة رفع الملفات */
-        .upload-section { background: rgba(34, 211, 238, 0.05); padding: 30px; margin: 20px 5%; border: 2px dashed var(--primary); border-radius: 20px; text-align: center; }
-        .upload-btn { background: var(--primary); color: #020617; padding: 12px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; border: none; font-size: 1.1rem; }
+        .main-display { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid #334155; min-height: 450px; }
         
-        /* الأدوات الذكية */
-        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 5%; }
-        .tool-card { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid #334155; position: relative; overflow: hidden; cursor: pointer; }
-        .tool-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .tool-card h3 { color: var(--primary); margin-top: 0; }
-        .status { font-size: 0.8rem; color: #94a3b8; }
-
-        /* المحاكي الذكي */
-        #processing { display: none; margin: 20px 5%; text-align: center; }
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 10px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* النتائج */
-        .result-box { display: none; background: #0f172a; padding: 20px; border-radius: 15px; margin: 20px 5%; border: 1px solid var(--accent); }
+        /* تقارير الدكتور */
+        .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .report-card { background: #0f172a; padding: 15px; border-radius: 15px; border-right: 4px solid var(--primary); }
+        .alert-card { border-right-color: var(--accent); }
+        
+        canvas { max-width: 100%; margin-top: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 10px; }
+        
+        .upload-area { border: 2px dashed var(--primary); padding: 30px; text-align: center; border-radius: 15px; margin-bottom: 20px; }
+        .btn-action { background: var(--primary); color: #000; border: none; padding: 10px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <div class="logo-area">
-        <img src="https://raw.githubusercontent.com/Abdullah1396/EduSync-AI/main/image.png" class="logo-img" alt="Logo">
-        <div>
-            <h1 style="font-size: 1.5rem; margin: 0;">EduSync AI</h1>
-            <span style="font-size: 0.8rem; color: var(--primary);">بوابة جامعة الملك خالد للذكاء الاصطناعي</span>
+    <img src="https://raw.githubusercontent.com/Abdullah1396/EduSync-AI/main/image.png" class="logo-img">
+    <h1 style="margin:0; font-size: 1.2rem;">EduSync AI - KKU</h1>
+</div>
+
+<div class="container">
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="showSection('student')">👨‍🎓 واجهة الطالب</button>
+        <button class="tab-btn" onclick="showSection('doctor')">👨‍🏫 تقارير الدكتور (AI)</button>
+    </div>
+
+    <div id="studentSection" class="main-display">
+        <div class="upload-area">
+            <h3>رفع منهج الـ PDF</h3>
+            <button class="btn-action">اختر الملف</button>
+        </div>
+        <div id="studentTools" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+            <div style="text-align:center; padding:10px; background:#0f172a; border-radius:10px;">📝 اختبار</div>
+            <div style="text-align:center; padding:10px; background:#0f172a; border-radius:10px;">🧠 خريطة</div>
+            <div style="text-align:center; padding:10px; background:#0f172a; border-radius:10px;">🗂️ بطاقات</div>
+        </div>
+        <p style="margin-top:20px; color:#94a3b8; font-size:0.9rem;">* الطالب هنا يذاكر ويختبر نفسه، والبيانات تُرسل تلقائياً للدكتور.</p>
+    </div>
+
+    <div id="doctorSection" class="main-display" style="display:none;">
+        <h2 style="color:var(--primary); margin-top:0;">📊 لوحة تحليل الأداء الأكاديمي</h2>
+        <p>تقرير ذكي مبني على تفاعل 150 طالب مع المنهج:</p>
+        
+        <div class="report-grid">
+            <div class="report-card">
+                <small>متوسط درجات الطلاب</small>
+                <h3 style="margin:5px 0;">82%</h3>
+            </div>
+            <div class="report-card alert-card">
+                <small>أصعب فصل (يحتاج مراجعة)</small>
+                <h3 style="margin:5px 0; color:var(--accent);">الفصل الثالث</h3>
+            </div>
+        </div>
+
+        <canvas id="performanceChart" height="150"></canvas>
+
+        <div style="margin-top:20px; background:rgba(34, 211, 238, 0.1); padding:15px; border-radius:10px; font-size:0.9rem;">
+            <b>💡 توصية Gemini للدكتور:</b> الطلاب يواجهون صعوبة في فهم "الشبكات العصبية". نقترح تخصيص 15 دقيقة في المحاضرة القادمة لتبسيط هذا المفهوم.
         </div>
     </div>
 </div>
 
-<div class="upload-section" id="dropZone">
-    <h2 style="margin-top: 0;">مرحباً دكتور، ارفع منهجك (PDF)</h2>
-    <p>سيقوم نظام Gemini 1.5 Pro بتحليل المحتوى فوراً</p>
-    <input type="file" id="fileInput" hidden accept=".pdf">
-    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">اختيار ملف المنهج</button>
-</div>
-
-<div id="processing">
-    <div class="loader"></div>
-    <p id="processText">جاري استخراج المفاهيم الأساسية من الملف...</p>
-</div>
-
-<div class="tools-grid">
-    <div class="tool-card" onclick="showTool('اختبار ذكي')">
-        <h3>📝 اختبارات قصيرة</h3>
-        <p>توليد أسئلة MCQ وصح وخطأ آلياً بناءً على المنهج.</p>
-        <span class="status">الحالة: جاهز للتحليل</span>
-    </div>
-    <div class="tool-card" onclick="showTool('خريطة ذهنية')">
-        <h3>🧠 خرائط ذهنية</h3>
-        <p>تحويل المحتوى المعقد إلى هيكل شجري بصري.</p>
-        <span class="status">الحالة: جاهز للتحليل</span>
-    </div>
-    <div class="tool-card" onclick="showTool('بطاقات مذاكرة')">
-        <h3>🗂️ بطاقات Flashcards</h3>
-        <p>تجهيز أهم المصطلحات والتعاريف للمراجعة السريعة.</p>
-        <span class="status">الحالة: جاهز للتحليل</span>
-    </div>
-</div>
-
-<div class="result-box" id="resultBox">
-    <h3 id="resultTitle" style="color: var(--accent);"></h3>
-    <div id="resultContent"></div>
-</div>
-
 <script>
-    const fileInput = document.getElementById('fileInput');
-    const processing = document.getElementById('processing');
-    const resultBox = document.getElementById('resultBox');
-
-    fileInput.onchange = function() {
-        if(this.files[0]) {
-            processing.style.display = 'block';
-            document.getElementById('processText').innerText = "جاري تحليل " + this.files[0].name + " عبر نماذج Gemini...";
-            setTimeout(() => {
-                processing.style.display = 'none';
-                alert("تم تحليل المنهج بنجاح! يمكنك الآن اختيار الأداة المطلوبة.");
-            }, 3000);
-        }
-    };
-
-    function showTool(name) {
-        if(!fileInput.files[0]) {
-            alert("يرجى رفع ملف المنهج أولاً");
-            return;
-        }
-        resultBox.style.display = 'block';
-        document.getElementById('resultTitle').innerText = "نتائج " + name;
+    function showSection(section) {
+        document.getElementById('studentSection').style.display = section === 'student' ? 'block' : 'none';
+        document.getElementById('doctorSection').style.display = section === 'doctor' ? 'block' : 'none';
         
-        if(name === 'اختبار ذكي') {
-            document.getElementById('resultContent').innerHTML = "1. ما هو المفهوم الأساسي للوحدة الأولى؟<br>[أ] الخيار الأول [ب] الخيار الثاني...<br><br>2. صح أم خطأ: يعتبر الذكاء الاصطناعي أداة مساعدة...";
-        } else if(name === 'خريطة ذهنية') {
-            document.getElementById('resultContent').innerHTML = "🌳 المنهج الرئيسي <br> ┗ 📂 الفصل الأول: الأساسيات <br> ┗ 📂 الفصل الثاني: التطبيقات العمليّة";
-        } else {
-            document.getElementById('resultContent').innerHTML = "🎴 البطاقة 1: المصطلح الأكاديمي -> التعريف المستخلص من الـ PDF";
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+
+        if(section === 'doctor') {
+            initChart();
         }
-        resultBox.scrollIntoView();
+    }
+
+    function initChart() {
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'],
+                datasets: [{
+                    label: 'تفاعل الطلاب مع المنهج',
+                    data: [40, 65, 50, 90],
+                    borderColor: '#22d3ee',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                scales: { y: { beginAtZero: true, grid: { color: '#334155' } } }
+            }
+        });
     }
 </script>
 
