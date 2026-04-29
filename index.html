@@ -3,136 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | المنصة التعليمية المتكاملة</title>
+    <title>EduSync AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --accent: #f43f5e; }
-        * { box-sizing: border-box; transition: 0.3s; }
-        body { background: radial-gradient(circle at top, #1e293b 0%, #020617 100%); color: white; font-family: 'Cairo', sans-serif; margin: 0; min-height: 100vh; }
-
-        /* الهيدر */
-        .header { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
-        .logo-box { display: flex; align-items: center; gap: 12px; }
-        .logo-img { width: 45px; height: 45px; border-radius: 10px; border: 1px solid var(--primary); }
-        .brand-en { font-weight: 700; color: var(--primary); font-size: 1.2rem; }
-
-        /* المحتوى */
-        .container { padding: 30px 20px; max-width: 900px; margin: auto; }
-        .section { display: none; animation: fadeIn 0.4s ease; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* منطقة الرفع الاحترافية */
-        .upload-card { background: var(--card); border-radius: 25px; padding: 40px; border: 1px solid rgba(34, 211, 238, 0.2); text-align: center; margin-bottom: 30px; }
-        .drop-zone { border: 2px dashed rgba(34, 211, 238, 0.4); border-radius: 20px; padding: 40px 20px; background: rgba(34, 211, 238, 0.02); cursor: pointer; margin-bottom: 20px; }
-        .drop-zone:hover { border-color: var(--primary); background: rgba(34, 211, 238, 0.05); }
-        .drop-zone i { font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; }
-
-        /* أزرار الخدمات */
-        .grid-services { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
-        .s-card { background: #1e293b; padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border: 1px solid transparent; }
-        .s-card:hover { border-color: var(--primary); transform: scale(1.05); }
-        .s-card i { font-size: 1.8rem; margin-bottom: 10px; display: block; color: var(--primary); }
-
-        .btn-action { background: var(--primary); color: #000; border: none; padding: 18px; border-radius: 15px; font-weight: 700; width: 100%; cursor: pointer; font-size: 1.1rem; }
+        /* رجعنا لألوانك الأصلية بالضبط */
+        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --line: #1e293b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
+        body { 
+            background-color: var(--bg); 
+            color: white; 
+            font-family: 'Cairo', sans-serif; 
+            min-height: 100vh;
+        }
+
+        /* الهيدر زي ما كان في صورتك الأولى */
+        .top-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 15px 5%; background: var(--bg);
+            border-bottom: 2px solid var(--primary);
+        }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-img { width: 45px; height: 45px; border-radius: 5px; border: 1px solid var(--primary); }
+        .brand-text { font-weight: 700; color: var(--primary); font-size: 1.2rem; }
+
+        .container { padding: 30px 20px; max-width: 600px; margin: auto; }
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* منطقة الرفع (المهمة) */
+        .upload-container {
+            border: 2px dashed #22d3ee80; border-radius: 20px;
+            padding: 40px 20px; text-align: center; background: #0f172a50;
+            margin-bottom: 30px; cursor: pointer;
+        }
+        .upload-container i { font-size: 3rem; color: var(--primary); margin-bottom: 15px; }
+
+        /* شبكة الأزرار (نفس تقسيم صورتك) */
+        .tools-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; 
+        }
+        .tool-btn {
+            background: var(--card); border: 1px solid var(--line);
+            border-radius: 15px; padding: 25px; text-align: center;
+            cursor: pointer; transition: 0.2s;
+        }
+        .tool-btn:hover { border-color: var(--primary); transform: translateY(-3px); }
+        .tool-btn i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; display: block; }
+        .tool-btn span { font-weight: 600; font-size: 0.9rem; }
+
         /* القائمة الجانبية */
-        .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; border-left: 1px solid var(--primary); z-index: 2000; padding: 40px 20px; }
-        .sidebar.active { right: 0; }
-        .nav-item { padding: 15px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+        .menu-btn { font-size: 1.5rem; color: var(--primary); cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="sidebar" id="sidebar">
-    <div style="text-align: left; font-size: 2rem; cursor: pointer;" onclick="toggleMenu()">×</div>
-    <div class="nav-item" onclick="showSec('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
-    <div class="nav-item" onclick="showSec('student')"><i class="fa-solid fa-user-graduate"></i> بوابة الطالب</div>
-    <div class="nav-item" onclick="showSec('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
-</div>
-
-<header class="header">
-    <div onclick="toggleMenu()" style="cursor:pointer; color: var(--primary); font-size: 1.4rem;"><i class="fa-solid fa-bars-staggered"></i></div>
-    <div class="logo-box">
+<header class="top-bar">
+    <div class="menu-btn"><i class="fa-solid fa-bars"></i></div>
+    <div class="logo-area">
         <div style="text-align:right">
-            <span class="brand-en">EduSync AI</span><br>
-            <span style="font-size:0.7rem; color:#94a3b8">المزامنة التعليمية الذكية</span>
+            <span class="brand-text">EduSync AI</span><br>
+            <span style="font-size:0.6rem; color:#94a3b8">المزامنة التعليمية الذكية</span>
         </div>
         <img src="1A9FCFDC-779E-4D60-9CC7-32F9D6705596.png" class="logo-img" onerror="this.src='https://i.ibb.co/v4S8L8Y/logo.png'">
     </div>
 </header>
 
 <div class="container">
-    <div id="home" class="section active">
-        <h2 style="text-align:center;">مرحباً بك في مستقبل التعليم 🚀</h2>
-        <div class="upload-card">
-            <h3>ابدأ برفع ملف المنهج</h3>
-            <div class="drop-zone" onclick="document.getElementById('mainFile').click()">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <p id="mainText">ارفع ملف الـ PDF لتحليله بالذكاء الاصطناعي</p>
-                <input type="file" id="mainFile" hidden accept=".pdf">
-            </div>
-            <div class="grid-services">
-                <div class="s-card" onclick="showSec('student')"><i class="fa-solid fa-microphone"></i>بودكاست</div>
-                <div class="s-card" onclick="showSec('student')"><i class="fa-solid fa-spell-check"></i>اختبارات</div>
-                <div class="s-card" onclick="showSec('student')"><i class="fa-solid fa-brain"></i>خرائط</div>
-                <div class="s-card" onclick="showSec('student')"><i class="fa-solid fa-copy"></i>بطاقات</div>
-            </div>
-        </div>
+    <h2 style="text-align:center; margin-bottom:25px; font-size: 1.3rem;">ابدأ برفع ملف المنهج 🚀</h2>
+
+    <div class="upload-container" onclick="document.getElementById('fileInput').click()">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <p id="statusText">ارفع ملف الـ PDF هنا</p>
+        <input type="file" id="fileInput" hidden accept=".pdf">
     </div>
 
-    <div id="student" class="section">
-        <div class="upload-card">
-            <h2>🎓 لوحة تحكم الطالب</h2>
-            <p>ارفع ملفك لاختيار الخدمة المطلوبة</p>
-            <div class="drop-zone" onclick="document.getElementById('stuFile').click()">
-                <i class="fa-solid fa-file-pdf"></i>
-                <p id="stuText">اضغط هنا لرفع المحاضرة أو الكتاب</p>
-                <input type="file" id="stuFile" hidden accept=".pdf">
-            </div>
-            <button class="btn-action" onclick="processAI()">بدء المعالجة الذكية</button>
+    <div class="tools-grid">
+        <div class="tool-btn">
+            <i class="fa-solid fa-microphone"></i>
+            <span>بودكاست</span>
         </div>
-    </div>
-
-    <div id="doctor" class="section">
-        <div class="upload-card">
-            <h2 style="color:var(--accent)">👨‍🏫 بوابة الأستاذ الجامعي</h2>
-            <p>ارفع بيانات الطلاب لإصدار تقرير الاستيعاب</p>
-            <div class="drop-zone" style="border-color: var(--accent)" onclick="document.getElementById('docFile').click()">
-                <i class="fa-solid fa-chart-bar" style="color:var(--accent)"></i>
-                <p id="docText">ارفع ملف الإحصائيات (Excel/PDF)</p>
-                <input type="file" id="docFile" hidden>
-            </div>
-            <button class="btn-action" style="background:var(--accent); color:#fff">توليد تقرير الاستيعاب</button>
+        <div class="tool-btn">
+            <i class="fa-solid fa-check-double"></i>
+            <span>اختبارات</span>
+        </div>
+        <div class="tool-btn">
+            <i class="fa-solid fa-brain"></i>
+            <span>خرائط</span>
+        </div>
+        <div class="tool-btn">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>بطاقات</span>
         </div>
     </div>
 </div>
 
 <script>
-    function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-    function showSec(id) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.getElementById('sidebar').classList.remove('active');
-        window.scrollTo(0,0);
-    }
-
-    // لتغيير النص عند اختيار ملف
-    document.getElementById('mainFile').onchange = function() { 
-        if(this.files[0]) document.getElementById('mainText').innerText = "✅ جاهز: " + this.files[0].name; 
+    document.getElementById('fileInput').onchange = function() {
+        if(this.files[0]) {
+            document.getElementById('statusText').innerText = "✅ جاهز: " + this.files[0].name;
+            document.getElementById('statusText').style.color = "#22d3ee";
+        }
     };
-    document.getElementById('stuFile').onchange = function() { 
-        if(this.files[0]) document.getElementById('stuText').innerText = "✅ تم اختيار المنهج"; 
-    };
-    document.getElementById('docFile').onchange = function() { 
-        if(this.files[0]) document.getElementById('docText').innerText = "✅ تم اختيار بيانات الطلاب"; 
-    };
-
-    function processAI() {
-        if(!document.getElementById('stuFile').files[0]) return alert("ارفع الملف أولاً يا بطل!");
-        alert("جاري تحليل المنهج عبر Gemini 1.5 Pro لتوليد البودكاست والأسئلة...");
-    }
 </script>
 
 </body>
