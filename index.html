@@ -72,6 +72,11 @@
         .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
 
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; }
+        
+        /* إضافة نبض بسيط لزر المساعدة الصوتية */
+        .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; }
+        @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
+        
         @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
     </style>
 </head>
@@ -174,7 +179,7 @@
 
         <div id="quizRes" class="result-panel">
             <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
-            <p style="font-size:0.9rem; margin-bottom:15px;">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p>
+            <p style="font-size:0.9rem; margin-bottom:15px;" id="qVoiceText">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p>
             <div class="quiz-option" onclick="awardPoints(600, this)">أ) تقنية البلوكشين (Blockchain). <span style="color:var(--success); font-size:0.7rem;">(+600 نقطة)</span></div>
             <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) قواعد بيانات تقليدية فقط.</div>
         </div>
@@ -205,7 +210,7 @@
     </div>
 </div>
 
-<div class="chat-float" onclick="alert('أهلاً! أنا مساعد EduSync الذكي، كيف أساعدك؟')"><i class="fa-solid fa-comment-dots"></i></div>
+<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
 
 <script>
     // --- متغيرات النظام ---
@@ -213,6 +218,41 @@
     let balance = 0.00;
     let isFile = false;
     let nameF = "";
+
+    // --- 🔊 نظام المساعدة الصوتية ودعم فاقدي البصر ---
+    const synth = window.speechSynthesis;
+    
+    function speak(text) {
+        if (synth.speaking) synth.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ar-SA';
+        utter.rate = 0.9;
+        synth.speak(utter);
+    }
+
+    function startVoiceRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) return alert("متصفحك لا يدعم التعرف على الصوت.");
+        
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ar-SA';
+        const btn = document.getElementById('voiceAssistant');
+        
+        recognition.onstart = () => { btn.classList.add('voice-active'); speak("أنا أسمعك، تفضل؟"); };
+        recognition.onresult = (event) => {
+            const command = event.results[0][0].transcript;
+            processVoiceCommand(command);
+        };
+        recognition.onend = () => { btn.classList.remove('voice-active'); };
+        recognition.start();
+    }
+
+    function processVoiceCommand(cmd) {
+        if (cmd.includes("طالب") || cmd.includes("بوابة الطالب")) { showSection('student'); speak("تم الدخول إلى بوابة الطالب"); }
+        else if (cmd.includes("اختبار") || cmd.includes("ابدأ")) { runAI('quiz'); speak("جاري توليد الاختبار الذكي من منهجك"); }
+        else if (cmd.includes("أ") || cmd.includes("الأول")) { speak("إجابة صحيحة، أحسنت!"); awardPoints(600, document.querySelector('.quiz-option')); }
+        else { speak("لم أفهم الطلب، يمكنك قول 'بوابة الطالب' أو 'اختبار'"); }
+    }
 
     // --- 💰 نظام المكافآت والبلوكشين ---
     function updateClaimButton() {
@@ -232,7 +272,10 @@
         points += amount;
         document.getElementById('studentPoints').innerText = points;
         updateClaimButton();
-        if(points >= 1000) alert("مبروك! يمكنك الآن المطالبة بـ $SYNC من المحفظة.");
+        if(points >= 1000) {
+            speak("مبروك! جمعت ألف نقطة، يمكنك الآن سحب عملاتك الرقمية");
+            alert("مبروك! يمكنك الآن المطالبة بـ $SYNC من المحفظة.");
+        }
     }
 
     function mintFromSidebar() {
@@ -244,13 +287,14 @@
             points -= 1000;
             document.getElementById('sidebarBalance').innerText = balance;
             document.getElementById('studentPoints').innerText = points;
+            speak("تمت عملية التوثيق على البلوكشين بنجاح");
             alert("تم صك 10.00 $SYNC بنجاح على الشبكة! 🎉");
             btn.innerHTML = '<i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)';
             updateClaimButton();
         }, 2500);
     }
 
-    // --- 🔊 نظام الصوت ---
+    // --- 🔊 نظام الصوت للترحيب ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
     let isUnlocked = false;
@@ -266,7 +310,12 @@
     }
 
     document.addEventListener('mousedown', (e) => {
-        if (!isUnlocked) { audioCtx.resume(); playStartupSound(); isUnlocked = true; }
+        if (!isUnlocked) { 
+            audioCtx.resume(); 
+            playStartupSound(); 
+            isUnlocked = true; 
+            speak("أهلاً بك في إديو سينك، النظام التعليمي الذكي");
+        }
     });
 
     // --- 🌌 أنميشن الخلفية ---
@@ -304,6 +353,7 @@
             document.getElementById('upStatus').innerHTML = "✅ تم تحميل: " + input.files[0].name;
             document.getElementById('mapTitle').innerText = nameF;
             document.getElementById('quizTitle').innerText = nameF;
+            speak("تم تحميل المنهج بنجاح، البصمة الرقمية مسجلة");
             alert("تم التحقق من بصمة الملف عبر البلوكشين بنجاح!");
         }
     }
@@ -311,6 +361,7 @@
     function handleDocUpload(input) {
         if(input.files[0]) {
             document.getElementById('docUpStatus').innerHTML = "✅ تم اعتماد: " + input.files[0].name;
+            speak("تم تسجيل المنهج الرسمي على شبكة البلوكشين");
             alert("تم تسجيل المنهج وتوليد SHA-256 Hash على الشبكة.");
         }
     }
@@ -320,8 +371,14 @@
         document.getElementById('aiLoading').style.display = 'block';
         setTimeout(() => {
             document.getElementById('aiLoading').style.display = 'none';
-            if(type==='map') document.getElementById('mapRes').style.display = 'block';
-            else document.getElementById('quizRes').style.display = 'block';
+            if(type==='map') {
+                document.getElementById('mapRes').style.display = 'block';
+                speak("تم إنشاء الخريطة الذهنية للمنهج");
+            } else {
+                document.getElementById('quizRes').style.display = 'block';
+                const qText = document.getElementById('qVoiceText').innerText;
+                speak("استمع للسؤال: " + qText);
+            }
         }, 1500);
     }
 
