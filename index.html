@@ -31,10 +31,20 @@
         .sidebar.active { right: 0; }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
 
-        /* محفظة العملات في السايدبار */
+        /* محفظة العملات وزر المطالبة */
         .wallet-mini { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; }
         .wallet-mini i { color: var(--gold); font-size: 1.2rem; margin-bottom: 5px; }
-        .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); }
+        .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 10px; }
+        
+        .claim-btn { 
+            width: 100%; background: #334155; color: #94a3b8; border: 1px solid #475569; 
+            padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; 
+            cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .claim-btn.ready { 
+            background: var(--gold); color: black; border: none; cursor: pointer; 
+            animation: pulse-gold 2s infinite;
+        }
 
         .container { padding: 20px; max-width: 500px; margin: auto; position: relative; z-index: 1; }
         .section { display: none; }
@@ -43,16 +53,12 @@
         .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; margin-bottom: 15px; font-weight: bold; backdrop-filter: blur(5px); }
         .info-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
         
-        /* نظام النقاط للطالب */
         .points-badge { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px; }
 
         .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
         .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
-
-        .progress-bar { width: 100%; height: 8px; background: #1e293b; border-radius: 10px; overflow: hidden; margin-top: 5px; }
-        .progress-fill { height: 100%; transition: 1.5s ease-in-out; }
 
         #aiLoading { display: none; text-align: center; margin: 20px 0; }
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
@@ -61,26 +67,12 @@
         .result-panel { display: none; margin-top: 20px; padding: 20px; background: #0b1224; border-radius: 20px; border: 1px solid var(--primary); }
         .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
 
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
-
-        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; }
-        
-        /* انميشن تحويل النقاط */
-        .mint-anim { animation: pulse-gold 1s infinite; }
-        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
+        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
     </style>
 </head>
 <body>
 
 <canvas id="bg-canvas"></canvas>
-
-<div class="modal" id="infoModal" onclick="this.style.display='none'">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div id="modalBody"></div>
-        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">إغلاق</button>
-    </div>
-</div>
 
 <header>
     <div class="logo-box">
@@ -100,12 +92,16 @@
         <i class="fa-solid fa-wallet"></i>
         <div style="font-size:0.7rem; color:#94a3b8;">رصيد محفظة $SYNC</div>
         <div class="balance-val" id="sidebarBalance">0.00</div>
+        
+        <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
+            <i class="fa-solid fa-lock" id="claimIcon"></i>
+            Claim (1000 pts)
+        </button>
     </div>
 
     <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
     <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
-    <div class="sidebar-item" onclick="showSection('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</div>
 </div>
 
 <div class="container">
@@ -119,14 +115,13 @@
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
             <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
             <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ بصمة المنهج والمكافآت تقنياً.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-coins"></i><div><div style="font-weight:bold;">نظام المكافآت</div><div style="font-size:0.8rem; color:#94a3b8;">حوّل جهدك الدراسي إلى عملات رقمية وNFT.</div></div></div>
         </div>
     </div>
 
     <div id="student" class="section">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div class="points-badge"><i class="fa-solid fa-star"></i> نقاطي: <span id="studentPoints">450</span></div>
-            <button onclick="mintTokens()" id="mintBtn" style="background:var(--gold); border:none; padding:5px 12px; border-radius:50px; font-size:0.7rem; font-weight:bold; cursor:pointer; color:black;">تحويل لـ $SYNC</button>
+            <div style="font-size:0.6rem; color:#94a3b8;">اجمع 1000 للمطالبة</div>
         </div>
 
         <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
@@ -138,7 +133,7 @@
         <div class="tools-grid">
             <div class="tool-card" onclick="runAI('audio')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
             <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
-            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي للمادة</div>
+            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي (لربح النقاط)</div>
         </div>
 
         <div id="aiLoading">
@@ -146,133 +141,73 @@
             <div style="font-size:0.8rem; color:var(--primary); margin-top:5px;" id="loadingText">جاري المعالجة...</div>
         </div>
 
-        <div id="mapRes" class="result-panel">
-            <div style="background:var(--primary); color:#000; padding:8px 20px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:15px;" id="mapTitle">العنوان</div>
-            <div style="text-align:center;">
-                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">مفاهيم الوحدة الأولى</div>
-                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">العلاقات والروابط</div>
-            </div>
-        </div>
-
         <div id="quizRes" class="result-panel">
-            <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
-            <p style="font-size:0.9rem; margin-bottom:15px;">س١: ما هو الهدف الرئيسي من المحتوى الذي قمت برفعه؟</p>
-            <div class="quiz-option" onclick="awardPoints(50, this)">أ) شرح المفاهيم الأساسية وتطبيقاتها. <span style="color:var(--success); font-size:0.7rem;">(+50 نقطة)</span></div>
-            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) مجرد عرض تاريخي للمادة.</div>
+            <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع 📝</h4>
+            <p style="font-size:0.9rem; margin-bottom:15px;">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p>
+            <div class="quiz-option" onclick="awardPoints(600, this)">أ) تقنية البلوكشين (Blockchain). <span style="color:var(--success); font-size:0.7rem;">(+600 نقطة)</span></div>
+            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) قواعد بيانات تقليدية فقط.</div>
         </div>
     </div>
 
     <div id="doctor" class="section">
         <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
-        
-        <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
-            <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
-            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
-            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي (سيتم تشفيره)</div>
-            <p style="font-size:0.65rem; color:#94a3b8;">سيتم توليد SHA-256 Hash ووضعه على البلوكشين</p>
-        </div>
-
-        <div class="info-card">
-            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تقارير الأداء والمكافآت</h4>
-            <div style="background: rgba(16, 185, 129, 0.05); padding: 12px; border-radius: 10px; margin-bottom:15px;">
-                <div style="font-size:0.75rem; color:var(--success);">إجمالي المكافآت الموزعة للدفعة:</div>
-                <div style="font-size:1.1rem; font-weight:bold; color:var(--gold);">4,250 $SYNC</div>
-            </div>
-            <div class="progress-container">
-                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
-                    <span>تحليل استيعاب المحتوى</span>
-                    <span style="color: var(--danger);">تحتاج مراجعة (35%)</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 35%; background: var(--danger);"></div></div>
-            </div>
+        <div class="info-card" style="text-align:center;">
+             <p style="font-size:0.8rem; color:#94a3b8;">إجمالي الطلاب الذين قاموا بمطالبة (Claim) اليوم:</p>
+             <h2 style="color:var(--gold); margin:10px 0;">128 طالب</h2>
         </div>
     </div>
 
 </div>
 
 <script>
-    // --- 💰 نظام المحفظة والنقاط ---
     let points = 450;
     let balance = 0.00;
+
+    function updateClaimButton() {
+        const btn = document.getElementById('claimBtn');
+        const icon = document.getElementById('claimIcon');
+        if (points >= 1000) {
+            btn.classList.add('ready');
+            btn.style.cursor = 'pointer';
+            icon.className = 'fa-solid fa-unlock-keyhole';
+        } else {
+            btn.classList.remove('ready');
+            btn.style.cursor = 'not-allowed';
+            icon.className = 'fa-solid fa-lock';
+        }
+    }
 
     function awardPoints(amount, el) {
         el.style.backgroundColor = '#10b981';
         points += amount;
         document.getElementById('studentPoints').innerText = points;
-        playStartupSound(); // صوت مكافأة
+        updateClaimButton();
+        if(points >= 1000) alert("مبروك! وصلت لـ 1000 نقطة. يمكنك الآن المطالبة بـ $SYNC من المحفظة.");
     }
 
-    function mintTokens() {
-        if(points < 100) return alert("تحتاج على الأقل 100 نقطة للتحويل!");
-        
-        const btn = document.getElementById('mintBtn');
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الصك...';
-        btn.classList.add('mint-anim');
+    function mintFromSidebar() {
+        if (points < 1000) {
+            alert("عذراً، يجب أن تملك 1000 نقطة على الأقل للمطالبة.");
+            return;
+        }
 
+        const btn = document.getElementById('claimBtn');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Minting...';
+        
         setTimeout(() => {
-            let newTokens = (points / 100).toFixed(2);
-            balance = (parseFloat(balance) + parseFloat(newTokens)).toFixed(2);
-            points = 0;
+            balance = (parseFloat(balance) + 10.00).toFixed(2);
+            points -= 1000;
             
-            document.getElementById('studentPoints').innerText = points;
             document.getElementById('sidebarBalance').innerText = balance;
+            document.getElementById('studentPoints').innerText = points;
             
-            btn.innerHTML = '✅ تم التحويل';
-            btn.classList.remove('mint-anim');
-            btn.style.background = '#10b981';
+            alert("تم صك 10.00 $SYNC بنجاح في محفظتك! 🎉");
             
-            alert(`تم نجاح العملية! \nتم صك ${newTokens} $SYNC وإضافتها لمحفظتك الرقمية.`);
-            
-            setTimeout(() => {
-                btn.innerHTML = 'تحويل لـ $SYNC';
-                btn.style.background = 'var(--gold)';
-            }, 3000);
+            btn.innerHTML = '<i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)';
+            updateClaimButton();
         }, 2500);
     }
 
-    // --- 🔊 نظام الصوت ---
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
-    let isUnlocked = false;
-
-    function playStartupSound() {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.5);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-    }
-
-    document.addEventListener('mousedown', () => { if (!isUnlocked) { audioCtx.resume(); isUnlocked = true; } });
-
-    // --- 🌌 أنميشن الخلفية ---
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    function initParticles() {
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        particles = [];
-        for (let i = 0; i < 60; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, size: Math.random() * 2 });
-    }
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.4)";
-        particles.forEach((p, i) => {
-            p.x += p.vx; p.y += p.vy;
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
-        });
-        requestAnimationFrame(animate);
-    }
-    window.addEventListener('resize', initParticles);
-    initParticles(); animate();
-
-    // --- وظائف التطبيق ---
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSection(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -283,14 +218,7 @@
     function handleFile(input) {
         if(input.files[0]) {
             document.getElementById('upStatus').innerHTML = "✅ تم تحميل: " + input.files[0].name;
-            alert("تم التحقق من بصمة الملف (Hash) عبر البلوكشين بنجاح!");
-        }
-    }
-
-    function handleDocUpload(input) {
-        if(input.files[0]) {
-            document.getElementById('docUpStatus').innerHTML = "✅ تم تشفير ورفع: " + input.files[0].name;
-            alert("تم تسجيل المنهج على Blockchain وتوليد Smart Contract.");
+            alert("تم التحقق من بصمة الملف (Hash) عبر البلوكشين.");
         }
     }
 
@@ -298,11 +226,33 @@
         document.getElementById('aiLoading').style.display = 'block';
         setTimeout(() => {
             document.getElementById('aiLoading').style.display = 'none';
-            if(type==='map') document.getElementById('mapRes').style.display = 'block';
-            else if(type==='quiz') document.getElementById('quizRes').style.display = 'block';
-            else alert("جاري توليد البودكاست الصوتي الموثق...");
-        }, 2000);
+            if(type==='quiz') document.getElementById('quizRes').style.display = 'block';
+            else alert("جاري المعالجة...");
+        }, 1500);
     }
+
+    // --- أنميشن الخلفية ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function initParticles() {
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        particles = [];
+        for (let i = 0; i < 50; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, size: Math.random() * 2 });
+    }
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(34, 211, 238, 0.3)";
+        particles.forEach(p => {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+        });
+        requestAnimationFrame(animate);
+    }
+    initParticles(); animate();
+    updateClaimButton(); // لتحديث حالة الزر عند التشغيل
 </script>
 </body>
 </html>
