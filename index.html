@@ -26,7 +26,7 @@
         .sidebar { 
             position: fixed; right: -280px; top: 0; width: 280px; height: 100%; 
             background: #0f172a; border-left: 2px solid var(--primary); 
-            z-index: 2000; padding: 20px;
+            z-index: 5000; padding: 20px;
         }
         .sidebar.active { right: 0; }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
@@ -40,62 +40,29 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* تنسيق المربعات المتجاورة للرئيسية */
-        .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 25px 0; }
-        .square-btn { 
-            background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); 
-            padding: 25px 10px; border-radius: 20px; text-align: center; 
-            cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px;
-        }
-        .square-btn i { font-size: 2rem; }
-        .square-btn span { font-weight: bold; font-size: 0.9rem; }
-
+        .portal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 20px; border-radius: 12px; text-align: center; color: white; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        
         .info-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
-        .feature-item i { color: var(--primary); font-size: 1.3rem; }
+        .feature-item i { color: var(--primary); font-size: 1.3rem; min-width: 25px; }
         
         .points-badge { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px; }
         .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
-        .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
 
-        .progress-bar { width: 100%; height: 8px; background: #1e293b; border-radius: 10px; overflow: hidden; margin-top: 5px; }
-        .progress-fill { height: 100%; transition: 1.5s ease-in-out; }
-
-        #aiLoading { display: none; text-align: center; margin: 20px 0; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
+        /* تعديل الميكروفون ليكون فوق كل شيء */
+        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white; }
+        
+        @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.6); } 70% { box-shadow: 0 0 0 20px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .result-panel { display: none; margin-top: 20px; padding: 20px; background: #0b1224; border-radius: 20px; border: 1px solid var(--primary); }
-        .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
-
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
-
-        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; }
-
-        /* Roadmap Styling */
-        .roadmap-container { position: relative; padding-right: 20px; border-right: 2px solid var(--line); margin-top: 20px; }
-        .roadmap-step { position: relative; margin-bottom: 25px; padding-right: 15px; }
-        .roadmap-step::before { content: ''; position: absolute; right: -27px; top: 5px; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
-        .roadmap-tag { font-size: 0.6rem; background: var(--primary); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin-bottom: 5px; display: inline-block; }
-
-        .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; }
-        @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
-        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
     </style>
 </head>
 <body>
 
 <canvas id="bg-canvas"></canvas>
-
-<div class="modal" id="infoModal" onclick="this.style.display='none'">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div id="modalBody"></div>
-        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">إغلاق</button>
-    </div>
-</div>
 
 <header>
     <div class="logo-box">
@@ -119,97 +86,104 @@
     <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
     <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
-    <div class="sidebar-item" onclick="showSection('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</div>
-    <div class="sidebar-item" onclick="showSection('roadmap')" style="color: var(--primary); border-top: 1px solid var(--line);"><i class="fa-solid fa-map-location-dot"></i> Future Roadmap</div>
 </div>
 
 <div class="container">
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
-        <div class="home-grid">
-            <div class="square-btn" onclick="showSection('student')">
-                <i class="fa-solid fa-graduation-cap" style="color:var(--primary);"></i>
+        
+        <div class="portal-grid">
+            <div class="blue-btn" onclick="showSection('student')">
+                <i class="fa-solid fa-user-graduate"></i>
                 <span>بوابة الطالب</span>
             </div>
-            <div class="square-btn" onclick="showSection('doctor')" style="border-color:var(--danger);">
-                <i class="fa-solid fa-user-tie" style="color:var(--danger);"></i>
+            <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')">
+                <i class="fa-solid fa-user-doctor"></i>
                 <span>بوابة الدكتور</span>
             </div>
         </div>
+
         <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
+            
             <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
+            
             <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
+            
             <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><div style="font-weight:bold;">تحليلات الفجوة</div><div style="font-size:0.8rem; color:#94a3b8;">لرصد تعثر الطلاب مبكراً.</div></div></div>
+            
             <div class="feature-item"><i class="fa-solid fa-id-card"></i><div><div style="font-weight:bold;">هوية رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">لتوثيق المهارات لجهات التوظيف.</div></div></div>
+            
+            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><div style="font-weight:bold;">تعلم متكيف</div><div style="font-size:0.8rem; color:#94a3b8;">تخصيص المحتوى لكل طالب.</div></div></div>
+            
+            <div class="feature-item"><i class="fa-solid fa-copyright"></i><div><div style="font-weight:bold;">حقوق رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">حماية الملكية الفكرية للمناهج.</div></div></div>
+
+            <div class="feature-item"><i class="fa-solid fa-square-poll-vertical"></i><div><div style="font-weight:bold;">اختبارات ومكافآت</div><div style="font-size:0.8rem; color:#94a3b8;">حوّل مذاكرتك إلى عملات رقمية.</div></div></div>
         </div>
     </div>
 
     <div id="student" class="section">
         <div class="points-badge"><i class="fa-solid fa-star"></i> نقاطي: <span id="studentPoints">450</span></div>
-        <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
         <div class="upload-box" onclick="document.getElementById('fInput').click()">
-            <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
-            <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
+            <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
+            <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); mb:15px;"></i>
+            <div id="upStatus">تحميل مصادر المنهج</div>
         </div>
-        <div class="tools-grid">
-            <div class="tool-card" onclick="alert('جاري توليد البودكاست التعليمي...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
-            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
-            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي</div>
-        </div>
-        <div id="aiLoading"><div class="loader"></div></div>
-        <div id="mapRes" class="result-panel"><div id="mapTitle"></div></div>
-        <div id="quizRes" class="result-panel"><h4 id="quizTitle"></h4><p id="qVoiceText">س١: ما هي التقنية المستخدمة لتأمين المنهج؟</p><div class="quiz-option" onclick="awardPoints(600, this)">أ) البلوكشين (+600 نقطة)</div></div>
-    </div>
-
-    <div id="doctor" class="section">
-        <h3 style="margin-bottom:15px;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
-        <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
-            <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
-            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
-            <div id="docUpStatus" style="font-weight:bold;">رفع المرجع الرسمي</div>
-        </div>
-    </div>
-
-    <div id="roadmap" class="section">
-        <h3><i class="fa-solid fa-rocket"></i> Future Roadmap</h3>
-        <div class="roadmap-container">
-            <div class="roadmap-step"><span class="roadmap-tag">2026</span><div style="font-weight:bold;">المستشار التعليمي (NLP)</div></div>
-            <div class="roadmap-step"><span class="roadmap-tag" style="background:var(--gold);">2026</span><div style="font-weight:bold;">سوق المهارات (NFT)</div></div>
-            <div class="roadmap-step"><span class="roadmap-tag" style="background:var(--success);">2027</span><div style="font-weight:bold;">إثبات التركيز (AI)</div></div>
-        </div>
-        <div class="blue-btn" style="background:var(--primary); color:black; margin-top:20px;" onclick="showSection('home')">رجوع</div>
     </div>
 </div>
 
-<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
+<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()">
+    <i class="fa-solid fa-microphone" style="font-size: 1.5rem;"></i>
+</div>
 
 <script>
-    let points = 450; let balance = 0.00; let isFile = false; let nameF = "";
+    let points = 450;
     const synth = window.speechSynthesis;
-    function speak(text) { if (synth.speaking) synth.cancel(); const utter = new SpeechSynthesisUtterance(text); utter.lang = 'ar-SA'; synth.speak(utter); }
+
+    function speak(text) {
+        if (synth.speaking) synth.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ar-SA';
+        synth.speak(utter);
+    }
+
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSection(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
-        if(id==='roadmap') speak("هذه رؤيتنا المستقبلية");
     }
-    function awardPoints(amount, el) { points += amount; document.getElementById('studentPoints').innerText = points; updateClaimButton(); el.style.backgroundColor='#10b981'; }
-    function updateClaimButton() {
-        const btn = document.getElementById('claimBtn');
-        if (points >= 1000) btn.classList.add('ready');
-        else btn.classList.remove('ready');
+
+    function startVoiceRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) return alert("المتصفح لا يدعم الصوت");
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ar-SA';
+        const btn = document.getElementById('voiceAssistant');
+        recognition.onstart = () => { btn.classList.add('voice-active'); speak("أنا أسمعك"); };
+        recognition.onresult = (e) => { 
+            const cmd = e.results[0][0].transcript;
+            if(cmd.includes("طالب")) showSection('student');
+            if(cmd.includes("دكتور")) showSection('doctor');
+        };
+        recognition.onend = () => btn.classList.remove('voice-active');
+        recognition.start();
     }
-    function handleFile(input) { if(input.files[0]) { isFile = true; document.getElementById('upStatus').innerText = "✅ تم تحميل: " + input.files[0].name; } }
-    function runAI(type) { if(!isFile) return alert("ارفع ملف أولاً"); document.getElementById('aiLoading').style.display='block'; setTimeout(() => { document.getElementById('aiLoading').style.display='none'; if(type==='quiz') document.getElementById('quizRes').style.display='block'; }, 1000); }
-    
-    // أنميشن الخلفية
-    const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d');
+
+    // انميشن الخلفية
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
     let particles = [];
-    function initParticles() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; for (let i = 0; i < 50; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, size: Math.random() * 2 }); }
-    function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "rgba(34, 211, 238, 0.4)"; particles.forEach(p => { p.x += p.vx; p.y += p.vy; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); }); requestAnimationFrame(animate); }
-    initParticles(); animate();
+    function init() {
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        for(let i=0; i<50; i++) particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.5, vy:(Math.random()-0.5)*0.5});
+    }
+    function animate() {
+        ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="rgba(34,211,238,0.3)";
+        particles.forEach(p => { p.x+=p.vx; p.y+=p.vy; ctx.beginPath(); ctx.arc(p.x,p.y,1,0,Math.PI*2); ctx.fill(); });
+        requestAnimationFrame(animate);
+    }
+    init(); animate();
 </script>
 </body>
 </html>
