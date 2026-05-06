@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | الهاكاthون</title>
+    <title>EduSync AI | الهاكاثون</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --line: #1e293b; --danger: #f43f5e; --success: #10b981; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
+        
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
-
-        /* الخلفية المتحركة */
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
         header { 
             background: rgba(2, 6, 23, 0.95); padding: 15px 20px; display: flex; 
             justify-content: space-between; align-items: center; 
-            border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(10px);
         }
         .logo-box { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
@@ -35,7 +35,7 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; margin-bottom: 15px; font-weight: bold; }
+        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; margin-bottom: 15px; font-weight: bold; backdrop-filter: blur(5px); }
         .info-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .feature-item i { color: var(--primary); font-size: 1.3rem; }
@@ -143,16 +143,17 @@
     </div>
 
     <div id="doctor" class="section">
-        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-tie"></i> لوحة تحكم الدكتور</h3>
+        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
         
         <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
             <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
             <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
-            <div id="docUpStatus" style="font-weight:bold;">رفع المرجع الرسمي للدفعة</div>
+            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي للدفعة</div>
+            <p style="font-size:0.65rem; color:#94a3b8;">سيتم تحليل المنهج وتوزيعه للطلاب</p>
         </div>
 
         <div class="info-card">
-            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تحليل استيعاب الطلاب</h4>
+            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تقرير الاستيعاب العام</h4>
             <div class="progress-container">
                 <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
                     <span>تحليل شابتر 1</span>
@@ -161,89 +162,148 @@
                 <div class="progress-bar"><div class="progress-fill" style="width: 35%; background: var(--danger);"></div></div>
             </div>
             <div style="background: rgba(34, 211, 238, 0.05); padding: 12px; border-radius: 10px; margin-top: 15px;">
-                <h6 style="color: var(--primary); font-size:0.8rem;">لماذا الضعف؟ 🤖</h6>
-                <p style="font-size:0.7rem; color: #94a3b8;">الطلاب أعادوا البودكاست في فقرة "الخوارزميات" 6 مرات بالمتوسط، مما يدل على تعقيد الشرح.</p>
+                <h6 style="color: var(--primary); font-size:0.8rem;">رؤية AI 🤖</h6>
+                <p style="font-size:0.7rem; color: #94a3b8;">يواجه الطلاب صعوبة في فهم "الروابط الكيميائية". تم رصد تكرار تشغيل البودكاست لهذا الجزء.</p>
             </div>
-            <button class="blue-btn" style="margin-top: 15px; font-size: 0.8rem;" onclick="alert('تم إرسال إشعار مراجعة!')">إرسال إشعار مراجعة</button>
+            <button class="blue-btn" style="margin-top: 15px; font-size: 0.8rem;" onclick="alert('تم إرسال تنبيه مراجعة لجميع الطلاب!')">إرسال إشعار مراجعة</button>
         </div>
     </div>
 
     <div id="settings" class="section">
-        <h3 style="margin-bottom:20px;">الإعدادات</h3>
+        <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
         <div class="info-card" style="padding:0;">
             <div class="sidebar-item" onclick="openModal('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
             <div class="sidebar-item" onclick="openModal('guide')"><span>إرشادات المستخدم</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
         </div>
     </div>
 
 </div>
 
-<div class="chat-float" onclick="alert('أهلاً بك!')"><i class="fa-solid fa-comment-dots"></i></div>
+<div class="chat-float" onclick="alert('أهلاً! أنا مساعد EduSync الذكي، كيف أساعدك؟')"><i class="fa-solid fa-comment-dots"></i></div>
 
 <script>
-    // --- الأصوات والخلفية ---
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // --- 🔊 نظام الصوت ---
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
     let isUnlocked = false;
-    function playSound(freq, duration) {
-        if(audioCtx.state === 'suspended') audioCtx.resume();
+
+    function playStartupSound() {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.6);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
         osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start(); osc.stop(audioCtx.currentTime + duration);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.8);
     }
-    document.addEventListener('mousedown', () => { if(!isUnlocked) { playSound(440, 0.5); isUnlocked=true; } });
 
+    function playClickSound() {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(1400, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    document.addEventListener('mousedown', (e) => {
+        if (!isUnlocked) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            playStartupSound();
+            isUnlocked = true;
+        } else if (e.target.closest('.blue-btn, .tool-card, .sidebar-item, .upload-box, .menu-icon, .chat-float, .quiz-option')) {
+            playClickSound();
+        }
+    });
+
+    // --- 🌌 أنميشن الخلفية ---
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    function init() {
+    function initParticles() {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        for(let i=0; i<40; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4});
+        particles = [];
+        for (let i = 0; i < 60; i++) {
+            particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, size: Math.random() * 2 });
+        }
     }
     function animate() {
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.2)";
-        particles.forEach(p => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(34, 211, 238, 0.4)";
+        particles.forEach((p, i) => {
             p.x += p.vx; p.y += p.vy;
-            if(p.x<0 || p.x>canvas.width) p.vx*=-1; if(p.y<0 || p.y>canvas.height) p.vy*=-1;
-            ctx.beginPath(); ctx.arc(p.x, p.y, 1.2, 0, Math.PI*2); ctx.fill();
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+            for (let j = i + 1; j < particles.length; j++) {
+                let p2 = particles[j]; let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                if (dist < 100) {
+                    ctx.strokeStyle = `rgba(34, 211, 238, ${0.15 - dist/600})`;
+                    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+                }
+            }
         });
         requestAnimationFrame(animate);
     }
-    init(); animate();
+    window.addEventListener('resize', initParticles);
+    initParticles(); animate();
 
-    // --- الوظائف ---
-    let isFile = false; let nameF = "";
+    // --- وظائف التطبيق ---
+    let isFile = false;
+    let nameF = "";
+
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSection(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
     }
+
     function handleFile(input) {
         if(input.files[0]) {
-            isFile = true; nameF = input.files[0].name.split('.')[0];
-            document.getElementById('upStatus').innerHTML = "✅ " + input.files[0].name;
+            isFile = true;
+            nameF = input.files[0].name.split('.')[0];
+            document.getElementById('upStatus').innerHTML = "✅ تم تحميل: " + input.files[0].name;
             document.getElementById('mapTitle').innerText = nameF;
             document.getElementById('quizTitle').innerText = nameF;
         }
     }
+
     function handleDocUpload(input) {
         if(input.files[0]) {
-            document.getElementById('docUpStatus').innerHTML = "✅ تم الاعتماد: " + input.files[0].name;
-            alert("تم رفع المرجع الرسمي للدفعة!");
+            document.getElementById('docUpStatus').innerHTML = "✅ تم اعتماد: " + input.files[0].name;
+            alert("تم تحديث المنهج الرسمي بنجاح!");
         }
     }
+
     function runAI(type) {
         if(!isFile) return alert("ارفع ملف أولاً!");
+        document.getElementById('mapRes').style.display = 'none';
+        document.getElementById('quizRes').style.display = 'none';
         document.getElementById('aiLoading').style.display = 'block';
+        document.getElementById('loadingText').innerText = type==='map'?"جاري رسم الخريطة...":"جاري إنشاء الأسئلة...";
+
         setTimeout(() => {
             document.getElementById('aiLoading').style.display = 'none';
             if(type==='map') document.getElementById('mapRes').style.display = 'block';
             else document.getElementById('quizRes').style.display = 'block';
         }, 2000);
+    }
+
+    const contents = {
+        privacy: `<h3>الخصوصية 🔒</h3><p>بياناتك وملفاتك مشفرة بالكامل ولا نطلع عليها.</p>`,
+        guide: `<h3>إرشادات المستخدم 📖</h3><p>ارفع ملفك، اختر الأداة، واترك الباقي لذكائنا الاصطناعي.</p>`,
+        contact: `<h3>تواصل معنا 📞</h3><p>الدعم الفني متاح 24/7 عبر البريد: support@edusync.ai</p>`
+    };
+
+    function openModal(id) {
+        document.getElementById('modalBody').innerHTML = contents[id];
+        document.getElementById('infoModal').style.display = 'flex';
     }
 </script>
 </body>
