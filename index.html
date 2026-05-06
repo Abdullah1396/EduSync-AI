@@ -11,7 +11,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; transition: 0.3s; }
         body { background-color: var(--bg); color: white; font-family: 'Cairo', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
-        /* الهيدر والمنيو */
+        /* الهيدر والمنيو الجانبي */
         .top-bar { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; background: var(--bg); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
         .logo-area { display: flex; align-items: center; gap: 12px; }
         .logo-img { width: 45px; height: 45px; border-radius: 5px; border: 1px solid var(--primary); object-fit: cover; }
@@ -20,31 +20,31 @@
         .sidebar-item { padding: 18px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; cursor: pointer; color: #cbd5e1; }
         .sidebar-item:hover { color: var(--primary); background: rgba(34, 211, 238, 0.05); }
 
-        /* الحاوية والأقسام */
+        /* الحاوية */
         .container { padding: 30px 20px; max-width: 650px; margin: auto; }
-        .section { display: none; animation: fadeIn 0.5s; }
+        .section { display: none; }
         .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* تنسيق الإعدادات (مثل الصورة الأخيرة) */
-        .settings-group { margin-bottom: 25px; }
-        .settings-label { font-size: 0.8rem; color: #94a3b8; margin-bottom: 10px; display: block; padding-right: 10px; }
-        .settings-card { background: var(--card); border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+        /* المربع الأحمر (شرح التطبيق) */
+        .about-app { margin-top: 30px; background: rgba(34, 211, 238, 0.03); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-bottom: 50px; }
+        .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
+        .feature-item i { color: var(--primary); font-size: 1.4rem; margin-top: 5px; }
+        .feature-item h4 { font-size: 0.95rem; margin-bottom: 5px; color: #fff; }
+        .feature-item p { font-size: 0.8rem; color: #94a3b8; line-height: 1.6; }
+
+        /* الإعدادات والتخصيص */
+        .settings-card { background: var(--card); border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 1px solid var(--line); }
         .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid var(--line); cursor: pointer; }
         .settings-item:last-child { border-bottom: none; }
-        .settings-item i { color: #94a3b8; font-size: 0.9rem; }
-        .settings-info { display: flex; align-items: center; gap: 12px; }
-        .settings-icon-box { width: 35px; height: 35px; background: rgba(255,255,255,0.05); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .settings-label { font-size: 0.8rem; color: #94a3b8; margin-bottom: 10px; display: block; padding-right: 5px; }
+        .feature-hero { text-align: center; padding: 30px; background: white; border-radius: 20px; margin-bottom: 20px; color: #020617; }
+        .feature-hero img { width: 80px; margin-bottom: 15px; }
 
-        /* تخصيص التجربة (مثل الصورة الرابعة) */
-        .feature-hero { text-align: center; padding: 40px 20px; background: white; border-radius: 20px; margin-bottom: 20px; color: #020617; }
-        .feature-hero img { width: 100px; margin-bottom: 20px; }
-        .feature-hero h2 { color: #1e40af; font-weight: 700; }
-
-        /* البطاقات والأدوات */
-        .tool-btn { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 10px; }
-        .tool-btn:hover { border-color: var(--primary); }
+        /* أدوات الطالب والدكتور */
         .upload-card { border: 2px dashed rgba(34, 211, 238, 0.5); border-radius: 20px; padding: 40px 20px; text-align: center; background: rgba(15, 23, 42, 0.5); margin-bottom: 30px; cursor: pointer; }
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .tool-btn { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; }
+        .tool-btn:hover { border-color: var(--primary); }
 
         /* الشات بوت */
         .chat-launcher { position: fixed; bottom: 20px; left: 20px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--bg); cursor: pointer; z-index: 3000; }
@@ -61,12 +61,12 @@
         <i class="fa-solid fa-times" onclick="toggleChat()"></i>
     </div>
     <div id="chatBody" style="flex:1; padding:15px; overflow-y:auto; font-size:0.85rem;">
-        <div style="background:var(--line); padding:10px; border-radius:10px; margin-bottom:10px;">مرحباً! ارفع ملفاتك وسأساعدك في تلخيصها فوراً.</div>
+        <div style="background:var(--line); padding:10px; border-radius:10px;">مرحباً! كيف أساعدك في منهجك اليوم؟</div>
     </div>
 </div>
 
 <div class="sidebar" id="sidebar">
-    <div style="text-align:left; font-size:2rem; cursor:pointer;" onclick="toggleMenu()">×</div>
+    <div style="text-align:left; font-size:2rem; cursor:pointer; padding:10px;" onclick="toggleMenu()">×</div>
     <div class="sidebar-item" onclick="showSec('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSec('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
     <div class="sidebar-item" onclick="showSec('customize')"><i class="fa-solid fa-wand-magic-sparkles"></i> تخصيص التجربة</div>
@@ -86,62 +86,50 @@
     
     <div id="home" class="section active">
         <h2 style="text-align:center; margin-bottom:25px;">مرحباً بك في EduSync 🚀</h2>
-        <div class="tool-btn" style="background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">دخول بوابة الطالب</div>
-        <div class="tool-btn" style="border-color:var(--danger);" onclick="showSec('doctor')">دخول بوابة الدكتور</div>
+        <div class="tool-btn" style="width:100%; margin-bottom:15px; background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">دخول بوابة الطالب</div>
+        <div class="tool-btn" style="width:100%; border-color:var(--danger); margin-bottom:30px;" onclick="showSec('doctor')">دخول بوابة الدكتور</div>
+
+        <div class="about-app">
+            <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h3>
+            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><h4>قوة الذكاء الاصطناعي</h4><p>تحليل المناهج واستخراج المعلومات الجوهرية بدقة فائقة باستخدام معالجة اللغات الطبيعية.</p></div></div>
+            <div class="feature-item"><i class="fa-solid fa-headphones-simple"></i><div><h4>التعلم السمعي (Podcast)</h4><p>حوّل دروسك إلى بودكاست تعليمي ممتع للمذاكرة في أي وقت ومكان.</p></div></div>
+            <div class="feature-item"><i class="fa-solid fa-chart-pie"></i><div><h4>تحليل الفجوات المعرفية</h4><p>نساعد الدكاترة في معرفة نقاط ضعف الطلاب بدقة من خلال تقارير ذكية.</p></div></div>
+        </div>
     </div>
 
     <div id="customize" class="section">
         <div class="feature-hero">
             <img src="https://img.icons8.com/fluency/100/science.png" alt="Icon">
-            <h2>تخصيص التجربة التعليمية</h2>
+            <h2 style="color:#1e40af">تخصيص التجربة التعليمية</h2>
         </div>
-        <div class="settings-group">
-            <span class="settings-label">اختر نمط التعلم المفضل</span>
-            <div class="settings-card">
-                <div class="settings-item"><span>نمط التلخيص السريع</span><i class="fa-solid fa-bolt" style="color:var(--primary)"></i></div>
-                <div class="settings-item"><span>النمط التعمقي (شرح مفصل)</span><i class="fa-solid fa-book-open"></i></div>
-                <div class="settings-item"><span>نمط الاختبارات المكثفة</span><i class="fa-solid fa-spell-check"></i></div>
-            </div>
+        <div class="settings-card">
+            <div class="settings-item"><span>نمط التلخيص السريع</span><i class="fa-solid fa-bolt" style="color:var(--primary)"></i></div>
+            <div class="settings-item"><span>النمط التعمقي</span><i class="fa-solid fa-book-open"></i></div>
+            <div class="settings-item"><span>نمط الاختبارات</span><i class="fa-solid fa-spell-check"></i></div>
         </div>
     </div>
 
     <div id="settings" class="section">
         <h3 style="margin-bottom:20px;">الإعدادات</h3>
-        <div class="settings-group">
-            <span class="settings-label">الحساب</span>
-            <div class="settings-card">
-                <div class="settings-item"><div class="settings-info"><div class="settings-icon-box"><i class="fa-regular fa-envelope"></i></div><span>تعديل البريد الإلكتروني</span></div><i class="fa-solid fa-chevron-left"></i></div>
-                <div class="settings-item"><div class="settings-info"><div class="settings-icon-box"><i class="fa-solid fa-lock"></i></div><span>تغيير كلمة المرور</span></div><i class="fa-solid fa-chevron-left"></i></div>
-                <div class="settings-item" style="color:var(--danger);"><div class="settings-info"><div class="settings-icon-box"><i class="fa-solid fa-trash"></i></div><span>حذف الحساب</span></div><i class="fa-solid fa-chevron-left"></i></div>
-            </div>
+        <span class="settings-label">الحساب</span>
+        <div class="settings-card">
+            <div class="settings-item"><span>تعديل البريد الإلكتروني</span><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="settings-item"><span>تغيير كلمة المرور</span><i class="fa-solid fa-chevron-left"></i></div>
         </div>
-        <div class="settings-group">
-            <span class="settings-label">الخصوصية</span>
-            <div class="settings-card">
-                <div class="settings-item"><div class="settings-info"><div class="settings-icon-box"><i class="fa-solid fa-shield-halved"></i></div><span>إرسال الرسائل</span></div><i class="fa-solid fa-lock"></i></div>
-            </div>
-        </div>
-        <div class="settings-group">
-            <span class="settings-label">الدعم</span>
-            <div class="settings-card">
-                <div class="settings-item"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left"></i></div>
-                <div class="settings-item"><span>شروط الاستخدام</span><i class="fa-solid fa-chevron-left"></i></div>
-                <div class="settings-item"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left"></i></div>
-            </div>
-        </div>
-        <div class="settings-card" style="margin-top:20px; border:1px solid var(--danger);">
-            <div class="settings-item" style="color:var(--danger);"><span>تسجيل الخروج</span><i class="fa-solid fa-right-from-bracket"></i></div>
+        <span class="settings-label">الدعم</span>
+        <div class="settings-card">
+            <div class="settings-item"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="settings-item"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left"></i></div>
         </div>
     </div>
 
     <div id="student" class="section">
-        <div class="upload-card">
-            <i class="fa-solid fa-cloud-arrow-up"></i>
-            <p>ارفع المنهج (PDF) هنا</p>
-        </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div class="upload-card"><i class="fa-solid fa-cloud-arrow-up"></i><p>ارفع المنهج (PDF) هنا</p></div>
+        <div class="tools-grid">
             <div class="tool-btn"><i class="fa-solid fa-microphone"></i><br>بودكاست</div>
+            <div class="tool-btn"><i class="fa-solid fa-check-double"></i><br>اختبارات</div>
             <div class="tool-btn"><i class="fa-solid fa-brain"></i><br>خرائط</div>
+            <div class="tool-btn"><i class="fa-solid fa-layer-group"></i><br>بطاقات</div>
         </div>
     </div>
 
@@ -149,7 +137,6 @@
         <div class="settings-card" style="padding:20px; border-right:4px solid var(--danger);">
             <h4>📊 تقرير استيعاب الدفعة</h4>
             <div style="height:10px; background:var(--line); border-radius:5px; margin-top:15px;"><div style="width:75%; height:100%; background:var(--danger); border-radius:5px;"></div></div>
-            <p style="font-size:0.7rem; margin-top:5px; color:#94a3b8">نسبة الاستيعاب الإجمالية: 75%</p>
         </div>
     </div>
 
@@ -162,7 +149,6 @@
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
-        window.scrollTo(0,0);
     }
 </script>
 </body>
