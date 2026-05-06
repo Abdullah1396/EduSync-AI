@@ -3,185 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | المنصة المتكاملة</title>
+    <title>EduSync AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --line: #1e293b; --danger: #f43f5e; }
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: 0.3s; font-family: 'Cairo', sans-serif; }
-        body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; }
+        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --line: #1e293b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg); color: white; min-height: 100vh; }
 
-        /* الهيدر والقائمة الجانبية (ثابتة كما طلبت) */
-        .top-bar { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; background: var(--bg); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
-        .logo-area { display: flex; align-items: center; gap: 12px; }
-        .logo-img { width: 45px; height: 45px; border-radius: 5px; border: 2px solid var(--primary); object-fit: cover; }
-        .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; border-left: 2px solid var(--primary); z-index: 2000; padding: 20px; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
+        /* الهيدر الأصلي كما في صورك */
+        header { 
+            background: #020617; 
+            padding: 15px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 2px solid var(--primary);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
+        .menu-icon { color: var(--primary); font-size: 1.5rem; cursor: pointer; }
+
+        /* القائمة الجانبية */
+        .sidebar { 
+            position: fixed; right: -280px; top: 0; width: 280px; height: 100%; 
+            background: #0f172a; border-left: 1px solid var(--line); 
+            transition: 0.3s; z-index: 2000; padding: 20px; 
+        }
         .sidebar.active { right: 0; }
-        .sidebar-logo-container { text-align: center; padding: 20px 0; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
-        .sidebar-logo { width: 80px; height: 80px; border-radius: 12px; border: 2px solid var(--primary); }
-        .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; cursor: pointer; color: #cbd5e1; }
-        .close-btn { position: absolute; top: 10px; left: 15px; font-size: 2rem; cursor: pointer; color: var(--primary); }
+        .sidebar-item { 
+            padding: 15px; border-bottom: 1px solid var(--line); 
+            display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer;
+        }
 
-        /* الحاوية */
-        .container { padding: 30px 20px; max-width: 650px; margin: auto; }
+        /* الحاوية الرئيسية */
+        .container { padding: 20px; max-width: 500px; margin: auto; }
         .section { display: none; }
         .section.active { display: block; }
 
-        /* المربع الأحمر */
-        .about-app { margin-top: 30px; background: rgba(34, 211, 238, 0.03); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-bottom: 40px; }
-        .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
-        .feature-item i { color: var(--primary); font-size: 1.4rem; }
+        /* المربع الأنيق (لماذا EduSync) */
+        .info-card { 
+            background: rgba(15, 23, 42, 0.6); 
+            border: 1px solid var(--line); 
+            border-radius: 15px; padding: 20px; margin-top: 25px;
+        }
+        .blue-btn { 
+            background: rgba(34, 211, 238, 0.1); 
+            border: 1px solid var(--line); 
+            padding: 15px; border-radius: 12px; width: 100%; 
+            text-align: center; color: white; cursor: pointer; margin-bottom: 15px;
+        }
 
-        /* منطقة الرفع والأدوات */
-        .upload-card { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; background: rgba(34, 211, 238, 0.05); cursor: pointer; margin-bottom: 20px; }
+        /* بوابة الطالب والرفع */
+        .upload-area { 
+            border: 2px dashed var(--primary); 
+            border-radius: 15px; padding: 40px 20px; 
+            text-align: center; margin-bottom: 20px; cursor: pointer;
+        }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .tool-btn { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; }
-        .tool-btn i { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; display: block; }
+        .tool-box { 
+            background: var(--card); border: 1px solid var(--line); 
+            padding: 20px; border-radius: 15px; text-align: center; cursor: pointer;
+        }
+        .tool-box i { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; display: block; }
 
-        /* مخرج الخريطة الذهنية (Simulation) */
-        #resultArea { display: none; margin-top: 30px; padding: 20px; background: #0f172a; border-radius: 20px; border: 1px solid var(--primary); animation: fadeIn 0.5s; }
-        .mindmap-node { background: var(--primary); color: var(--bg); padding: 10px; border-radius: 10px; font-weight: bold; display: inline-block; margin: 10px; }
-        .sub-node { background: white; color: #020617; padding: 8px; border-radius: 8px; font-size: 0.8rem; display: inline-block; margin: 5px; border-right: 4px solid var(--primary); }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* مخرج الخريطة الذهنية */
+        #mindmapResult { 
+            display: none; background: #0f172a; border: 1px solid var(--primary); 
+            border-radius: 15px; padding: 20px; margin-top: 20px; text-align: center;
+        }
+        .node { background: var(--primary); color: #000; padding: 5px 15px; border-radius: 20px; display: inline-block; font-weight: bold; margin: 5px; }
 
-        /* الإعدادات والمودال */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; max-width: 500px; width: 100%; }
-        .settings-card { background: var(--card); border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 1px solid var(--line); }
-        .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 18px; border-bottom: 1px solid var(--line); cursor: pointer; }
-        .active-pattern-badge { background: var(--primary); color: var(--bg); padding: 8px 20px; border-radius: 25px; font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; display: inline-block; }
+        .chat-float { position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
-    <div class="modal-box" onclick="event.stopPropagation()">
-        <div id="modalContent"></div>
-        <button onclick="closeModal()" style="margin-top:20px; background:var(--primary); border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%; font-weight:bold;">إغلاق</button>
+<header>
+    <div class="logo-box">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+        <div>
+            <div style="font-size: 0.9rem; font-weight: bold;">EduSync AI</div>
+            <div style="font-size: 0.6rem; color: #94a3b8;">المزامنة التعليمية الذكية</div>
+        </div>
     </div>
-</div>
+    <div class="menu-icon" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
+</header>
 
 <div class="sidebar" id="sidebar">
-    <span class="close-btn" onclick="toggleMenu()">&times;</span>
-    <div class="sidebar-logo-container">
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="sidebar-logo">
+    <div style="text-align: left; font-size: 1.5rem; cursor: pointer;" onclick="toggleMenu()">&times;</div>
+    <div style="text-align:center; margin-bottom: 20px;">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" style="width:70px; border-radius:10px; border:1px solid var(--primary);">
     </div>
     <div class="sidebar-item" onclick="showSec('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSec('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
     <div class="sidebar-item" onclick="showSec('customize')"><i class="fa-solid fa-wand-magic-sparkles"></i> تخصيص التجربة</div>
-    <div class="sidebar-item" onclick="showSec('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
     <div class="sidebar-item" onclick="showSec('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</div>
 </div>
 
-<header class="top-bar">
-    <div onclick="toggleMenu()" style="cursor:pointer; color:var(--primary); font-size:1.5rem;"><i class="fa-solid fa-bars"></i></div>
-    <div class="logo-area">
-        <div style="font-weight:700; color:var(--primary); font-size:1.1rem; text-align:right;">EduSync AI<br><span style="font-size:0.6rem; color:#94a3b8">المزامنة التعليمية الذكية</span></div>
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
-    </div>
-</header>
-
 <div class="container">
-    
+
     <div id="home" class="section active">
-        <h2 style="text-align:center; margin-bottom:25px;">مرحباً بك في EduSync 🚀</h2>
-        <div class="tool-btn" style="width:100%; margin-bottom:15px; background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">دخول بوابة الطالب</div>
-        <div class="about-app">
-            <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h3>
-            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><h4>تحليل NLP</h4><p>معالجة لغات طبيعية لاستخراج زبدة المحتوى.</p></div></div>
+        <h3 style="text-align: center; margin: 20px 0;">مرحباً بك في EduSync 🚀</h3>
+        <div class="blue-btn" onclick="showSec('student')">دخول بوابة الطالب</div>
+        
+        <div class="info-card">
+            <h4 style="color: var(--primary); margin-bottom: 15px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary);"></i>
+                <div>
+                    <div style="font-weight: bold; font-size: 0.9rem;">تحليل NLP</div>
+                    <div style="font-size: 0.75rem; color: #cbd5e1;">معالجة لغات طبيعية لاستخراج زبدة المحتوى.</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="student" class="section">
-        <div id="currentPatternDisplay" style="text-align:center;"></div>
-        <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(this)">
-        <div class="upload-card" onclick="document.getElementById('fileInput').click()">
-            <i class="fa-solid fa-cloud-arrow-up" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
-            <h4 id="uploadStatus">تحميل مصادر المنهج</h4>
+        <div id="activePattern" style="text-align: center; margin-bottom: 10px;"></div>
+        <input type="file" id="fileIn" style="display: none;" onchange="updateFileStatus(this)">
+        <div class="upload-area" onclick="document.getElementById('fileIn').click()">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 10px;"></i>
+            <div id="upText" style="font-weight: bold;">تحميل مصادر المنهج</div>
         </div>
 
         <div class="tools-grid">
-            <div class="tool-btn" onclick="alert('جاري توليد البودكاست...')"><i class="fa-solid fa-microphone"></i>بودكاست</div>
-            <div class="tool-btn" onclick="generateMindMap()"><i class="fa-solid fa-brain"></i>خرائط ذهنية</div>
+            <div class="tool-box" onclick="alert('جاري تجهيز البودكاست...')"><i class="fa-solid fa-microphone"></i>بودكاست</div>
+            <div class="tool-box" onclick="showMindMap()"><i class="fa-solid fa-brain"></i>خرائط ذهنية</div>
         </div>
 
-        <div id="resultArea">
-            <h3 style="color:var(--primary); text-align:center; margin-bottom:20px;">الخريطة الذهنية للمنهج 🧠</h3>
-            <div style="text-align:center;">
-                <div class="mindmap-node">الموضوع الرئيسي</div><br>
-                <i class="fa-solid fa-arrow-down"></i><br>
-                <div class="sub-node">الفكرة الفرعية 1</div>
-                <div class="sub-node">الفكرة الفرعية 2</div><br>
-                <div class="sub-node">الفكرة الفرعية 3</div>
-                <div class="sub-node">الخلاصة النهائية</div>
-            </div>
-            <p style="font-size:0.7rem; color:#94a3b8; margin-top:15px; text-align:center;">تم توليد الخريطة بناءً على الملف المرفوع ونمط التعلم المختار.</p>
-        </div>
-    </div>
-
-    <div id="customize" class="section">
-        <h2 style="text-align:center; margin-bottom:20px;">تخصيص التجربة</h2>
-        <div class="settings-card">
-            <div class="settings-item" onclick="activatePattern('نمط التلخيص السريع')"><span>نمط التلخيص السريع</span><i class="fa-solid fa-bolt"></i></div>
-            <div class="settings-item" onclick="activatePattern('النمط التعمقي')"><span>النمط التعمقي</span><i class="fa-solid fa-book-open"></i></div>
+        <div id="mindmapResult">
+            <h4 style="color:var(--primary); margin-bottom:15px;">الخريطة الذهنية الذكية 🧠</h4>
+            <div class="node">المحاضرة الأولى</div><br>
+            <div class="node" style="font-size:0.7rem; background:white;">الفكرة 1</div>
+            <div class="node" style="font-size:0.7rem; background:white;">الفكرة 2</div>
         </div>
     </div>
 
     <div id="settings" class="section">
         <h3 style="margin-bottom:20px;">الإعدادات</h3>
-        <div class="settings-card">
-            <div class="settings-item" onclick="openInfo('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left"></i></div>
-            <div class="settings-item" onclick="openInfo('terms')"><span>شروط الاستخدام</span><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="info-card" style="padding: 0;">
+            <div class="sidebar-item"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right: auto;"></i></div>
+            <div class="sidebar-item"><span>شروط الاستخدام</span><i class="fa-solid fa-chevron-left" style="margin-right: auto;"></i></div>
         </div>
     </div>
 
 </div>
 
-<script>
-    let isFileUploaded = false;
+<div class="chat-float"><i class="fa-solid fa-comment"></i></div>
 
+<script>
+    let fileUploaded = false;
     function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-    
     function showSec(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        document.getElementById('sidebar').classList.remove('active');
+        toggleMenu();
     }
-
-    function handleFileUpload(input) {
-        if (input.files && input.files[0]) {
-            isFileUploaded = true;
-            document.getElementById('uploadStatus').innerText = "تم رفع: " + input.files[0].name;
-            alert("تم الرفع! الآن اضغط على 'خرائط ذهنية' لرؤية السحر.");
+    function updateFileStatus(input) {
+        if(input.files[0]) {
+            fileUploaded = true;
+            document.getElementById('upText').innerHTML = "تم رفع: " + input.files[0].name;
+            alert("تم الرفع بنجاح!");
         }
     }
-
-    function generateMindMap() {
-        if (!isFileUploaded) {
-            alert("ارفع ملف أولاً يا بطل عشان الـ AI يحلله!");
-            return;
-        }
-        // إظهار منطقة النتائج وعمل محاكاة
-        document.getElementById('resultArea').style.display = 'block';
-        window.scrollTo(0, document.body.scrollHeight);
+    function showMindMap() {
+        if(!fileUploaded) return alert("ارفع الملف أولاً!");
+        document.getElementById('mindmapResult').style.display = 'block';
     }
-
-    function activatePattern(name) {
-        document.getElementById('currentPatternDisplay').innerHTML = `<span class="active-pattern-badge">الوضع النشط: ${name}</span>`;
-        showSec('student');
-    }
-
-    const info = {
-        privacy: `<h3>الخصوصية</h3><p>بياناتك محمية بالكامل.</p>`,
-        terms: `<h3>الشروط</h3><p>الاستخدام للأغراض الأكاديمية فقط.</p>`
-    };
-
-    function openInfo(type) {
-        document.getElementById('modalContent').innerHTML = info[type];
-        document.getElementById('modalOverlay').style.display = 'flex';
-    }
-    function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
 </script>
 </body>
 </html>
