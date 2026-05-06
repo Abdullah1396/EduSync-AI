@@ -46,13 +46,17 @@
         /* تخصيص التجربة */
         .cust-hero { background: white; color: #020617; padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 20px; }
         .cust-hero img { width: 80px; margin-bottom: 15px; }
-        .active-pattern-badge { background: var(--primary); color: var(--bg); padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.8rem; margin-top: 10px; display: inline-block; }
+        .active-pattern-badge { background: var(--primary); color: var(--bg); padding: 8px 20px; border-radius: 25px; font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; display: inline-block; border: 2px solid white; }
 
-        /* أدوات الطالب والدكتور */
-        .upload-card { border: 2px dashed rgba(34, 211, 238, 0.5); border-radius: 20px; padding: 30px; text-align: center; background: rgba(15, 23, 42, 0.5); margin-bottom: 20px; }
+        /* بوابة الطالب - منطقة الرفع */
+        .upload-card { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; background: rgba(34, 211, 238, 0.05); margin-bottom: 25px; cursor: pointer; transition: 0.4s; position: relative; }
+        .upload-card:hover { background: rgba(34, 211, 238, 0.1); border-style: solid; }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .tool-btn { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; width: 100%; }
-        .tool-btn i { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; display: block; }
+        .tool-btn { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; }
+        .tool-btn i { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; display: block; }
+        
+        /* شات بوت */
+        .chat-btn { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--bg); cursor: pointer; box-shadow: 0 5px 15px rgba(34,211,238,0.4); }
     </style>
 </head>
 <body>
@@ -60,14 +64,16 @@
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
     <div class="modal-box" onclick="event.stopPropagation()">
         <div id="modalContent"></div>
-        <button onclick="closeModal()" style="margin-top:20px; background:var(--primary); border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%; font-weight:bold;">فهمت</button>
+        <button onclick="closeModal()" style="margin-top:20px; background:var(--primary); border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%; font-weight:bold;">تم</button>
     </div>
 </div>
+
+<div class="chat-btn" onclick="alert('مساعدك الذكي قيد التطوير!')"><i class="fa-solid fa-comment-dots"></i></div>
 
 <div class="sidebar" id="sidebar">
     <span class="close-btn" onclick="toggleMenu()">&times;</span>
     <div class="sidebar-logo-container">
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="sidebar-logo">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="sidebar-logo" onerror="this.src='https://img.icons8.com/neon/96/artificial-intelligence.png'">
     </div>
     <div class="sidebar-item" onclick="showSec('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSec('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
@@ -88,13 +94,13 @@
     
     <div id="home" class="section active">
         <h2 style="text-align:center; margin-bottom:25px;">مرحباً بك في EduSync 🚀</h2>
-        <div class="tool-btn" style="margin-bottom:15px; background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">دخول بوابة الطالب</div>
-        <div class="tool-btn" style="border-color:var(--danger); margin-bottom:30px;" onclick="showSec('doctor')">دخول بوابة الدكتور</div>
+        <div class="tool-btn" style="width:100%; margin-bottom:15px; background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">دخول بوابة الطالب</div>
+        <div class="tool-btn" style="width:100%; border-color:var(--danger); margin-bottom:30px;" onclick="showSec('doctor')">دخول بوابة الدكتور</div>
 
         <div class="about-app">
             <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h3>
-            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><h4>قوة الذكاء الاصطناعي</h4><p>تحليل المناهج واستخراج المعلومات الجوهرية بدقة فائقة باستخدام معالجة اللغات الطبيعية (NLP).</p></div></div>
-            <div class="feature-item"><i class="fa-solid fa-headphones-simple"></i><div><h4>التعلم السمعي (Podcast)</h4><p>حوّل دروسك إلى بودكاست تعليمي ممتع للمذاكرة في أي وقت ومكان.</p></div></div>
+            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><h4>قوة الذكاء الاصطناعي</h4><p>تحليل المناهج واستخراج المعلومات الجوهرية بدقة فائقة باستخدام تقنيات NLP.</p></div></div>
+            <div class="feature-item"><i class="fa-solid fa-headphones-simple"></i><div><h4>التعلم السمعي (Podcast)</h4><p>حوّل دروسك إلى بودكاست تعليمي ممتع للمذاكرة بذكاء.</p></div></div>
         </div>
     </div>
 
@@ -102,30 +108,29 @@
         <div class="cust-hero">
             <img src="https://img.icons8.com/fluency/100/science.png">
             <h2 style="color:#1e40af">تخصيص التجربة التعليمية</h2>
-            <p style="font-size:0.8rem; color:#64748b">اختر النمط ليقوم الـ AI بتكييف المحتوى لك</p>
+            <p style="font-size:0.8rem; color:#64748b">اختر النمط ليقوم الـ AI بتكييف المحتوى</p>
         </div>
         <div class="settings-card">
-            <div class="settings-item" onclick="activatePattern('نمط التلخيص السريع')">
-                <span>نمط التلخيص السريع</span><i class="fa-solid fa-bolt" style="color:var(--primary)"></i>
-            </div>
-            <div class="settings-item" onclick="activatePattern('النمط التعمقي')">
-                <span>النمط التعمقي (شرح مفصل)</span><i class="fa-solid fa-book-open" style="color:var(--primary)"></i>
-            </div>
-            <div class="settings-item" onclick="activatePattern('نمط الاختبارات المكثفة')">
-                <span>نمط الاختبارات المكثفة</span><i class="fa-solid fa-spell-check" style="color:var(--primary)"></i>
-            </div>
+            <div class="settings-item" onclick="activatePattern('نمط التلخيص السريع')"><span>نمط التلخيص السريع</span><i class="fa-solid fa-bolt" style="color:var(--primary)"></i></div>
+            <div class="settings-item" onclick="activatePattern('النمط التعمقي')"><span>النمط التعمقي (شرح مفصل)</span><i class="fa-solid fa-book-open" style="color:var(--primary)"></i></div>
+            <div class="settings-item" onclick="activatePattern('نمط الاختبارات المكثفة')"><span>نمط الاختبارات المكثفة</span><i class="fa-solid fa-spell-check" style="color:var(--primary)"></i></div>
         </div>
     </div>
 
     <div id="student" class="section">
-        <div id="currentPatternDisplay" style="text-align:center; margin-bottom:10px;"></div>
-        <div class="upload-card">
-            <i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem; color:var(--primary); margin-bottom:10px;"></i>
-            <p id="uploadStatus">ارفع ملف المنهج (PDF)</p>
+        <div id="currentPatternDisplay" style="text-align:center;"></div>
+        
+        <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(this)">
+        
+        <div class="upload-card" onclick="document.getElementById('fileInput').click()">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
+            <h4 id="uploadStatus">جاهز لتحميل المصادر</h4>
+            <p style="font-size:0.75rem; color:#94a3b8; margin-top:5px;">اضغط هنا لاختيار ملف PDF أو صور المنهج</p>
         </div>
+
         <div class="tools-grid">
-            <div class="tool-btn"><i class="fa-solid fa-microphone"></i>بودكاست</div>
-            <div class="tool-btn"><i class="fa-solid fa-brain"></i>خرائط ذهنية</div>
+            <div class="tool-btn" onclick="alert('سيتم توليد البودكاست بناءً على الملف المرفوع')"><i class="fa-solid fa-microphone"></i>بودكاست</div>
+            <div class="tool-btn" onclick="alert('سيتم رسم الخريطة الذهنية للمنهج')"><i class="fa-solid fa-brain"></i>خرائط ذهنية</div>
         </div>
     </div>
 
@@ -138,12 +143,7 @@
         <div class="settings-card" style="border-color:var(--danger);"><div class="settings-item" style="color:var(--danger);"><span>تسجيل الخروج</span><i class="fa-solid fa-right-from-bracket"></i></div></div>
     </div>
 
-    <div id="doctor" class="section">
-        <div class="settings-card" style="padding:20px; border-right:4px solid var(--danger);">
-            <h4>📊 تقرير استيعاب الدفعة</h4>
-            <p style="font-size:0.8rem; color:#94a3b8; margin-top:10px;">بانتظار البيانات...</p>
-        </div>
-    </div>
+    <div id="doctor" class="section"><div class="settings-card" style="padding:20px; border-right:4px solid var(--danger);"><h4>📊 تقارير الاستيعاب</h4><p style="color:#94a3b8; font-size:0.8rem;">لا توجد بيانات حالياً.</p></div></div>
 
 </div>
 
@@ -157,17 +157,25 @@
         window.scrollTo(0,0);
     }
 
-    // دالة تفعيل الأنماط (المحاكاة أمام اللجنة)
+    // تفعيل الأنماط
     function activatePattern(name) {
-        alert("تم إرسال تكوين النظام: " + name);
         document.getElementById('currentPatternDisplay').innerHTML = `<span class="active-pattern-badge">الوضع النشط: ${name}</span>`;
-        document.getElementById('uploadStatus').innerText = "جاهز لتحليل الملف بوضع " + name;
-        showSec('student'); // نقله لصفحة الطالب مباشرة
+        document.getElementById('uploadStatus').innerText = "جاهز للتحليل بوضع " + name;
+        showSec('student');
+    }
+
+    // إصلاح زر تحميل المصادر
+    function handleFileUpload(input) {
+        if (input.files && input.files[0]) {
+            const fileName = input.files[0].name;
+            document.getElementById('uploadStatus').innerHTML = `<span style="color:var(--primary)">تم اختيار: ${fileName}</span>`;
+            alert("تم رفع الملف بنجاح! جاري المعالجة بالذكاء الاصطناعي...");
+        }
     }
 
     const info = {
-        privacy: `<h3>الخصوصية 🔒</h3><p>ملفاتك مشفرة ولا تستخدم لتدريب النماذج العامة. خصوصيتك الأكاديمية هي أولويتنا.</p>`,
-        terms: `<h3>الشروط ⚖️</h3><p>الاستخدام مخصص للأغراض التعليمية الجامعية. المخرجات هي أدوات مساعدة للطالب.</p>`
+        privacy: `<h3>الخصوصية 🔒</h3><p>بياناتك الأكاديمية محمية ومشفرة بالكامل ولا يتم استخدامها لتدريب نماذج عامة.</p>`,
+        terms: `<h3>الشروط ⚖️</h3><p>الاستخدام مخصص للطلبة الجامعيين للأغراض التعليمية فقط وفق سياسات الجامعة.</p>`
     };
 
     function openInfo(type) {
