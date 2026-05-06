@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI</title>
+    <title>EduSync AI | الهاكاثون</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --line: #1e293b; --danger: #f43f5e; --success: #10b981; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; }
 
         header { 
@@ -23,7 +23,7 @@
         .sidebar { 
             position: fixed; right: -280px; top: 0; width: 280px; height: 100%; 
             background: #0f172a; border-left: 2px solid var(--primary); 
-            z-index: 2000; padding: 20px; transition: 0.3s;
+            z-index: 2000; padding: 20px;
         }
         .sidebar.active { right: 0; }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
@@ -37,31 +37,32 @@
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .feature-item i { color: var(--primary); font-size: 1.3rem; }
 
-        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.02); }
-        
-        /* شبكة الأدوات - محدثة لثلاثة أزرار */
+        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .full-width { grid-column: span 2; }
         .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
         .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
 
-        /* منطقة النتائج واللودينج */
         #aiLoading { display: none; text-align: center; margin: 20px 0; }
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .result-panel { display: none; margin-top: 20px; padding: 20px; background: #0b1224; border-radius: 20px; border: 1px solid var(--primary); animation: fadeIn 0.5s; }
-        
-        /* تنسيق الكويز */
-        .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; font-size: 0.9rem; text-align: right; }
-        .quiz-option:hover { border-color: var(--primary); }
-        .correct { background: var(--success) !important; color: white; }
-        .wrong { background: var(--danger) !important; color: white; }
+        .result-panel { display: none; margin-top: 20px; padding: 20px; background: #0b1224; border-radius: 20px; border: 1px solid var(--primary); }
+        .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
+
+        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; }
     </style>
 </head>
 <body>
+
+<div class="modal" id="infoModal" onclick="this.style.display='none'">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div id="modalBody"></div>
+        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">إغلاق</button>
+    </div>
+</div>
 
 <header>
     <div class="logo-box">
@@ -76,7 +77,7 @@
 
 <div class="sidebar" id="sidebar">
     <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
-    <div style="text-align:center; margin: 20px 0;"><img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" style="width:80px; border-radius:12px; border:1px solid var(--primary);"></div>
+    <div style="text-align:center; margin-bottom: 20px;"><img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" style="width:80px; border-radius:12px; border:1px solid var(--primary);"></div>
     <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
     <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
@@ -108,7 +109,7 @@
         <div class="tools-grid">
             <div class="tool-card" onclick="alert('جاري إنشاء البودكاست...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
             <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
-            <div class="tool-card full-width" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي للمادة</div>
+            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي للمادة</div>
         </div>
 
         <div id="aiLoading">
@@ -118,32 +119,38 @@
 
         <div id="mapRes" class="result-panel">
             <div style="background:var(--primary); color:#000; padding:8px 20px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:15px;" id="mapTitle">العنوان</div>
-            <div style="font-size:0.85rem; line-height:2;">• فكرة المحاضرة المركزية<br>• تفاصيل القسم الأول<br>• الخلاصة المستنتجة</div>
+            <div style="text-align:center;">
+                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">مفاهيم الوحدة الأولى</div>
+                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">العلاقات والروابط</div>
+            </div>
         </div>
 
         <div id="quizRes" class="result-panel">
             <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
-            <p style="font-size:0.9rem; margin-bottom:15px;">س١: ما هي النقاط الجوهرية التي ركزت عليها المادة المرفوعة؟</p>
-            <div class="quiz-option" onclick="this.classList.add('correct')">أ) المفاهيم التقنية الأساسية وتطبيقاتها.</div>
-            <div class="quiz-option" onclick="this.classList.add('wrong')">ب) تاريخ نشأة العلم فقط.</div>
-            <div class="quiz-option" onclick="this.classList.add('wrong')">ج) لا توجد معلومات كافية.</div>
+            <p style="font-size:0.9rem; margin-bottom:15px;">س١: ما هو الهدف الرئيسي من المحتوى الذي قمت برفعه؟</p>
+            <div class="quiz-option" onclick="this.style.backgroundColor='#10b981'">أ) شرح المفاهيم الأساسية وتطبيقاتها.</div>
+            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) مجرد عرض تاريخي للمادة.</div>
         </div>
     </div>
 
-    <div id="doctor" class="section">
-        <div class="info-card" style="border-right: 4px solid var(--danger);">
-            <h4>📊 لوحة تحكم المحاضر</h4>
-            <p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">بانتظار تحليل بيانات الطلاب لتقديم تقارير الاستيعاب.</p>
+    <div id="settings" class="section">
+        <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
+        <div class="info-card" style="padding:0;">
+            <div class="sidebar-item" onclick="openModal('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('guide')"><span>إرشادات المستخدم</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
         </div>
     </div>
+
+    <div id="doctor" class="section"><div class="info-card"><h4>📊 لوحة تحكم الدكتور</h4><p style="color:#94a3b8; font-size:0.8rem; margin-top:10px;">بانتظار بيانات الطلاب...</p></div></div>
 
 </div>
 
-<div class="chat-float"><i class="fa-solid fa-comment-dots"></i></div>
+<div class="chat-float" onclick="alert('أهلاً! أنا مساعد EduSync الذكي، كيف أساعدك؟')"><i class="fa-solid fa-comment-dots"></i></div>
 
 <script>
-    let isUploaded = false;
-    let fileName = "";
+    let isFile = false;
+    let nameF = "";
 
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSection(id) {
@@ -154,29 +161,37 @@
 
     function handleFile(input) {
         if(input.files[0]) {
-            isUploaded = true;
-            fileName = input.files[0].name.split('.')[0];
+            isFile = true;
+            nameF = input.files[0].name.split('.')[0];
             document.getElementById('upStatus').innerHTML = "✅ تم تحميل: " + input.files[0].name;
-            document.getElementById('mapTitle').innerText = fileName;
-            document.getElementById('quizTitle').innerText = fileName;
+            document.getElementById('mapTitle').innerText = nameF;
+            document.getElementById('quizTitle').innerText = nameF;
         }
     }
 
     function runAI(type) {
-        if(!isUploaded) return alert("يرجى رفع ملف أولاً!");
-        
-        // تصفير الواجهة
+        if(!isFile) return alert("ارفع ملف أولاً!");
         document.getElementById('mapRes').style.display = 'none';
         document.getElementById('quizRes').style.display = 'none';
         document.getElementById('aiLoading').style.display = 'block';
-        document.getElementById('loadingText').innerText = type === 'map' ? "جاري رسم الخريطة الذهنية..." : "جاري توليد الأسئلة الذكية...";
+        document.getElementById('loadingText').innerText = type==='map'?"جاري رسم الخريطة...":"جاري إنشاء الأسئلة...";
 
         setTimeout(() => {
             document.getElementById('aiLoading').style.display = 'none';
-            if(type === 'map') document.getElementById('mapRes').style.display = 'block';
+            if(type==='map') document.getElementById('mapRes').style.display = 'block';
             else document.getElementById('quizRes').style.display = 'block';
-            window.scrollTo(0, document.body.scrollHeight);
         }, 2000);
+    }
+
+    const contents = {
+        privacy: `<h3>الخصوصية 🔒</h3><p>بياناتك وملفاتك مشفرة بالكامل ولا نطلع عليها.</p>`,
+        guide: `<h3>إرشادات المستخدم 📖</h3><p>ارفع ملفك، اختر الأداة، واترك الباقي لذكائنا الاصطناعي.</p>`,
+        contact: `<h3>تواصل معنا 📞</h3><p>الدعم الفني متاح 24/7 عبر البريد: support@edusync.ai</p>`
+    };
+
+    function openModal(id) {
+        document.getElementById('modalBody').innerHTML = contents[id];
+        document.getElementById('infoModal').style.display = 'flex';
     }
 </script>
 </body>
