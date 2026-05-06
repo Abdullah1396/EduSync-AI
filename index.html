@@ -11,7 +11,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
 
-        /* خلفية الشبكة */
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
         header { 
@@ -38,28 +37,12 @@
 
         .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; margin-bottom: 15px; font-weight: bold; }
         .info-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
-        .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
-        .feature-item i { color: var(--primary); font-size: 1.3rem; }
-
+        
         .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); }
-        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
-        .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
-
-        /* تصميم شريط التقدم للدكتور */
+        
         .progress-container { margin-bottom: 15px; }
         .progress-bar { width: 100%; height: 8px; background: #1e293b; border-radius: 10px; overflow: hidden; margin-top: 5px; }
-        .progress-fill { height: 100%; transition: 1s ease-in-out; }
-
-        #aiLoading { display: none; text-align: center; margin: 20px 0; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .result-panel { display: none; margin-top: 20px; padding: 20px; background: #0b1224; border-radius: 20px; border: 1px solid var(--primary); }
-        .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
-
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
+        .progress-fill { height: 100%; transition: 1.5s ease-in-out; }
 
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; }
     </style>
@@ -67,13 +50,6 @@
 <body>
 
 <canvas id="bg-canvas"></canvas>
-
-<div class="modal" id="infoModal" onclick="this.style.display='none'">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div id="modalBody"></div>
-        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">إغلاق</button>
-    </div>
-</div>
 
 <header>
     <div class="logo-box">
@@ -88,11 +64,9 @@
 
 <div class="sidebar" id="sidebar">
     <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
-    <div style="text-align:center; margin-bottom: 20px;"><img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" style="width:80px; border-radius:12px; border:1px solid var(--primary);"></div>
     <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
     <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
-    <div class="sidebar-item" onclick="showSection('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</div>
 </div>
 
 <div class="container">
@@ -101,155 +75,84 @@
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
         <div class="blue-btn" onclick="showSection('student')">دخول بوابة الطالب</div>
         <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')">دخول بوابة الدكتور</div>
-        
-        <div class="info-card">
-            <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
-            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-microphone-lines"></i><div><div style="font-weight:bold;">بودكاست ذكي</div><div style="font-size:0.8rem; color:#94a3b8;">تحويل المذاكرة لتجربة سمعية ممتعة.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-square-poll-vertical"></i><div><div style="font-weight:bold;">اختبارات ذاتية</div><div style="font-size:0.8rem; color:#94a3b8;">توليد أسئلة لتقييم مدى استيعابك.</div></div></div>
-        </div>
     </div>
 
     <div id="student" class="section">
-        <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
-        <div class="upload-box" onclick="document.getElementById('fInput').click()">
-            <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
-            <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
+        <div class="info-card" style="text-align:center; border-color: var(--success);">
+            <i class="fa-solid fa-cloud-arrow-down" style="font-size: 2rem; color: var(--success);"></i>
+            <h4 style="margin-top:10px;">المنهج المعتمد جاهز</h4>
+            <p style="font-size:0.75rem; color:#94a3b8;">قام الدكتور برفع مرجع "هندسة البرمجيات"</p>
         </div>
-
-        <div class="tools-grid">
-            <div class="tool-card" onclick="alert('جاري إنشاء البودكاست...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
-            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
-            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي للمادة</div>
-        </div>
-
-        <div id="aiLoading">
-            <div class="loader"></div>
-            <div style="font-size:0.8rem; color:var(--primary); margin-top:5px;" id="loadingText">جاري المعالجة...</div>
-        </div>
-
-        <div id="mapRes" class="result-panel">
-            <div style="background:var(--primary); color:#000; padding:8px 20px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:15px;" id="mapTitle">العنوان</div>
-            <div style="text-align:center;">
-                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">مفاهيم الوحدة الأولى</div>
-                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">العلاقات والروابط</div>
-            </div>
-        </div>
-
-        <div id="quizRes" class="result-panel">
-            <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
-            <p style="font-size:0.9rem; margin-bottom:15px;">س١: ما هو الهدف الرئيسي من المحتوى الذي قمت برفعه؟</p>
-            <div class="quiz-option" onclick="this.style.backgroundColor='#10b981'">أ) شرح المفاهيم الأساسية وتطبيقاتها.</div>
-            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) مجرد عرض تاريخي للمادة.</div>
+        <div class="tools-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:15px;">
+            <div class="blue-btn" onclick="alert('جاري تشغيل البودكاست...')"><i class="fa-solid fa-headphones"></i> بودكاست</div>
+            <div class="blue-btn" onclick="alert('جاري رسم الخريطة...')"><i class="fa-solid fa-diagram-project"></i> خريطة</div>
         </div>
     </div>
 
     <div id="doctor" class="section">
-        <div class="info-card">
-            <h4 style="color: var(--primary); margin-bottom: 20px;"><i class="fa-solid fa-chart-line"></i> تقرير استيعاب الدفعة</h4>
-            
-            <div class="progress-container">
-                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
-                    <span>تحليل المفاهيم (الوحدة 1)</span>
-                    <span style="color: var(--danger);">ضعيف (35%)</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 35%; background: var(--danger);"></div></div>
-            </div>
-
-            <div class="progress-container">
-                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
-                    <span>الاستيعاب الكلي للمنهج</span>
-                    <span style="color: var(--success);">جيد (72%)</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 72%; background: var(--success);"></div></div>
-            </div>
-
-            <div style="background: rgba(34, 211, 238, 0.05); padding: 15px; border-radius: 12px; margin-top: 20px;">
-                <h5 style="font-size: 0.9rem; color: var(--primary); margin-bottom: 10px;">اكتشاف AI لسبب الضعف 🤖</h5>
-                <p style="font-size: 0.75rem; color: #94a3b8; line-height: 1.6;">
-                    الطلاب يواجهون صعوبة في "الروابط الكيميائية". تم رصد إعادة استماع لبودكاست هذا الجزء 6 مرات بالمتوسط، ورسوب 60% في الاختبار التجريبي الخاص به.
-                </p>
-            </div>
-            
-            <button class="blue-btn" style="margin-top: 20px; font-size: 0.8rem;" onclick="alert('تم إرسال إشعار مراجعة فورية لجميع الطلاب')">إرسال إشعار مراجعة للنقاط الضعيفة</button>
+        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
+        
+        <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
+            <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
+            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
+            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي للطلاب</div>
+            <p style="font-size:0.65rem; color:#94a3b8; mt:5px;">سيقوم الذكاء الاصطناعي بتحليل الملف فور رفعه</p>
         </div>
-    </div>
 
-    <div id="settings" class="section">
-        <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
-        <div class="info-card" style="padding:0;">
-            <div class="sidebar-item" onclick="openModal('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
-            <div class="sidebar-item" onclick="openModal('guide')"><span>إرشادات المستخدم</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
-            <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+        <div class="info-card">
+            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تحليل استيعاب الطلاب الحالي</h4>
+            
+            <div class="progress-container">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                    <span>شابتر 1: الأساسيات</span>
+                    <span style="color: var(--success);">88% استيعاب</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 88%; background: var(--success);"></div></div>
+            </div>
+
+            <div class="progress-container">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                    <span>شابتر 2: الخوارزميات المعقدة</span>
+                    <span style="color: var(--danger);">42% استيعاب (نقطة ضعف)</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 42%; background: var(--danger);"></div></div>
+            </div>
+
+            <div style="background: rgba(244, 63, 94, 0.1); padding: 12px; border-radius: 10px; border-right: 3px solid var(--danger); margin-top:15px;">
+                <h6 style="color: var(--danger); font-size:0.8rem;">توصية الذكاء الاصطناعي:</h6>
+                <p style="font-size:0.7rem; color: #cbd5e1; margin-top:5px;">هناك تكرار لطلب شرح "خوارزمية البحث" في الشات. يفضل تخصيص 10 دقائق في المحاضرة القادمة لتغطيتها.</p>
+            </div>
         </div>
     </div>
 
 </div>
 
-<div class="chat-float" onclick="alert('أهلاً! أنا مساعد EduSync الذكي، كيف أساعدك؟')"><i class="fa-solid fa-comment-dots"></i></div>
+<div class="chat-float" onclick="alert('مساعد الدكتور الذكي جاهز')"><i class="fa-solid fa-robot"></i></div>
 
 <script>
-    // --- 🔊 نظام الصوت الذكي ---
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    let isUnlocked = false;
-
-    function playSound(freq, duration, type='sine') {
-        if(audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start(); osc.stop(audioCtx.currentTime + duration);
-    }
-
-    document.addEventListener('mousedown', (e) => {
-        if (!isUnlocked) {
-            playSound(440, 0.5, 'triangle');
-            isUnlocked = true;
-        } else if (e.target.closest('.blue-btn, .tool-card, .sidebar-item, .upload-box, .menu-icon, .quiz-option')) {
-            playSound(1200, 0.1, 'square');
-        }
-    });
-
-    // --- 🌌 خلفية الشبكة المتحركة ---
+    // --- أنميشن الخلفية ---
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
     function initParticles() {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         particles = [];
-        for (let i = 0; i < 50; i++) {
-            particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4 });
-        }
+        for (let i = 0; i < 40; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3 });
     }
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.3)";
-        particles.forEach((p, i) => {
+        ctx.fillStyle = "rgba(34, 211, 238, 0.2)";
+        particles.forEach(p => {
             p.x += p.vx; p.y += p.vy;
             if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
             if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2); ctx.fill();
-            for (let j = i + 1; j < particles.length; j++) {
-                let p2 = particles[j]; let d = Math.hypot(p.x - p2.x, p.y - p2.y);
-                if (d < 100) {
-                    ctx.strokeStyle = `rgba(34, 211, 238, ${0.1 - d/1000})`;
-                    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
-                }
-            }
+            ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI * 2); ctx.fill();
         });
         requestAnimationFrame(animate);
     }
-    window.addEventListener('resize', initParticles);
     initParticles(); animate();
 
-    // --- 🛠️ وظائف التطبيق الأصلية ---
-    let isFile = false;
-    let nameF = "";
-
+    // --- وظائف الواجهة ---
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSection(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -257,39 +160,16 @@
         document.getElementById('sidebar').classList.remove('active');
     }
 
-    function handleFile(input) {
+    function handleDocUpload(input) {
         if(input.files[0]) {
-            isFile = true;
-            nameF = input.files[0].name.split('.')[0];
-            document.getElementById('upStatus').innerHTML = "✅ تم تحميل: " + input.files[0].name;
-            document.getElementById('mapTitle').innerText = nameF;
-            document.getElementById('quizTitle').innerText = nameF;
+            const status = document.getElementById('docUpStatus');
+            status.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> جاري المعالجة...";
+            setTimeout(() => {
+                status.innerHTML = "✅ تم الاعتماد: " + input.files[0].name;
+                status.style.color = "var(--success)";
+                alert("تم تحديث المنهج لجميع الطلاب بنجاح!");
+            }, 2000);
         }
-    }
-
-    function runAI(type) {
-        if(!isFile) return alert("ارفع ملف أولاً!");
-        document.getElementById('mapRes').style.display = 'none';
-        document.getElementById('quizRes').style.display = 'none';
-        document.getElementById('aiLoading').style.display = 'block';
-        document.getElementById('loadingText').innerText = type==='map'?"جاري رسم الخريطة...":"جاري إنشاء الأسئلة...";
-
-        setTimeout(() => {
-            document.getElementById('aiLoading').style.display = 'none';
-            if(type==='map') document.getElementById('mapRes').style.display = 'block';
-            else document.getElementById('quizRes').style.display = 'block';
-        }, 2000);
-    }
-
-    const contents = {
-        privacy: `<h3>الخصوصية 🔒</h3><p>بياناتك وملفاتك مشفرة بالكامل ولا نطلع عليها.</p>`,
-        guide: `<h3>إرشادات المستخدم 📖</h3><p>ارفع ملفك، اختر الأداة، واترك الباقي لذكائنا الاصطناعي.</p>`,
-        contact: `<h3>تواصل معنا 📞</h3><p>الدعم الفني متاح 24/7 عبر البريد: support@edusync.ai</p>`
-    };
-
-    function openModal(id) {
-        document.getElementById('modalBody').innerHTML = contents[id];
-        document.getElementById('infoModal').style.display = 'flex';
     }
 </script>
 </body>
