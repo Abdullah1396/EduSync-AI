@@ -46,10 +46,7 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* تعديل نظام الأزرار الرئيسية لتكون متجاورة */
-        .portal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; backdrop-filter: blur(5px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
-        
+        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; margin-bottom: 15px; font-weight: bold; backdrop-filter: blur(5px); }
         .info-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .feature-item i { color: var(--primary); font-size: 1.3rem; }
@@ -74,7 +71,13 @@
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
 
-        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; }
+        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; }
+
+        /* Roadmap Styling */
+        .roadmap-container { position: relative; padding-right: 20px; border-right: 2px solid var(--line); margin-top: 30px; }
+        .roadmap-step { position: relative; margin-bottom: 30px; padding-right: 20px; }
+        .roadmap-step::before { content: ''; position: absolute; right: -27px; top: 5px; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
+        .roadmap-tag { font-size: 0.6rem; background: var(--primary); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin-bottom: 5px; display: inline-block; }
         
         /* إضافة نبض بسيط لزر المساعدة الصوتية */
         .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; }
@@ -121,23 +124,15 @@
     <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
     <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
     <div class="sidebar-item" onclick="showSection('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</div>
+    <div class="sidebar-item" onclick="showSection('roadmap')" style="color: var(--primary);"><i class="fa-solid fa-map-location-dot"></i> Future Roadmap</div>
 </div>
 
 <div class="container">
 
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
-        
-        <div class="portal-grid">
-            <div class="blue-btn" onclick="showSection('student')">
-                <i class="fa-solid fa-user-graduate" style="font-size: 1.2rem;"></i>
-                بوابة الطالب
-            </div>
-            <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')">
-                <i class="fa-solid fa-user-doctor" style="font-size: 1.2rem;"></i>
-                بوابة الدكتور
-            </div>
-        </div>
+        <div class="blue-btn" onclick="showSection('student')">دخول بوابة الطالب</div>
+        <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')">دخول بوابة الدكتور</div>
         
         <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
@@ -220,6 +215,38 @@
             <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
         </div>
     </div>
+
+    <div id="roadmap" class="section">
+        <h3 style="margin-bottom:10px;"><i class="fa-solid fa-rocket"></i> خارطة الطريق</h3>
+        <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:20px;">رؤيتنا لتطوير EduSync AI في المراحل القادمة</p>
+        
+        <div class="roadmap-container">
+            <div class="roadmap-step">
+                <span class="roadmap-tag">Q3 2026</span>
+                <div style="font-weight:bold;">المستشار التعليمي (NLP Chat)</div>
+                <div style="font-size:0.75rem; color:#cbd5e1;">تمكين الدردشة الصوتية المباشرة مع محتوى الـ PDF لتحليل المنهج بعمق.</div>
+            </div>
+
+            <div class="roadmap-step">
+                <span class="roadmap-tag" style="background:var(--gold);">Q4 2026</span>
+                <div style="font-weight:bold;">سوق المهارات (Skill NFT)</div>
+                <div style="font-size:0.75rem; color:#cbd5e1;">توثيق الإنجازات الأكاديمية كرموز غير قابلة للاستبدال (NFT) لتعزيز السيرة الذاتية الرقمية.</div>
+            </div>
+
+            <div class="roadmap-step">
+                <span class="roadmap-tag" style="background:var(--success);">2027</span>
+                <div style="font-weight:bold;">إثبات التركيز (AI-Focus)</div>
+                <div style="font-size:0.75rem; color:#cbd5e1;">استخدام الذكاء الاصطناعي البصري لمكافأة الطلاب على "ساعات التركيز" الفعلية.</div>
+            </div>
+        </div>
+
+        <div class="info-card" style="text-align:center; padding:15px; border-style:dashed;">
+            <i class="fa-solid fa-certificate" style="color:var(--gold); font-size:1.5rem; margin-bottom:10px;"></i>
+            <p style="font-size:0.75rem;">نهدف لأن نكون المعيار الأول في توثيق المهارات التعليمية عبر تقنية البلوكشين.</p>
+        </div>
+        
+        <button class="blue-btn" style="margin-top:20px;" onclick="showSection('home')">العودة للرئيسية</button>
+    </div>
 </div>
 
 <div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
@@ -261,9 +288,10 @@
 
     function processVoiceCommand(cmd) {
         if (cmd.includes("طالب") || cmd.includes("بوابة الطالب")) { showSection('student'); speak("تم الدخول إلى بوابة الطالب"); }
+        else if (cmd.includes("خارطة") || cmd.includes("طريق") || cmd.includes("مستقبل")) { showSection('roadmap'); speak("هذه هي رؤيتنا المستقبلية لتطوير النظام"); }
         else if (cmd.includes("اختبار") || cmd.includes("ابدأ")) { runAI('quiz'); speak("جاري توليد الاختبار الذكي من منهجك"); }
         else if (cmd.includes("أ") || cmd.includes("الأول")) { speak("إجابة صحيحة، أحسنت!"); awardPoints(600, document.querySelector('.quiz-option')); }
-        else { speak("لم أفهم الطلب، يمكنك قول 'بوابة الطالب' أو 'اختبار'"); }
+        else { speak("لم أفهم الطلب، يمكنك قول 'بوابة الطالب' أو 'خارطة الطريق'"); }
     }
 
     // --- 💰 نظام المكافآت والبلوكشين ---
@@ -357,6 +385,7 @@
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
+        if(id === 'roadmap') speak("هذه هي رؤيتنا المستقبلية");
     }
 
     function handleFile(input) {
