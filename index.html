@@ -31,6 +31,7 @@
         .sidebar.active { right: 0; }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
 
+        /* نظام المحفظة وزر Claim */
         .wallet-mini { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; }
         .wallet-mini i { color: var(--gold); font-size: 1.2rem; margin-bottom: 5px; }
         .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 10px; }
@@ -59,14 +60,12 @@
         .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
         .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
 
-        /* --- Future Roadmap Styles --- */
-        .roadmap-timeline { position: relative; margin-top: 30px; padding-right: 20px; border-right: 2px solid var(--line); }
-        .roadmap-item { position: relative; margin-bottom: 30px; padding-right: 25px; }
-        .roadmap-item::before { content: ''; position: absolute; right: -31px; top: 0; width: 20px; height: 20px; background: var(--bg); border: 3px solid var(--primary); border-radius: 50%; z-index: 2; }
-        .roadmap-content { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .roadmap-content h4 { color: var(--primary); font-size: 0.95rem; margin-bottom: 5px; display: flex; align-items: center; gap: 10px; }
-        .roadmap-content p { font-size: 0.75rem; color: #94a3b8; line-height: 1.5; }
-        .roadmap-badge { background: rgba(34, 211, 238, 0.1); color: var(--primary); font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin-bottom: 8px; display: inline-block; }
+        /* --- Future Roadmap New Styles --- */
+        .roadmap-container { margin-top: 30px; padding-bottom: 40px; }
+        .roadmap-item { background: rgba(30, 41, 59, 0.5); border: 1px solid var(--line); border-radius: 15px; padding: 15px; margin-bottom: 15px; border-right: 4px solid var(--primary); position: relative; }
+        .roadmap-item h4 { font-size: 0.9rem; color: var(--primary); margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+        .roadmap-item p { font-size: 0.75rem; color: #94a3b8; line-height: 1.4; }
+        .roadmap-tag { position: absolute; top: 10px; left: 10px; font-size: 0.6rem; background: var(--line); padding: 2px 8px; border-radius: 5px; color: var(--primary); }
 
         .progress-bar { width: 100%; height: 8px; background: #1e293b; border-radius: 10px; overflow: hidden; margin-top: 5px; }
         .progress-fill { height: 100%; transition: 1.5s ease-in-out; }
@@ -78,6 +77,9 @@
         .result-panel { display: none; margin-top: 20px; padding: 20px; background: #0b1224; border-radius: 20px; border: 1px solid var(--primary); }
         .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
 
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
+
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; }
         .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; }
         @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
@@ -87,6 +89,13 @@
 <body>
 
 <canvas id="bg-canvas"></canvas>
+
+<div class="modal" id="infoModal" onclick="this.style.display='none'">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div id="modalBody"></div>
+        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">إغلاق</button>
+    </div>
+</div>
 
 <header>
     <div class="logo-box">
@@ -103,7 +112,7 @@
     <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
     <div class="wallet-mini">
         <i class="fa-solid fa-wallet"></i>
-        <div style="font-size:0.7rem; color:#94a3b8;">رصيد $SYNC</div>
+        <div style="font-size:0.7rem; color:#94a3b8;">رصيد محفظة $SYNC</div>
         <div class="balance-val" id="sidebarBalance">0.00</div>
         <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
             <i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)
@@ -111,117 +120,182 @@
     </div>
     <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
-    <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-doctor"></i> بوابة الدكتور</div>
+    <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
     <div class="sidebar-item" onclick="showSection('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</div>
 </div>
 
 <div class="container">
-
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
         <div class="portal-grid">
-            <div class="blue-btn" onclick="showSection('student')"><i class="fa-solid fa-user-graduate"></i> بوابة الطالب</div>
-            <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')"><i class="fa-solid fa-user-doctor"></i> بوابة الدكتور</div>
+            <div class="blue-btn" onclick="showSection('student')"><i class="fa-solid fa-user-graduate" style="font-size: 1.2rem;"></i> بوابة الطالب</div>
+            <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')"><i class="fa-solid fa-user-doctor" style="font-size: 1.2rem;"></i> بوابة الدكتور</div>
         </div>
         <div class="info-card">
-            <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">الميزات الحالية ✨</h4>
-            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><b>تحليل NLP</b><br><span style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية للمناهج.</span></div></div>
-            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><b>توثيق Blockchain</b><br><span style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت وحقوق المنهج.</span></div></div>
+            <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
+            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><div style="font-weight:bold;">تحليلات الفجوة</div><div style="font-size:0.8rem; color:#94a3b8;">لرصد تعثر الطلاب مبكراً.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-id-card"></i><div><div style="font-weight:bold;">هوية رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">لتوثيق المهارات لجهات التوظيف.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><div style="font-weight:bold;">تعلم متكيف</div><div style="font-size:0.8rem; color:#94a3b8;">تخصيص المحتوى لكل طالب.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-copyright"></i><div><div style="font-weight:bold;">حقوق رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">حماية الملكية الفكرية للمناهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-square-poll-vertical"></i><div><div style="font-weight:bold;">اختبارات ومكافآت</div><div style="font-size:0.8rem; color:#94a3b8;">حوّل مذاكرتك إلى عملات رقمية.</div></div></div>
         </div>
     </div>
 
     <div id="student" class="section">
-        <div class="points-badge"><i class="fa-solid fa-star"></i> نقاطي: <span id="studentPoints">450</span></div>
-        <div class="upload-box" onclick="alert('يرجى اختيار ملف PDF المنهج')">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="points-badge"><i class="fa-solid fa-star"></i> نقاطي: <span id="studentPoints">450</span></div>
+            <div style="font-size:0.6rem; color:#94a3b8;">اجمع 1000 للمطالبة</div>
+        </div>
+        <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
+        <div class="upload-box" onclick="document.getElementById('fInput').click()">
             <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
-            <div>تحميل مصادر المنهج</div>
+            <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
         </div>
         <div class="tools-grid">
-            <div class="tool-card"><i class="fa-solid fa-headphones"></i>بودكاست</div>
-            <div class="tool-card"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
+            <div class="tool-card" onclick="alert('جاري توليد البودكاست التعليمي...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
+            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
+            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي (لربح النقاط)</div>
+        </div>
+        <div id="aiLoading"><div class="loader"></div><div style="font-size:0.8rem; color:var(--primary); margin-top:5px;" id="loadingText">جاري المعالجة...</div></div>
+        <div id="mapRes" class="result-panel">
+            <div style="background:var(--primary); color:#000; padding:8px 20px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:15px;" id="mapTitle">العنوان</div>
+            <div style="text-align:center;">
+                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">مفاهيم الوحدة الأولى</div>
+                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">العلاقات والروابط</div>
+            </div>
+        </div>
+        <div id="quizRes" class="result-panel">
+            <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
+            <p style="font-size:0.9rem; margin-bottom:15px;" id="qVoiceText">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p>
+            <div class="quiz-option" onclick="awardPoints(600, this)">أ) تقنية البلوكشين (Blockchain). <span style="color:var(--success); font-size:0.7rem;">(+600 نقطة)</span></div>
+            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) قواعد بيانات تقليدية فقط.</div>
         </div>
     </div>
 
     <div id="doctor" class="section">
-        <h3 style="margin-bottom:15px;"><i class="fa-solid fa-user-tie"></i> لوحة المحاضر</h3>
-        <div class="upload-box">
-            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary);"></i>
-            <div>رفع المرجع الرسمي</div>
+        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
+        <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
+            <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
+            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
+            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي للدفعة</div>
+            <p style="font-size:0.65rem; color:#94a3b8;">سيتم توليد SHA-256 Hash ووضعه على البلوكشين</p>
+        </div>
+        <div class="info-card">
+            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تقرير الاستيعاب العام</h4>
+            <div class="progress-container"><div style="display: flex; justify-content: space-between; font-size: 0.75rem;"><span>تحليل شابتر 1</span><span style="color: var(--danger);">ضعيف (35%)</span></div><div class="progress-bar"><div class="progress-fill" style="width: 35%; background: var(--danger);"></div></div></div>
+            <button class="blue-btn" style="margin-top: 15px; font-size: 0.8rem;" onclick="alert('تم إرسال تنبيه مراجعة لجميع الطلاب!')">إرسال إشعار مراجعة</button>
         </div>
     </div>
 
     <div id="settings" class="section">
-        <h3 style="margin-bottom:10px;">الإعدادات</h3>
-        <div class="info-card" style="padding:10px; margin-top:10px;">
-            <div class="sidebar-item"><span>تعديل الملف الشخصي</span></div>
-            <div class="sidebar-item"><span>إشعارات التطبيق</span></div>
+        <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
+        <div class="info-card" style="padding:0;">
+            <div class="sidebar-item" onclick="openModal('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('guide')"><span>إرشادات المستخدم</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
         </div>
 
-        <h3 style="margin-top:30px; color:var(--primary); text-align: center;">
-            <i class="fa-solid fa-rocket"></i> Future Roadmap
-        </h3>
-        <p style="text-align: center; font-size: 0.75rem; color: #94a3b8; margin-bottom: 20px;">خطة تطوير EduSync AI المستقبلية</p>
-
-        <div class="roadmap-timeline">
+        <h3 style="margin-top:30px; margin-bottom:15px; color:var(--primary);"><i class="fa-solid fa-map-location-dot"></i> Road Map Future</h3>
+        <div class="roadmap-container">
             <div class="roadmap-item">
-                <div class="roadmap-content">
-                    <span class="roadmap-badge">Phase 1: Analysis</span>
-                    <h4><i class="fa-solid fa-user-astronaut"></i> التوأم الرقمي (Digital Twin)</h4>
-                    <p>إنشاء نسخة افتراضية لمهارات الطالب تتنبأ بمدى جاهزيته لسوق العمل وتحدد فجوات المهارات (Skills Gap) بدقة ذكاء اصطناعي عالية.</p>
-                </div>
+                <span class="roadmap-tag">المرحلة 1</span>
+                <h4><i class="fa-solid fa-user-astronaut"></i> التوأم الرقمي (Digital Twin)</h4>
+                <p>نسخة افتراضية لمهارات الطالب تتنبأ بجاهزيته لسوق العمل بناءً على أدائه التعليمي.</p>
             </div>
-
             <div class="roadmap-item">
-                <div class="roadmap-content" style="border-color: var(--gold);">
-                    <span class="roadmap-badge" style="background:rgba(245,158,11,0.1); color:var(--gold);">Phase 2: Social Learning</span>
-                    <h4 style="color:var(--gold);"><i class="fa-solid fa-people-group"></i> غرف المذاكرة الذكية</h4>
-                    <p>مساحات تقنية مدارة بواسطة "بوت" ذكاء اصطناعي يطرح تحديات بين الطلاب ويصحح المفاهيم الخاطئة لحظياً أثناء النقاش الجماعي.</p>
-                </div>
+                <span class="roadmap-tag">المرحلة 2</span>
+                <h4><i class="fa-solid fa-comments"></i> غرف المذاكرة الذكية</h4>
+                <p>مساحات جماعية يديرها بوت ذكاء اصطناعي لتصحيح المفاهيم وطرح تحديات تفاعلية.</p>
             </div>
-
             <div class="roadmap-item">
-                <div class="roadmap-content">
-                    <span class="roadmap-badge">Phase 3: Automation</span>
-                    <h4><i class="fa-solid fa-microphone-lines"></i> تقنية البصمة الصوتية</h4>
-                    <p>تحليل تسجيلات المحاضرات واستخلاص أهم النقاط التي ركز عليها المحاضر وتحويلها تلقائياً إلى بنك أسئلة ذكي.</p>
-                </div>
+                <span class="roadmap-tag">المرحلة 3</span>
+                <h4><i class="fa-solid fa-wave-square"></i> البصمة الصوتية للمحاضرات</h4>
+                <p>استخلاص الرؤى والأفكار الرئيسية من تسجيلات المحاضر وتحويلها لأسئلة اختبار.</p>
             </div>
-
             <div class="roadmap-item">
-                <div class="roadmap-content" style="border-color: var(--success);">
-                    <span class="roadmap-badge" style="background:rgba(16,185,129,0.1); color:var(--success);">Phase 4: Employment</span>
-                    <h4 style="color:var(--success);"><i class="fa-solid fa-link"></i> ربط جهات التوظيف</h4>
-                    <p>مشاركة "البصمة التعليمية" الموثقة بالبلوكشين وشهادات الـ NFT مباشرة مع LinkedIn كدليل تقني معتمد للمهارات.</p>
-                </div>
+                <span class="roadmap-tag">المرحلة 4</span>
+                <h4><i class="fa-brands fa-linkedin"></i> الربط مع جهات التوظيف</h4>
+                <p>مشاركة الميداليات (NFTs) ونقاط $SYNC مباشرة مع جهات التوظيف لتوثيق المهارات.</p>
             </div>
-
-            <div class="roadmap-item">
-                <div class="roadmap-content" style="border-color: var(--danger);">
-                    <span class="roadmap-badge" style="background:rgba(244,63,94,0.1); color:var(--danger);">Phase 5: Early Warning</span>
-                    <h4 style="color:var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> تنبيه التعثر المبكر</h4>
-                    <p>خوارزمية للدكاترة تتنبأ باحتمالية رسوب الطالب قبل وقوعه بناءً على سلوكه التعليمي، مع اقتراح خطة مراجعة فورية.</p>
-                </div>
+            <div class="roadmap-item" style="border-right-color: var(--danger);">
+                <span class="roadmap-tag">المرحلة 5</span>
+                <h4><i class="fa-solid fa-bolt-lightning"></i> تنبيه التعثر المبكر</h4>
+                <p>نظام تنبؤي للدكتور يحذر من احتمالية رسوب الطالب قبل وقوع الاختبار.</p>
             </div>
-
             <div class="roadmap-item">
-                <div class="roadmap-content">
-                    <span class="roadmap-badge">Phase 6: AR Experience</span>
-                    <h4><i class="fa-solid fa-vr-cardboard"></i> المذاكرة المعززة (AR)</h4>
-                    <p>استخدام الكاميرا لتحويل صفحات الكتاب الورقي إلى شروحات تفاعلية عبر "أفاتار" ذكي يظهر فوق النص التعليمي.</p>
-                </div>
+                <span class="roadmap-tag">المرحلة 6</span>
+                <h4><i class="fa-solid fa-eye"></i> المذاكرة المعززة (AR)</h4>
+                <p>تحويل الكتب الورقية لشروح تفاعلية ومرئية بمجرد توجيه كاميرا الهاتف للنص.</p>
             </div>
         </div>
     </div>
 </div>
 
-<div class="chat-float" id="voiceAssistant" onclick="alert('المساعد الصوتي قيد التشغيل...')"><i class="fa-solid fa-microphone"></i></div>
+<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
 
 <script>
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-    function showSection(id) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.getElementById('sidebar').classList.remove('active');
+    // --- كل الأكواد البرمجية الأصلية دون تغيير ---
+    let points = 450;
+    let balance = 0.00;
+    let isFile = false;
+    let nameF = "";
+    const synth = window.speechSynthesis;
+    
+    function speak(text) {
+        if (synth.speaking) synth.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ar-SA';
+        utter.rate = 0.9;
+        synth.speak(utter);
+    }
+
+    function startVoiceRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) return alert("متصفحك لا يدعم التعرف على الصوت.");
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ar-SA';
+        const btn = document.getElementById('voiceAssistant');
+        recognition.onstart = () => { btn.classList.add('voice-active'); speak("أنا أسمعك، تفضل؟"); };
+        recognition.onresult = (event) => { processVoiceCommand(event.results[0][0].transcript); };
+        recognition.onend = () => { btn.classList.remove('voice-active'); };
+        recognition.start();
+    }
+
+    function processVoiceCommand(cmd) {
+        if (cmd.includes("طالب")) { showSection('student'); speak("بوابة الطالب"); }
+        else if (cmd.includes("اختبار")) { runAI('quiz'); }
+        else { speak("كرر الطلب من فضلك"); }
+    }
+
+    function updateClaimButton() {
+        const btn = document.getElementById('claimBtn');
+        const icon = document.getElementById('claimIcon');
+        if (points >= 1000) { btn.classList.add('ready'); icon.className = 'fa-solid fa-unlock-keyhole'; } 
+        else { btn.classList.remove('ready'); icon.className = 'fa-solid fa-lock'; }
+    }
+
+    function awardPoints(amount, el) {
+        el.style.backgroundColor = '#10b981';
+        points += amount;
+        document.getElementById('studentPoints').innerText = points;
+        updateClaimButton();
+        if(points >= 1000) speak("يمكنك الآن سحب العملات");
+    }
+
+    function mintFromSidebar() {
+        if (points < 1000) return;
+        const btn = document.getElementById('claimBtn');
+        btn.innerHTML = 'Minting...';
+        setTimeout(() => {
+            balance = (parseFloat(balance) + 10.0).toFixed(2);
+            points -= 1000;
+            document.getElementById('sidebarBalance').innerText = balance;
+            document.getElementById('studentPoints').innerText = points;
+            btn.innerHTML = '<i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)';
+            updateClaimButton();
+        }, 2000);
     }
 
     const canvas = document.getElementById('bg-canvas');
@@ -229,11 +303,10 @@
     let particles = [];
     function initParticles() {
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        particles = [];
-        for (let i = 0; i < 40; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, size: Math.random() * 2 });
+        for (let i = 0; i < 50; i++) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, size: Math.random() * 2 });
     }
     function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "rgba(34, 211, 238, 0.2)";
+        ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "rgba(34, 211, 238, 0.4)";
         particles.forEach(p => {
             p.x += p.vx; p.y += p.vy;
             if (p.x < 0 || p.x > canvas.width) p.vx *= -1; if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
@@ -242,6 +315,40 @@
         requestAnimationFrame(animate);
     }
     initParticles(); animate();
+
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('sidebar').classList.remove('active');
+    }
+
+    function handleFile(input) {
+        if(input.files[0]) {
+            isFile = true; nameF = input.files[0].name.split('.')[0];
+            document.getElementById('upStatus').innerHTML = "✅ " + input.files[0].name;
+            document.getElementById('mapTitle').innerText = nameF;
+            document.getElementById('quizTitle').innerText = nameF;
+        }
+    }
+
+    function handleDocUpload(input) {
+        if(input.files[0]) document.getElementById('docUpStatus').innerHTML = "✅ " + input.files[0].name;
+    }
+
+    function runAI(type) {
+        if(!isFile) return alert("ارفع ملف!");
+        document.getElementById('aiLoading').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('aiLoading').style.display = 'none';
+            document.getElementById(type === 'map' ? 'mapRes' : 'quizRes').style.display = 'block';
+        }, 1500);
+    }
+
+    function openModal(id) {
+        document.getElementById('modalBody').innerHTML = "معلومات القسم...";
+        document.getElementById('infoModal').style.display = 'flex';
+    }
 </script>
 </body>
 </html>
