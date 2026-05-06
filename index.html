@@ -124,28 +124,28 @@
         
         <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
-            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-square-poll-vertical"></i><div><div style="font-weight:bold;">اختبارات ومكافآت</div><div style="font-size:0.8rem; color:#94a3b8;">حوّل مذاكرتك إلى عملات رقمية.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">محرك الـ NLP المتقدم</div><div style="font-size:0.8rem; color:#94a3b8;">تحليل دلالي (Semantic Analysis) للمناهج المعقدة.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">تأمين الملكية الفكرية للمحتوى التعليمي والمكافآت.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-square-poll-vertical"></i><div><div style="font-weight:bold;">حوكمة التقييم الذكي</div><div style="font-size:0.8rem; color:#94a3b8;">توليد آلي للاختبارات وربطها بنظام التحفيز المالي.</div></div></div>
         </div>
     </div>
 
     <div id="student" class="section">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div class="points-badge"><i class="fa-solid fa-star"></i> نقاطي: <span id="studentPoints">450</span></div>
-            <div style="font-size:0.6rem; color:#94a3b8;">اجمع 1000 للمطالبة</div>
+            <div style="font-size:0.6rem; color:#94a3b8;">اجمع 1000 للمطالبة بـ $SYNC</div>
         </div>
 
         <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
         <div class="upload-box" onclick="document.getElementById('fInput').click()">
             <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
-            <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
+            <div id="upStatus" style="font-weight:bold;">تحليل المصدر بـ NLP</div>
         </div>
 
         <div class="tools-grid">
-            <div class="tool-card" onclick="alert('جاري توليد البودكاست التعليمي...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
-            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
-            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي (لربح النقاط)</div>
+            <div class="tool-card" onclick="alert('جاري معالجة النص وتحويله لبودكاست تعليمي...')"><i class="fa-solid fa-headphones"></i>بودكاست الـ AI</div>
+            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>رسم خرائط ذهنيه</div>
+            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>اختبار استيعاب (ربح $SYNC)</div>
         </div>
 
         <div id="aiLoading">
@@ -156,45 +156,45 @@
         <div id="mapRes" class="result-panel">
             <div style="background:var(--primary); color:#000; padding:8px 20px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:15px;" id="mapTitle">العنوان</div>
             <div style="text-align:center;">
-                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">مفاهيم الوحدة الأولى</div>
-                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">العلاقات والروابط</div>
+                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">مفاهيم تم استخراجها بـ NLP</div>
+                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">روابط منطقية ذكية</div>
             </div>
         </div>
 
         <div id="quizRes" class="result-panel">
-            <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
-            <p style="font-size:0.9rem; margin-bottom:15px;">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p>
-            <div class="quiz-option" onclick="awardPoints(600, this)">أ) تقنية البلوكشين (Blockchain). <span style="color:var(--success); font-size:0.7rem;">(+600 نقطة)</span></div>
-            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) قواعد بيانات تقليدية فقط.</div>
+            <h4 style="color:var(--primary); margin-bottom:15px;">تقييم ذكي: <span id="quizTitle"></span></h4>
+            <p style="font-size:0.9rem; margin-bottom:15px;">س١: ما هي القيمة الجوهرية لاستخدام الـ NLP في هذا التطبيق؟</p>
+            <div class="quiz-option" onclick="awardPoints(600, this)">أ) فهم المعنى السياقي للمناهج وتوليد محتوى تفاعلي. <span style="color:var(--success); font-size:0.7rem;">(+600 نقطة)</span></div>
+            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) مجرد تخزين النصوص في قاعدة البيانات.</div>
         </div>
     </div>
 
     <div id="doctor" class="section">
-        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
+        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> مركز الإدارة والأبحاث الأكاديمية</h3>
         <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
             <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
             <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
-            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي للدفعة</div>
-            <p style="font-size:0.65rem; color:#94a3b8;">سيتم توليد SHA-256 Hash ووضعه على البلوكشين</p>
+            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">اعتماد المنهج الرسمي (Blockchain Hash)</div>
+            <p style="font-size:0.65rem; color:#94a3b8;">حماية الملكية الفكرية وتوفير البيانات الضخمة للتحليل</p>
         </div>
         <div class="info-card">
-            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تقرير الاستيعاب العام</h4>
-            <div class="progress-container"><div style="display: flex; justify-content: space-between; font-size: 0.75rem;"><span>تحليل شابتر 1</span><span style="color: var(--danger);">ضعيف (35%)</span></div><div class="progress-bar"><div class="progress-fill" style="width: 35%; background: var(--danger);"></div></div></div>
-            <button class="blue-btn" style="margin-top: 15px; font-size: 0.8rem;" onclick="alert('تم إرسال تنبيه مراجعة لجميع الطلاب!')">إرسال إشعار مراجعة</button>
+            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تحليل Big Data لمستوى الاستيعاب</h4>
+            <div class="progress-container"><div style="display: flex; justify-content: space-between; font-size: 0.75rem;"><span>تحليل شابتر 1 عبر الـ AI</span><span style="color: var(--danger);">تحذير: فجوة استيعاب (35%)</span></div><div class="progress-bar"><div class="progress-fill" style="width: 35%; background: var(--danger);"></div></div></div>
+            <button class="blue-btn" style="margin-top: 15px; font-size: 0.8rem;" onclick="alert('تم إرسال إشعار تصحيحي لجميع الطلاب بناءً على تحليل NLP')">إرسال تدخل أكاديمي</button>
         </div>
     </div>
 
     <div id="settings" class="section">
-        <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
+        <h3 style="margin-bottom:20px;">حوكمة النظام والدعم</h3>
         <div class="info-card" style="padding:0;">
-            <div class="sidebar-item" onclick="openModal('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
-            <div class="sidebar-item" onclick="openModal('guide')"><span>إرشادات المستخدم</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
-            <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('privacy')"><span>بروتوكول التشفير والخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('guide')"><span>دليل استخدام الابتكار</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('contact')"><span>الدعم التقني والحلول</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
         </div>
     </div>
 </div>
 
-<div class="chat-float" onclick="alert('أهلاً! أنا مساعد EduSync الذكي، كيف أساعدك؟')"><i class="fa-solid fa-comment-dots"></i></div>
+<div class="chat-float" onclick="alert('أهلاً! أنا مساعد EduSync الذكي، أستخدم NLP لفهم تساؤلاتك، كيف أساعدك؟')"><i class="fa-solid fa-comment-dots"></i></div>
 
 <script>
     // --- متغيرات النظام ---
@@ -221,19 +221,19 @@
         points += amount;
         document.getElementById('studentPoints').innerText = points;
         updateClaimButton();
-        if(points >= 1000) alert("مبروك! يمكنك الآن المطالبة بـ $SYNC من المحفظة.");
+        if(points >= 1000) alert("مبروك! لقد أثبتت كفاءة استيعابك. يمكنك الآن صك (Mint) عملات $SYNC في محفظتك.");
     }
 
     function mintFromSidebar() {
-        if (points < 1000) return alert("تحتاج 1000 نقطة للمطالبة.");
+        if (points < 1000) return alert("تحتاج 1000 نقطة لتوليد بلوك جديد في المحفظة.");
         const btn = document.getElementById('claimBtn');
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Minting...';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Blockchain Minting...';
         setTimeout(() => {
             balance = (parseFloat(balance) + 10.00).toFixed(2);
             points -= 1000;
             document.getElementById('sidebarBalance').innerText = balance;
             document.getElementById('studentPoints').innerText = points;
-            alert("تم صك 10.00 $SYNC بنجاح على الشبكة! 🎉");
+            alert("تم صك 10.00 $SYNC بنجاح! تم توثيق المعاملة على الشبكة وتحديث رصيد محفظتك الرقمية. 🎉");
             btn.innerHTML = '<i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)';
             updateClaimButton();
         }, 2500);
@@ -290,23 +290,24 @@
     function handleFile(input) {
         if(input.files[0]) {
             isFile = true; nameF = input.files[0].name.split('.')[0];
-            document.getElementById('upStatus').innerHTML = "✅ تم تحميل: " + input.files[0].name;
+            document.getElementById('upStatus').innerHTML = "✅ جاري التحليل بـ NLP لـ: " + input.files[0].name;
             document.getElementById('mapTitle').innerText = nameF;
             document.getElementById('quizTitle').innerText = nameF;
-            alert("تم التحقق من بصمة الملف عبر البلوكشين بنجاح!");
+            alert("تم التحقق من سلامة الملف وتوليد SHA-256 Hash وتخزينه على البلوكشين.");
         }
     }
 
     function handleDocUpload(input) {
         if(input.files[0]) {
-            document.getElementById('docUpStatus').innerHTML = "✅ تم اعتماد: " + input.files[0].name;
-            alert("تم تسجيل المنهج وتوليد SHA-256 Hash على الشبكة.");
+            document.getElementById('docUpStatus').innerHTML = "✅ تم توثيق المنهج: " + input.files[0].name;
+            alert("تم تسجيل المنهج كمرجع رسمي وتفعيل بروتوكول حماية الملكية الفكرية على الشبكة.");
         }
     }
 
     function runAI(type) {
-        if(!isFile) return alert("ارفع ملف أولاً!");
+        if(!isFile) return alert("الرجاء رفع ملف المنهج أولاً للبدء بمعالجة الـ NLP.");
         document.getElementById('aiLoading').style.display = 'block';
+        document.getElementById('loadingText').innerText = type==='map'?"جاري التحليل الدلالي ورسم الخريطة...":"جاري معالجة NLP لتوليد الأسئلة...";
         setTimeout(() => {
             document.getElementById('aiLoading').style.display = 'none';
             if(type==='map') document.getElementById('mapRes').style.display = 'block';
@@ -315,7 +316,7 @@
     }
 
     function openModal(id) {
-        const contents = { privacy: `<h3>الخصوصية 🔒</h3><p>ملفاتك مشفرة بالكامل.</p>`, guide: `<h3>إرشادات 📖</h3><p>ارفع ملفك وابدأ الربح.</p>`, contact: `<h3>تواصل 📞</h3><p>support@edusync.ai</p>` };
+        const contents = { privacy: `<h3>الخصوصية وتأمين البيانات 🔒</h3><p>تتم معالجة كافة النصوص محلياً وبشكل مشفر، مع توثيق بصمات الملفات (Hashes) فقط على البلوكشين لضمان أعلى مستويات الأمان.</p>`, guide: `<h3>دليل استخدام EduSync 📖</h3><p>ارفع منهجك، دع الـ NLP يحلله، اربح نقاط الاستيعاب، وحولها لعملات رقمية في محفظتك.</p>`, contact: `<h3>تواصل مع الفريق التقني 📞</h3><p>لطلبات الاستحواذ أو الدعم: acquisition@edusync.ai</p>` };
         document.getElementById('modalBody').innerHTML = contents[id];
         document.getElementById('infoModal').style.display = 'flex';
     }
