@@ -34,13 +34,7 @@
         .wallet-mini { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; }
         .wallet-mini i { color: var(--gold); font-size: 1.2rem; margin-bottom: 5px; }
         .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 10px; }
-        .claim-btn { 
-            width: 100%; background: #334155; color: #94a3b8; border: 1px solid #475569; 
-            padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: not-allowed;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .claim-btn.ready { background: var(--gold); color: black; border: none; cursor: pointer; animation: pulse-gold 2s infinite; }
-
+        
         .container { padding: 20px; max-width: 500px; margin: auto; position: relative; z-index: 1; }
         .section { display: none; }
         .section.active { display: block; }
@@ -48,62 +42,37 @@
         .portal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
         .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; text-align: center; color: white; cursor: pointer; font-weight: bold; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
         
+        /* تصميم بوابة الدكتور المستعاد */
+        .doctor-card { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; margin-bottom: 15px; }
+        .upload-area { border: 2px dashed var(--primary); border-radius: 15px; padding: 30px; text-align: center; cursor: pointer; background: rgba(34, 211, 238, 0.05); margin-top: 10px; }
+        .report-box { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 15px; margin-top: 15px; border-right: 4px solid var(--primary); }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .stat-item { background: #1e293b; padding: 10px; border-radius: 8px; text-align: center; }
+        .stat-val { display: block; font-size: 1.2rem; font-weight: bold; color: var(--primary); }
+        .stat-label { font-size: 0.7rem; color: #94a3b8; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; margin-top: 5px; }
+        .tag-danger { background: rgba(244, 63, 94, 0.2); color: var(--danger); }
+        .tag-success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+
         .info-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .feature-item i { color: var(--primary); font-size: 1.3rem; }
-        
-        .points-badge { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px; }
 
-        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); }
-        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
-        .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
-
-        .progress-bar { width: 100%; height: 8px; background: #1e293b; border-radius: 10px; overflow: hidden; margin-top: 5px; }
-        .progress-fill { height: 100%; transition: 1.5s ease-in-out; }
-
-        #aiLoading { display: none; text-align: center; margin: 20px 0; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .result-panel { display: none; margin-top: 20px; padding: 20px; background: #0b1224; border-radius: 20px; border: 1px solid var(--primary); }
-        .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
-
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 6000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
-
-        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        
-        .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
-        @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
-        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
-
-        /* --- استعادة تصميم Roadmap في image_10.png --- */
         .roadmap-container { position: relative; padding: 10px 0; margin-top: 20px; }
         .roadmap-container::before { content: ''; position: absolute; right: 20px; top: 0; width: 2px; height: 100%; background: var(--line); z-index: 0; }
-        
         .roadmap-step { position: relative; margin-bottom: 25px; padding-right: 45px; z-index: 1; }
         .roadmap-dot { position: absolute; right: 11px; top: 0; width: 20px; height: 20px; background: var(--card); border: 3px solid var(--line); border-radius: 50%; }
         .roadmap-step.active .roadmap-dot { background: var(--primary); border-color: rgba(34, 211, 238, 0.3); box-shadow: 0 0 10px var(--primary); }
         .roadmap-step.completed .roadmap-dot { background: var(--success); border-color: var(--success); }
-        
-        /* تصميم التواريخ */
         .roadmap-date { font-size: 0.6rem; background: var(--primary); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin-bottom: 5px; display: inline-block; }
-        
         .roadmap-content { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--line); padding: 15px; border-radius: 15px; font-size: 0.85rem; }
-        .roadmap-step.active .roadmap-content { border-color: var(--primary); }
+
+        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 9999; }
     </style>
 </head>
 <body>
 
 <canvas id="bg-canvas"></canvas>
-
-<div class="modal" id="infoModal" onclick="this.style.display='none'">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div id="modalBody"></div>
-        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">إغلاق</button>
-    </div>
-</div>
 
 <header>
     <div class="logo-box">
@@ -118,19 +87,14 @@
 
 <div class="sidebar" id="sidebar">
     <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
-    
     <div class="wallet-mini">
         <i class="fa-solid fa-wallet"></i>
-        <div style="font-size:0.7rem; color:#94a3b8;">رصيد محفظة $SYNC</div>
+        <div style="font-size:0.7rem; color:#94a3b8;">رصيد $SYNC</div>
         <div class="balance-val" id="sidebarBalance">0.00</div>
-        <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
-            <i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)
-        </button>
     </div>
-
     <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
-    <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
+    <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-doctor"></i> بوابة الدكتور</div>
     <div class="sidebar-item" onclick="showSection('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</div>
     <div class="sidebar-item" onclick="showSection('future_roadmap')" style="color: var(--primary); border-top: 1px solid var(--line);"><i class="fa-solid fa-map-location-dot"></i> Future Roadmap</div>
 </div>
@@ -138,109 +102,99 @@
 <div class="container">
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
-        
         <div class="portal-grid">
             <div class="blue-btn" onclick="showSection('student')">
-                <i class="fa-solid fa-user-graduate" style="font-size: 1.2rem;"></i> بوابة الطالب
+                <i class="fa-solid fa-user-graduate"></i> بوابة الطالب
             </div>
             <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')">
-                <i class="fa-solid fa-user-doctor" style="font-size: 1.2rem;"></i> بوابة الدكتور
+                <i class="fa-solid fa-user-doctor"></i> بوابة الدكتور
             </div>
         </div>
         
         <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
-            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><div style="font-weight:bold;">تحليلات الفجوة</div><div style="font-size:0.8rem; color:#94a3b8;">لرصد تعثر الطلاب مبكراً.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-id-card"></i><div><div style="font-weight:bold;">هوية رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">لتوثيق المهارات لجهات التوظيف.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><div style="font-weight:bold;">تعلم متكيف</div><div style="font-size:0.8rem; color:#94a3b8;">تخصيص المحتوى لكل طالب.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-copyright"></i><div><div style="font-weight:bold;">حقوق رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">حماية الملكية الفكرية للمناهج.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-square-poll-vertical"></i><div><div style="font-weight:bold;">اختبارات ومكافآت</div><div style="font-size:0.8rem; color:#94a3b8;">حوّل مذاكرتك إلى عملات رقمية.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><b>تحليل NLP</b><br><span style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</span></div></div>
+            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><b>توثيق Blockchain</b><br><span style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</span></div></div>
+            <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><b>تحليلات الفجوة</b><br><span style="font-size:0.8rem; color:#94a3b8;">لرصد تعثر الطلاب مبكراً.</span></div></div>
         </div>
+    </div>
+
+    <div id="doctor" class="section">
+        <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-user-doctor"></i> لوحة تحكم المحاضر</h3>
+        
+        <div class="doctor-card">
+            <h4 style="font-size: 0.9rem; color: var(--primary);"><i class="fa-solid fa-cloud-arrow-up"></i> رفع المرجع الرسمي</h4>
+            <p style="font-size: 0.75rem; color: #94a3b8;">سيتم تحليل الكتاب وتوليد الأسئلة تلقائياً.</p>
+            <div class="upload-area" onclick="alert('جاري فتح الملفات...')">
+                <i class="fa-solid fa-file-pdf" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <div style="font-size: 0.85rem;">اضغط لرفع المنهج (PDF)</div>
+            </div>
+        </div>
+
+        <div class="doctor-card">
+            <h4 style="font-size: 0.9rem; color: var(--success);"><i class="fa-solid fa-chart-line"></i> تقارير الطلاب وتغذية راجعة</h4>
+            <div class="stat-grid">
+                <div class="stat-item"><span class="stat-val">85%</span><span class="stat-label">متوسط الاستيعاب</span></div>
+                <div class="stat-item"><span class="stat-val">12</span><span class="stat-label">طلاب متعثرين</span></div>
+            </div>
+            <div class="report-box">
+                <b>⚠️ فجوة تعليمية:</b>
+                <p style="font-size: 0.75rem; color: #cbd5e1;">واجه الطلاب صعوبة في "الفصل الثالث".</p>
+                <div class="tag tag-danger">تحتاج مراجعة</div>
+            </div>
+            <div class="report-box" style="border-color: var(--success);">
+                <b>✅ نقاط القوة:</b>
+                <p style="font-size: 0.75rem; color: #cbd5e1;">أداء ممتاز في الجانب التطبيقي.</p>
+                <div class="tag tag-success">ممتاز</div>
+            </div>
+        </div>
+        <button class="blue-btn" style="width: 100%;" onclick="showSection('home')">رجوع</button>
     </div>
 
     <div id="student" class="section">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="points-badge"><i class="fa-solid fa-star"></i> نقاطي: <span id="studentPoints">450</span></div>
-            <div style="font-size:0.6rem; color:#94a3b8;">اجمع 1000 للمطالبة</div>
-        </div>
-        <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
-        <div class="upload-box" onclick="document.getElementById('fInput').click()">
-            <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
-            <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
-        </div>
-        <div class="tools-grid">
-            <div class="tool-card" onclick="alert('جاري توليد البودكاست التعليمي...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
-            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
-            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي (لربح النقاط)</div>
-        </div>
-        <div id="aiLoading"><div class="loader"></div><div style="font-size:0.8rem; color:var(--primary); margin-top:5px;">جاري المعالجة...</div></div>
-        <div id="mapRes" class="result-panel"><div style="background:var(--primary); color:#000; padding:8px 20px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:15px;" id="mapTitle">العنوان</div></div>
-        <div id="quizRes" class="result-panel"><h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع</h4><p style="font-size:0.9rem; margin-bottom:15px;" id="qVoiceText">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p><div class="quiz-option" onclick="awardPoints(600, this)">أ) تقنية البلوكشين (Blockchain).</div></div>
+        <h3>بوابة الطالب</h3>
+        <p style="color:#94a3b8; margin: 20px 0;">قسم المذاكرة والاختبارات...</p>
+        <button class="blue-btn" style="width: 100%;" onclick="showSection('home')">رجوع</button>
     </div>
 
     <div id="future_roadmap" class="section">
-        <h3 style="margin-bottom:15px;"><i class="fa-solid fa-rocket" style="color:var(--primary)"></i> Future Roadmap</h3>
-        <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:20px;">مسار ذكي يتم توليده بناءً على مستواك الحالي في المنهج (أعدناه كما في الصورة):</p>
-        
+        <h3><i class="fa-solid fa-rocket"></i> Future Roadmap</h3>
         <div class="roadmap-container">
             <div class="roadmap-step completed">
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <span class="roadmap-date">2026</span>
                     <div style="font-weight:bold;">المستشار التعليمي (NLP)</div>
-                    <p style="font-size:0.75rem; color:#94a3b8;">فهم المفاهيم الأساسية وتحليل المصادر الأولية بالذكاء الاصطناعي.</p>
                 </div>
             </div>
-            
             <div class="roadmap-step active">
                 <div class="roadmap-dot"></div>
                 <div class="roadmap-content">
                     <span class="roadmap-date" style="background:var(--gold);">2026</span>
                     <div style="font-weight:bold;">سوق المهارات (NFT)</div>
-                    <p style="font-size:0.75rem; color:#94a3b8;">توليد وإثبات المهارات التعليمية كأصول رقمية فريدة.</p>
-                </div>
-            </div>
-            
-            <div class="roadmap-step">
-                <div class="roadmap-dot"></div>
-                <div class="roadmap-content">
-                    <span class="roadmap-date" style="background:var(--success);">2027</span>
-                    <div style="font-weight:bold;">إثبات التركيز (AI)</div>
-                    <p style="font-size:0.75rem; color:#94a3b8;">تحليل أداء وتركيز الطالب وربطه بنظام المكافآت.</p>
                 </div>
             </div>
         </div>
-        
-        <button class="blue-btn" style="width:100%; margin-top:15px; background:var(--primary); color:#000;" onclick="showSection('home')">رجوع</button>
+        <button class="blue-btn" style="width:100%;" onclick="showSection('home')">رجوع</button>
     </div>
 
-    <div id="doctor" class="section"><h3 style="margin-bottom:15px;">لوحة تحكم المحاضر</h3><p>رفع المرجع الرسمي الدفعة...</p></div>
-    <div id="settings" class="section"><h3>الإعدادات والدعم</h3><p>سياسة الخصوصية...</p></div>
+    <div id="settings" class="section"><h3>الإعدادات</h3></div>
 </div>
 
-<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
+<div class="chat-float"><i class="fa-solid fa-microphone"></i></div>
 
 <script>
-    let points = 450; let isFile = false; const synth = window.speechSynthesis;
-    function speak(text) { if (synth.speaking) synth.cancel(); const utter = new SpeechSynthesisUtterance(text); utter.lang = 'ar-SA'; uttet.rate = 0.9; synth.speak(utter); }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSection(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
-        if(id==='future_roadmap') speak("هذه رؤيتنا المستقبلية");
     }
-    function awardPoints(amount, el) { el.style.backgroundColor='#10b981'; points+=amount; document.getElementById('studentPoints').innerText = points; updateClaimButton(); }
-    function updateClaimButton() { const btn = document.getElementById('claimBtn'); if (points>=1000) btn.classList.add('ready'); }
-    function handleFile(input) { if(input.files[0]) { isFile = true; document.getElementById('upStatus').innerHTML="✅ تم تحميل: "+input.files[0].name; } }
     
-    // أنميشن الخلفية البسيط
     const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d');
     let particles = [];
-    function initParticles() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; particles = []; for (let i = 0; i < 50; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4, size:Math.random()*2 }); }
-    function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="rgba(34,211,238,0.3)"; particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>canvas.width) p.vx*=-1; if(p.y<0||p.y>canvas.height) p.vy*=-1; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); }); requestAnimationFrame(animate); }
+    function initParticles() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; particles = []; for (let i = 0; i < 40; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx:(Math.random()-0.5)*0.3, vy:(Math.random()-0.5)*0.3, size:Math.random()*2 }); }
+    function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="rgba(34,211,238,0.2)"; particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>canvas.width) p.vx*=-1; if(p.y<0||p.y>canvas.height) p.vy*=-1; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); }); requestAnimationFrame(animate); }
     initParticles(); animate();
 </script>
 </body>
