@@ -10,24 +10,44 @@
         :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --line: #1e293b; --danger: #f43f5e; --success: #10b981; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
         
-        /* --- كود تصميم الخلفية (برمجي) --- */
+        /* --- تعديل الخلفية لمحاكاة المربع الأصفر --- */
         body { 
             background-color: var(--bg); 
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(34, 211, 238, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                linear-gradient(135deg, #020617 0%, #0f172a 100%);
-            background-attachment: fixed;
             color: white; 
             min-height: 100vh; 
             overflow-x: hidden; 
+            position: relative;
+        }
+
+        /* توهج علوي يسار بنعومة عالية */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -15%; left: -10%;
+            width: 70%; height: 60%;
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.12) 0%, transparent 70%);
+            filter: blur(100px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* توهج سفلي يمين بلون موف خافت كما في الصورة */
+        body::after {
+            content: "";
+            position: fixed;
+            bottom: -10%; right: -5%;
+            width: 60%; height: 60%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+            filter: blur(120px);
+            z-index: -1;
+            pointer-events: none;
         }
 
         header { 
-            background: rgba(2, 6, 23, 0.9); padding: 15px 20px; display: flex; 
+            background: rgba(2, 6, 23, 0.8); padding: 15px 20px; display: flex; 
             justify-content: space-between; align-items: center; 
             border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px); /* تأثير زجاجي للرأس */
         }
         .logo-box { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
@@ -41,31 +61,32 @@
         .sidebar.active { right: 0; }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
 
-        .container { padding: 20px; max-width: 500px; margin: auto; }
+        .container { padding: 20px; max-width: 500px; margin: auto; position: relative; z-index: 1; }
         .section { display: none; }
         .section.active { display: block; }
 
-        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; margin-bottom: 15px; font-weight: bold; backdrop-filter: blur(5px); }
-        .info-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
+        /* تعديل الكروت لتكون شفافة وتظهر الوهج خلفها */
+        .blue-btn { background: rgba(34, 211, 238, 0.05); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; margin-bottom: 15px; font-weight: bold; backdrop-filter: blur(5px); }
+        .info-card { background: rgba(15, 23, 42, 0.5); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .feature-item i { color: var(--primary); font-size: 1.3rem; }
 
-        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); }
+        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.02); }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .tool-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; backdrop-filter: blur(5px); }
+        .tool-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; backdrop-filter: blur(5px); }
         .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
 
         #aiLoading { display: none; text-align: center; margin: 20px 0; }
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .result-panel { display: none; margin-top: 20px; padding: 20px; background: rgba(11, 18, 36, 0.9); border-radius: 20px; border: 1px solid var(--primary); }
+        .result-panel { display: none; margin-top: 20px; padding: 20px; background: rgba(11, 18, 36, 0.8); border-radius: 20px; border: 1px solid var(--primary); backdrop-filter: blur(10px); }
         .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
 
-        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; }
+        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; box-shadow: 0 0 20px rgba(34, 211, 238, 0.4); }
     </style>
 </head>
 <body>
