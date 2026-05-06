@@ -46,7 +46,10 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; margin-bottom: 15px; font-weight: bold; backdrop-filter: blur(5px); }
+        /* تعديل نظام الأزرار الرئيسية لتكون متجاورة */
+        .portal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; backdrop-filter: blur(5px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
+        
         .info-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .feature-item i { color: var(--primary); font-size: 1.3rem; }
@@ -71,7 +74,7 @@
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
 
-        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; }
+        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; }
         
         /* إضافة نبض بسيط لزر المساعدة الصوتية */
         .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; }
@@ -124,8 +127,17 @@
 
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
-        <div class="blue-btn" onclick="showSection('student')">دخول بوابة الطالب</div>
-        <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')">دخول بوابة الدكتور</div>
+        
+        <div class="portal-grid">
+            <div class="blue-btn" onclick="showSection('student')">
+                <i class="fa-solid fa-user-graduate" style="font-size: 1.2rem;"></i>
+                بوابة الطالب
+            </div>
+            <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')">
+                <i class="fa-solid fa-user-doctor" style="font-size: 1.2rem;"></i>
+                بوابة الدكتور
+            </div>
+        </div>
         
         <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
