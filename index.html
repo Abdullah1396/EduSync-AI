@@ -20,7 +20,7 @@
         .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; border-left: 2px solid var(--primary); z-index: 2000; padding: 20px; box-shadow: -10px 0 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
         .sidebar.active { right: 0; }
         .sidebar-logo-container { text-align: center; padding: 20px 0; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
-        .sidebar-logo { width: 90px; height: 90px; border-radius: 12px; border: 2px solid var(--primary); }
+        .sidebar-logo { width: 80px; height: 80px; border-radius: 12px; border: 2px solid var(--primary); }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; cursor: pointer; color: #cbd5e1; }
         .sidebar-item:hover { color: var(--primary); background: rgba(34, 211, 238, 0.05); }
         .close-btn { position: absolute; top: 10px; left: 15px; font-size: 2rem; cursor: pointer; color: var(--primary); }
@@ -30,50 +30,44 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* المربع الأحمر (لماذا EduSync) */
+        /* المربع الأحمر */
         .about-app { margin-top: 30px; background: rgba(34, 211, 238, 0.03); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-bottom: 40px; }
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .feature-item i { color: var(--primary); font-size: 1.4rem; }
 
         /* النوافذ المنبثقة (Modal) */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; }
-        .modal-body h3 { color: var(--primary); margin-bottom: 15px; }
+        .modal-box { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; max-width: 500px; width: 100%; }
 
         /* الإعدادات */
         .settings-card { background: var(--card); border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 1px solid var(--line); }
         .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 18px; border-bottom: 1px solid var(--line); cursor: pointer; }
-        .settings-label { font-size: 0.8rem; color: #94a3b8; margin: 15px 5px 5px 0; display: block; }
+
+        /* تخصيص التجربة */
+        .cust-hero { background: white; color: #020617; padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 20px; }
+        .cust-hero img { width: 80px; margin-bottom: 15px; }
+        .active-pattern-badge { background: var(--primary); color: var(--bg); padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.8rem; margin-top: 10px; display: inline-block; }
 
         /* أدوات الطالب والدكتور */
         .upload-card { border: 2px dashed rgba(34, 211, 238, 0.5); border-radius: 20px; padding: 30px; text-align: center; background: rgba(15, 23, 42, 0.5); margin-bottom: 20px; }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .tool-btn { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; }
-        .tool-btn i { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; display: block; }
-        
-        /* تخصيص التجربة */
-        .cust-hero { background: white; color: #020617; padding: 40px; border-radius: 20px; text-align: center; margin-bottom: 20px; }
-        .cust-hero img { width: 80px; margin-bottom: 15px; }
-
-        /* الشات بوت */
-        .chat-launcher { position: fixed; bottom: 20px; left: 20px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--bg); cursor: pointer; z-index: 3000; }
+        .tool-btn { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; width: 100%; }
+        .tool-btn i { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; display: block; }
     </style>
 </head>
 <body>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
     <div class="modal-box" onclick="event.stopPropagation()">
-        <div id="modalContent" class="modal-body"></div>
-        <button onclick="closeModal()" style="margin-top:20px; background:var(--primary); border:none; padding:10px 20px; border-radius:8px; cursor:pointer; width:100%; font-weight:bold;">إغلاق</button>
+        <div id="modalContent"></div>
+        <button onclick="closeModal()" style="margin-top:20px; background:var(--primary); border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%; font-weight:bold;">فهمت</button>
     </div>
 </div>
-
-<div class="chat-launcher" onclick="alert('مساعد AI جاهز لخدمتك!')"><i class="fa-solid fa-comment-dots"></i></div>
 
 <div class="sidebar" id="sidebar">
     <span class="close-btn" onclick="toggleMenu()">&times;</span>
     <div class="sidebar-logo-container">
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="sidebar-logo" onerror="this.src='https://img.icons8.com/neon/96/artificial-intelligence.png'">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="sidebar-logo">
     </div>
     <div class="sidebar-item" onclick="showSec('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSec('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
@@ -85,7 +79,7 @@
 <header class="top-bar">
     <div onclick="toggleMenu()" style="cursor:pointer; color:var(--primary); font-size:1.5rem;"><i class="fa-solid fa-bars"></i></div>
     <div class="logo-area">
-        <div style="font-weight:700; color:var(--primary); font-size:1.1rem; text-align:right; line-height:1.2;">EduSync AI<br><span style="font-size:0.6rem; color:#94a3b8">المزامنة التعليمية الذكية</span></div>
+        <div style="font-weight:700; color:var(--primary); font-size:1.1rem; text-align:right;">EduSync AI<br><span style="font-size:0.6rem; color:#94a3b8">المزامنة التعليمية الذكية</span></div>
         <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
     </div>
 </header>
@@ -94,55 +88,60 @@
     
     <div id="home" class="section active">
         <h2 style="text-align:center; margin-bottom:25px;">مرحباً بك في EduSync 🚀</h2>
-        <div class="tool-btn" style="width:100%; margin-bottom:15px; background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">دخول بوابة الطالب</div>
-        <div class="tool-btn" style="width:100%; border-color:var(--danger); margin-bottom:30px;" onclick="showSec('doctor')">دخول بوابة الدكتور</div>
+        <div class="tool-btn" style="margin-bottom:15px; background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">دخول بوابة الطالب</div>
+        <div class="tool-btn" style="border-color:var(--danger); margin-bottom:30px;" onclick="showSec('doctor')">دخول بوابة الدكتور</div>
 
         <div class="about-app">
             <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h3>
             <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><h4>قوة الذكاء الاصطناعي</h4><p>تحليل المناهج واستخراج المعلومات الجوهرية بدقة فائقة باستخدام معالجة اللغات الطبيعية (NLP).</p></div></div>
-            <div class="feature-item"><i class="fa-solid fa-headphones-simple"></i><div><h4>التعلم السمعي (Podcast)</h4><p>حوّل دروسك إلى بودكاست تعليمي ممتع للمذاكرة في أي وقت ومكان بدلاً من القراءة التقليدية.</p></div></div>
+            <div class="feature-item"><i class="fa-solid fa-headphones-simple"></i><div><h4>التعلم السمعي (Podcast)</h4><p>حوّل دروسك إلى بودكاست تعليمي ممتع للمذاكرة في أي وقت ومكان.</p></div></div>
         </div>
     </div>
 
     <div id="customize" class="section">
         <div class="cust-hero">
             <img src="https://img.icons8.com/fluency/100/science.png">
-            <h2>تخصيص التجربة التعليمية</h2>
+            <h2 style="color:#1e40af">تخصيص التجربة التعليمية</h2>
+            <p style="font-size:0.8rem; color:#64748b">اختر النمط ليقوم الـ AI بتكييف المحتوى لك</p>
         </div>
         <div class="settings-card">
-            <div class="settings-item"><span>نمط التلخيص السريع</span><i class="fa-solid fa-bolt" style="color:var(--primary)"></i></div>
-            <div class="settings-item"><span>النمط التعمقي</span><i class="fa-solid fa-book-open"></i></div>
+            <div class="settings-item" onclick="activatePattern('نمط التلخيص السريع')">
+                <span>نمط التلخيص السريع</span><i class="fa-solid fa-bolt" style="color:var(--primary)"></i>
+            </div>
+            <div class="settings-item" onclick="activatePattern('النمط التعمقي')">
+                <span>النمط التعمقي (شرح مفصل)</span><i class="fa-solid fa-book-open" style="color:var(--primary)"></i>
+            </div>
+            <div class="settings-item" onclick="activatePattern('نمط الاختبارات المكثفة')">
+                <span>نمط الاختبارات المكثفة</span><i class="fa-solid fa-spell-check" style="color:var(--primary)"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="student" class="section">
+        <div id="currentPatternDisplay" style="text-align:center; margin-bottom:10px;"></div>
+        <div class="upload-card">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem; color:var(--primary); margin-bottom:10px;"></i>
+            <p id="uploadStatus">ارفع ملف المنهج (PDF)</p>
+        </div>
+        <div class="tools-grid">
+            <div class="tool-btn"><i class="fa-solid fa-microphone"></i>بودكاست</div>
+            <div class="tool-btn"><i class="fa-solid fa-brain"></i>خرائط ذهنية</div>
         </div>
     </div>
 
     <div id="settings" class="section">
         <h3 style="margin-bottom:20px;">الإعدادات</h3>
-        <span class="settings-label">الحساب</span>
         <div class="settings-card">
-            <div class="settings-item"><span>تعديل البريد</span><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="settings-item" onclick="openInfo('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="settings-item" onclick="openInfo('terms')"><span>شروط الاستخدام</span><i class="fa-solid fa-chevron-left"></i></div>
         </div>
-        <span class="settings-label">القانون والدعم</span>
-        <div class="settings-card">
-            <div class="settings-item" onclick="openModal('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left"></i></div>
-            <div class="settings-item" onclick="openModal('terms')"><span>شروط الاستخدام</span><i class="fa-solid fa-chevron-left"></i></div>
-        </div>
-        <div class="settings-card" style="border-color:var(--danger); margin-top:20px;">
-            <div class="settings-item" style="color:var(--danger);"><span>تسجيل الخروج</span><i class="fa-solid fa-right-from-bracket"></i></div>
-        </div>
-    </div>
-
-    <div id="student" class="section">
-        <div class="upload-card"><i class="fa-solid fa-cloud-arrow-up" style="font-size:2.5rem; color:var(--primary);"></i><p>ارفع ملفات المنهج (PDF)</p></div>
-        <div class="tools-grid">
-            <div class="tool-btn"><i class="fa-solid fa-microphone"></i>بودكاست</div>
-            <div class="tool-btn"><i class="fa-solid fa-brain"></i>خرائط</div>
-        </div>
+        <div class="settings-card" style="border-color:var(--danger);"><div class="settings-item" style="color:var(--danger);"><span>تسجيل الخروج</span><i class="fa-solid fa-right-from-bracket"></i></div></div>
     </div>
 
     <div id="doctor" class="section">
         <div class="settings-card" style="padding:20px; border-right:4px solid var(--danger);">
             <h4>📊 تقرير استيعاب الدفعة</h4>
-            <p style="font-size:0.8rem; color:#94a3b8; margin-top:10px;">بانتظار رفع بيانات الطلاب...</p>
+            <p style="font-size:0.8rem; color:#94a3b8; margin-top:10px;">بانتظار البيانات...</p>
         </div>
     </div>
 
@@ -150,19 +149,29 @@
 
 <script>
     function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+    
     function showSec(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
+        window.scrollTo(0,0);
     }
 
-    const data = {
-        privacy: `<h3>سياسة الخصوصية 🔒</h3><p>بياناتك الأكاديمية مشفرة ومحمية بالكامل. لا يتم مشاركة ملفات المناهج مع أي جهة خارجية.</p>`,
-        terms: `<h3>شروط الاستخدام ⚖️</h3><p>هذا التطبيق مخصص للاستخدام التعليمي فقط. يُمنع استخدامه في تداول مواد غير مرخصة أكاديمياً.</p>`
+    // دالة تفعيل الأنماط (المحاكاة أمام اللجنة)
+    function activatePattern(name) {
+        alert("تم إرسال تكوين النظام: " + name);
+        document.getElementById('currentPatternDisplay').innerHTML = `<span class="active-pattern-badge">الوضع النشط: ${name}</span>`;
+        document.getElementById('uploadStatus').innerText = "جاهز لتحليل الملف بوضع " + name;
+        showSec('student'); // نقله لصفحة الطالب مباشرة
+    }
+
+    const info = {
+        privacy: `<h3>الخصوصية 🔒</h3><p>ملفاتك مشفرة ولا تستخدم لتدريب النماذج العامة. خصوصيتك الأكاديمية هي أولويتنا.</p>`,
+        terms: `<h3>الشروط ⚖️</h3><p>الاستخدام مخصص للأغراض التعليمية الجامعية. المخرجات هي أدوات مساعدة للطالب.</p>`
     };
 
-    function openModal(type) {
-        document.getElementById('modalContent').innerHTML = data[type];
+    function openInfo(type) {
+        document.getElementById('modalContent').innerHTML = info[type];
         document.getElementById('modalOverlay').style.display = 'flex';
     }
     function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
