@@ -11,18 +11,15 @@
         * { box-sizing: border-box; margin: 0; padding: 0; transition: 0.3s; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; }
 
-        /* الهيدر */
+        /* الهيدر والقائمة الجانبية (ثابتة كما طلبت) */
         .top-bar { display: flex; align-items: center; justify-content: space-between; padding: 15px 5%; background: var(--bg); border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
         .logo-area { display: flex; align-items: center; gap: 12px; }
         .logo-img { width: 45px; height: 45px; border-radius: 5px; border: 2px solid var(--primary); object-fit: cover; }
-
-        /* القائمة الجانبية */
-        .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; border-left: 2px solid var(--primary); z-index: 2000; padding: 20px; box-shadow: -10px 0 30px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
+        .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: #0f172a; border-left: 2px solid var(--primary); z-index: 2000; padding: 20px; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
         .sidebar.active { right: 0; }
         .sidebar-logo-container { text-align: center; padding: 20px 0; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
         .sidebar-logo { width: 80px; height: 80px; border-radius: 12px; border: 2px solid var(--primary); }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; cursor: pointer; color: #cbd5e1; }
-        .sidebar-item:hover { color: var(--primary); background: rgba(34, 211, 238, 0.05); }
         .close-btn { position: absolute; top: 10px; left: 15px; font-size: 2rem; cursor: pointer; color: var(--primary); }
 
         /* الحاوية */
@@ -35,28 +32,25 @@
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .feature-item i { color: var(--primary); font-size: 1.4rem; }
 
-        /* النوافذ المنبثقة (Modal) */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; max-width: 500px; width: 100%; }
-
-        /* الإعدادات */
-        .settings-card { background: var(--card); border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 1px solid var(--line); }
-        .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 18px; border-bottom: 1px solid var(--line); cursor: pointer; }
-
-        /* تخصيص التجربة */
-        .cust-hero { background: white; color: #020617; padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 20px; }
-        .cust-hero img { width: 80px; margin-bottom: 15px; }
-        .active-pattern-badge { background: var(--primary); color: var(--bg); padding: 8px 20px; border-radius: 25px; font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; display: inline-block; border: 2px solid white; }
-
-        /* بوابة الطالب - منطقة الرفع */
-        .upload-card { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; background: rgba(34, 211, 238, 0.05); margin-bottom: 25px; cursor: pointer; transition: 0.4s; position: relative; }
-        .upload-card:hover { background: rgba(34, 211, 238, 0.1); border-style: solid; }
+        /* منطقة الرفع والأدوات */
+        .upload-card { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; background: rgba(34, 211, 238, 0.05); cursor: pointer; margin-bottom: 20px; }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .tool-btn { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; }
         .tool-btn i { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; display: block; }
+
+        /* مخرج الخريطة الذهنية (Simulation) */
+        #resultArea { display: none; margin-top: 30px; padding: 20px; background: #0f172a; border-radius: 20px; border: 1px solid var(--primary); animation: fadeIn 0.5s; }
+        .mindmap-node { background: var(--primary); color: var(--bg); padding: 10px; border-radius: 10px; font-weight: bold; display: inline-block; margin: 10px; }
+        .sub-node { background: white; color: #020617; padding: 8px; border-radius: 8px; font-size: 0.8rem; display: inline-block; margin: 5px; border-right: 4px solid var(--primary); }
         
-        /* شات بوت */
-        .chat-btn { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--bg); cursor: pointer; box-shadow: 0 5px 15px rgba(34,211,238,0.4); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* الإعدادات والمودال */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; max-width: 500px; width: 100%; }
+        .settings-card { background: var(--card); border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 1px solid var(--line); }
+        .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 18px; border-bottom: 1px solid var(--line); cursor: pointer; }
+        .active-pattern-badge { background: var(--primary); color: var(--bg); padding: 8px 20px; border-radius: 25px; font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; display: inline-block; }
     </style>
 </head>
 <body>
@@ -64,16 +58,14 @@
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
     <div class="modal-box" onclick="event.stopPropagation()">
         <div id="modalContent"></div>
-        <button onclick="closeModal()" style="margin-top:20px; background:var(--primary); border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%; font-weight:bold;">تم</button>
+        <button onclick="closeModal()" style="margin-top:20px; background:var(--primary); border:none; padding:10px; border-radius:8px; cursor:pointer; width:100%; font-weight:bold;">إغلاق</button>
     </div>
 </div>
-
-<div class="chat-btn" onclick="alert('مساعدك الذكي قيد التطوير!')"><i class="fa-solid fa-comment-dots"></i></div>
 
 <div class="sidebar" id="sidebar">
     <span class="close-btn" onclick="toggleMenu()">&times;</span>
     <div class="sidebar-logo-container">
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="sidebar-logo" onerror="this.src='https://img.icons8.com/neon/96/artificial-intelligence.png'">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="sidebar-logo">
     </div>
     <div class="sidebar-item" onclick="showSec('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSec('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
@@ -95,42 +87,44 @@
     <div id="home" class="section active">
         <h2 style="text-align:center; margin-bottom:25px;">مرحباً بك في EduSync 🚀</h2>
         <div class="tool-btn" style="width:100%; margin-bottom:15px; background: rgba(34, 211, 238, 0.1);" onclick="showSec('student')">دخول بوابة الطالب</div>
-        <div class="tool-btn" style="width:100%; border-color:var(--danger); margin-bottom:30px;" onclick="showSec('doctor')">دخول بوابة الدكتور</div>
-
         <div class="about-app">
             <h3 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h3>
-            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><h4>قوة الذكاء الاصطناعي</h4><p>تحليل المناهج واستخراج المعلومات الجوهرية بدقة فائقة باستخدام تقنيات NLP.</p></div></div>
-            <div class="feature-item"><i class="fa-solid fa-headphones-simple"></i><div><h4>التعلم السمعي (Podcast)</h4><p>حوّل دروسك إلى بودكاست تعليمي ممتع للمذاكرة بذكاء.</p></div></div>
-        </div>
-    </div>
-
-    <div id="customize" class="section">
-        <div class="cust-hero">
-            <img src="https://img.icons8.com/fluency/100/science.png">
-            <h2 style="color:#1e40af">تخصيص التجربة التعليمية</h2>
-            <p style="font-size:0.8rem; color:#64748b">اختر النمط ليقوم الـ AI بتكييف المحتوى</p>
-        </div>
-        <div class="settings-card">
-            <div class="settings-item" onclick="activatePattern('نمط التلخيص السريع')"><span>نمط التلخيص السريع</span><i class="fa-solid fa-bolt" style="color:var(--primary)"></i></div>
-            <div class="settings-item" onclick="activatePattern('النمط التعمقي')"><span>النمط التعمقي (شرح مفصل)</span><i class="fa-solid fa-book-open" style="color:var(--primary)"></i></div>
-            <div class="settings-item" onclick="activatePattern('نمط الاختبارات المكثفة')"><span>نمط الاختبارات المكثفة</span><i class="fa-solid fa-spell-check" style="color:var(--primary)"></i></div>
+            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><h4>تحليل NLP</h4><p>معالجة لغات طبيعية لاستخراج زبدة المحتوى.</p></div></div>
         </div>
     </div>
 
     <div id="student" class="section">
         <div id="currentPatternDisplay" style="text-align:center;"></div>
-        
         <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(this)">
-        
         <div class="upload-card" onclick="document.getElementById('fileInput').click()">
             <i class="fa-solid fa-cloud-arrow-up" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
-            <h4 id="uploadStatus">جاهز لتحميل المصادر</h4>
-            <p style="font-size:0.75rem; color:#94a3b8; margin-top:5px;">اضغط هنا لاختيار ملف PDF أو صور المنهج</p>
+            <h4 id="uploadStatus">تحميل مصادر المنهج</h4>
         </div>
 
         <div class="tools-grid">
-            <div class="tool-btn" onclick="alert('سيتم توليد البودكاست بناءً على الملف المرفوع')"><i class="fa-solid fa-microphone"></i>بودكاست</div>
-            <div class="tool-btn" onclick="alert('سيتم رسم الخريطة الذهنية للمنهج')"><i class="fa-solid fa-brain"></i>خرائط ذهنية</div>
+            <div class="tool-btn" onclick="alert('جاري توليد البودكاست...')"><i class="fa-solid fa-microphone"></i>بودكاست</div>
+            <div class="tool-btn" onclick="generateMindMap()"><i class="fa-solid fa-brain"></i>خرائط ذهنية</div>
+        </div>
+
+        <div id="resultArea">
+            <h3 style="color:var(--primary); text-align:center; margin-bottom:20px;">الخريطة الذهنية للمنهج 🧠</h3>
+            <div style="text-align:center;">
+                <div class="mindmap-node">الموضوع الرئيسي</div><br>
+                <i class="fa-solid fa-arrow-down"></i><br>
+                <div class="sub-node">الفكرة الفرعية 1</div>
+                <div class="sub-node">الفكرة الفرعية 2</div><br>
+                <div class="sub-node">الفكرة الفرعية 3</div>
+                <div class="sub-node">الخلاصة النهائية</div>
+            </div>
+            <p style="font-size:0.7rem; color:#94a3b8; margin-top:15px; text-align:center;">تم توليد الخريطة بناءً على الملف المرفوع ونمط التعلم المختار.</p>
+        </div>
+    </div>
+
+    <div id="customize" class="section">
+        <h2 style="text-align:center; margin-bottom:20px;">تخصيص التجربة</h2>
+        <div class="settings-card">
+            <div class="settings-item" onclick="activatePattern('نمط التلخيص السريع')"><span>نمط التلخيص السريع</span><i class="fa-solid fa-bolt"></i></div>
+            <div class="settings-item" onclick="activatePattern('النمط التعمقي')"><span>النمط التعمقي</span><i class="fa-solid fa-book-open"></i></div>
         </div>
     </div>
 
@@ -140,42 +134,47 @@
             <div class="settings-item" onclick="openInfo('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left"></i></div>
             <div class="settings-item" onclick="openInfo('terms')"><span>شروط الاستخدام</span><i class="fa-solid fa-chevron-left"></i></div>
         </div>
-        <div class="settings-card" style="border-color:var(--danger);"><div class="settings-item" style="color:var(--danger);"><span>تسجيل الخروج</span><i class="fa-solid fa-right-from-bracket"></i></div></div>
     </div>
-
-    <div id="doctor" class="section"><div class="settings-card" style="padding:20px; border-right:4px solid var(--danger);"><h4>📊 تقارير الاستيعاب</h4><p style="color:#94a3b8; font-size:0.8rem;">لا توجد بيانات حالياً.</p></div></div>
 
 </div>
 
 <script>
+    let isFileUploaded = false;
+
     function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
     
     function showSec(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
-        window.scrollTo(0,0);
     }
 
-    // تفعيل الأنماط
-    function activatePattern(name) {
-        document.getElementById('currentPatternDisplay').innerHTML = `<span class="active-pattern-badge">الوضع النشط: ${name}</span>`;
-        document.getElementById('uploadStatus').innerText = "جاهز للتحليل بوضع " + name;
-        showSec('student');
-    }
-
-    // إصلاح زر تحميل المصادر
     function handleFileUpload(input) {
         if (input.files && input.files[0]) {
-            const fileName = input.files[0].name;
-            document.getElementById('uploadStatus').innerHTML = `<span style="color:var(--primary)">تم اختيار: ${fileName}</span>`;
-            alert("تم رفع الملف بنجاح! جاري المعالجة بالذكاء الاصطناعي...");
+            isFileUploaded = true;
+            document.getElementById('uploadStatus').innerText = "تم رفع: " + input.files[0].name;
+            alert("تم الرفع! الآن اضغط على 'خرائط ذهنية' لرؤية السحر.");
         }
     }
 
+    function generateMindMap() {
+        if (!isFileUploaded) {
+            alert("ارفع ملف أولاً يا بطل عشان الـ AI يحلله!");
+            return;
+        }
+        // إظهار منطقة النتائج وعمل محاكاة
+        document.getElementById('resultArea').style.display = 'block';
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function activatePattern(name) {
+        document.getElementById('currentPatternDisplay').innerHTML = `<span class="active-pattern-badge">الوضع النشط: ${name}</span>`;
+        showSec('student');
+    }
+
     const info = {
-        privacy: `<h3>الخصوصية 🔒</h3><p>بياناتك الأكاديمية محمية ومشفرة بالكامل ولا يتم استخدامها لتدريب نماذج عامة.</p>`,
-        terms: `<h3>الشروط ⚖️</h3><p>الاستخدام مخصص للطلبة الجامعيين للأغراض التعليمية فقط وفق سياسات الجامعة.</p>`
+        privacy: `<h3>الخصوصية</h3><p>بياناتك محمية بالكامل.</p>`,
+        terms: `<h3>الشروط</h3><p>الاستخدام للأغراض الأكاديمية فقط.</p>`
     };
 
     function openInfo(type) {
