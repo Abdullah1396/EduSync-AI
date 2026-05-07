@@ -88,14 +88,6 @@
         
         @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ميزة البطاقات التعليمية الجديدة */
-        .flashcard-section { perspective: 1000px; width: 100%; height: 200px; margin-top: 20px; display: none; cursor: pointer; }
-        .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
-        .flashcard-section.flipped .flashcard-inner { transform: rotateY(180deg); }
-        .flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 20px; padding: 20px; border: 1px solid var(--primary); backdrop-filter: blur(15px); }
-        .flashcard-front { background: rgba(15, 23, 42, 0.8); color: white; }
-        .flashcard-back { background: var(--primary); color: #020617; transform: rotateY(180deg); font-weight: bold; }
-
         .container { padding: 20px; max-width: 500px; margin: auto; position: relative; z-index: 1; }
         .section { display: none; }
         .section.active { display: block; }
@@ -224,22 +216,7 @@
         <div class="tools-grid">
             <div class="tool-card" onclick="alert('جاري توليد البودكاست التعليمي...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
             <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
-            <div class="tool-card" onclick="runAI('cards')"><i class="fa-solid fa-clone"></i>بطاقات مراجعة</div>
-            <div class="tool-card" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي</div>
-        </div>
-
-        <div id="cardBox" class="flashcard-section" onclick="this.classList.toggle('flipped')">
-            <div class="flashcard-inner">
-                <div class="flashcard-front">
-                    <p style="font-size: 0.7rem; color: var(--primary);">سؤال المراجعة</p>
-                    <h4 id="cardQ">ما هو الهدف الرئيسي من EduSync AI؟</h4>
-                    <p style="font-size: 0.6rem; margin-top: 15px; opacity: 0.7;">(اضغط للقلب وكشف الإجابة)</p>
-                </div>
-                <div class="flashcard-back">
-                    <p style="font-size: 0.7rem; color: #020617;">الإجابة الصحيحة</p>
-                    <p id="cardA">تحسين التجربة التعليمية بربط الذكاء الاصطناعي مع تقنيات البلوكشين للتحفيز والتوثيق.</p>
-                </div>
-            </div>
+            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي (لربح النقاط)</div>
         </div>
 
         <div class="mission-card">
@@ -252,7 +229,6 @@
         </div>
 
         <div id="aiLoading"><div class="loader"></div><div style="font-size:0.8rem; color:var(--primary); margin-top:5px;" id="loadingText">جاري المعالجة...</div></div>
-        
         <div id="mapRes" class="result-panel">
             <div style="background:var(--primary); color:#000; padding:8px 20px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:15px;" id="mapTitle">العنوان</div>
             <div style="text-align:center;">
@@ -260,7 +236,6 @@
                 <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">العلاقات والروابط</div>
             </div>
         </div>
-        
         <div id="quizRes" class="result-panel">
             <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
             <p style="font-size:0.9rem; margin-bottom:15px;" id="qVoiceText">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p>
@@ -367,7 +342,6 @@
     function processVoiceCommand(cmd) {
         if (cmd.includes("طالب")) { showSection('student'); speak("بوابة الطالب"); }
         else if (cmd.includes("اختبار")) { runAI('quiz'); }
-        else if (cmd.includes("بطاقة")) { runAI('cards'); }
         else { speak("كرر الطلب من فضلك"); }
     }
 
@@ -407,20 +381,26 @@
             btn.innerHTML = '<i class="fa-solid fa-link fa-spin"></i> سك $SYNC...';
 
             setTimeout(() => {
-                if(emptyMsg) emptyMsg.remove();
+                if(emptyMsg) emptyMsg.remove(); 
+
                 balance = (parseFloat(balance) + 10.0).toFixed(2);
                 points -= 1000;
+                
                 balanceEl.innerText = balance;
                 pointsEl.innerText = points;
                 
                 const txId = '0x' + Math.random().toString(16).slice(2, 8).toUpperCase();
                 const newItem = document.createElement('div');
                 newItem.className = 'tx-item';
-                newItem.innerHTML = `<div class="tx-id"><i class="fa-solid fa-arrow-right-arrow-left" style="color:var(--primary);"></i> ${txId}</div><div class="tx-amount">+10.0 SYNC</div>`;
+                newItem.innerHTML = `
+                    <div class="tx-id"><i class="fa-solid fa-arrow-right-arrow-left" style="color:var(--primary);"></i> ${txId}</div>
+                    <div class="tx-amount">+10.0 SYNC</div>
+                `;
                 txList.prepend(newItem);
 
                 balanceEl.style.transform = "scale(1.3)";
                 balanceEl.style.color = "var(--success)";
+                
                 btn.innerHTML = '<i class="fa-solid fa-square-check"></i> تمت المهمة';
                 btn.style.background = "var(--success)";
                 speak("تمت العملية بنجاح");
@@ -439,42 +419,56 @@
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
+    
     function initParticles() {
         canvas.width = window.innerWidth; 
         canvas.height = window.innerHeight;
         particles = [];
-        const count = window.innerWidth < 600 ? 40 : 80;
+        const count = window.innerWidth < 600 ? 50 : 100;
         for (let i = 0; i < count; i++) {
             particles.push({ 
                 x: Math.random() * canvas.width, 
                 y: Math.random() * canvas.height, 
-                vx: (Math.random() - 0.5) * 0.5, 
-                vy: (Math.random() - 0.5) * 0.5, 
-                size: Math.random() * 2 + 1 
+                vx: (Math.random() - 0.5) * 0.6, 
+                vy: (Math.random() - 0.5) * 0.6, 
+                size: Math.random() * 2 + 1
             });
         }
     }
+
     function drawParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.7)";
-        ctx.strokeStyle = "rgba(34, 211, 238, 0.15)";
+        ctx.fillStyle = "rgba(34, 211, 238, 0.9)";
+        ctx.strokeStyle = "rgba(34, 211, 238, 0.4)";
+        ctx.lineWidth = 1;
+
         particles.forEach((p, i) => {
-            p.x += p.vx; p.y += p.vy;
+            p.x += p.vx;
+            p.y += p.vy;
             if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
             if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+
             for (let j = i + 1; j < particles.length; j++) {
                 const p2 = particles[j];
                 const dist = Math.sqrt((p.x - p2.x)**2 + (p.y - p2.y)**2);
-                if (dist < 110) {
-                    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+                if (dist < 130) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
                 }
             }
         });
         requestAnimationFrame(drawParticles);
     }
+
     window.addEventListener('resize', initParticles);
-    initParticles(); drawParticles();
+    initParticles();
+    drawParticles();
 
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSection(id) {
@@ -489,7 +483,9 @@
             document.getElementById('upStatus').innerHTML = "✅ " + input.files[0].name;
             document.getElementById('mapTitle').innerText = nameF;
             document.getElementById('quizTitle').innerText = nameF;
-            document.getElementById('m1').style.color = '#58cc02';
+            const m1 = document.getElementById('m1');
+            m1.style.color = '#58cc02';
+            m1.innerHTML = '<i class="fa-solid fa-circle-check"></i> رفع ملف المنهج لهذا اليوم';
         }
     }
 
@@ -498,30 +494,27 @@
     }
 
     function runAI(type) {
-        if(!isFile) return alert("ارفع ملف المنهج أولاً!");
+        if(!isFile) return alert("ارفع ملف أولاً!");
         document.getElementById('aiLoading').style.display = 'block';
         setTimeout(() => {
             document.getElementById('aiLoading').style.display = 'none';
-            if(type === 'cards') {
-                document.getElementById('cardBox').style.display = 'block';
-                speak("تم توليد بطاقات المراجعة الذكية");
-            } else if(type === 'map') {
-                document.getElementById('mapRes').style.display = 'block';
-                document.getElementById('m3').style.color = '#58cc02';
-            } else if(type === 'quiz') {
-                document.getElementById('quizRes').style.display = 'block';
+            document.getElementById(type === 'map' ? 'mapRes' : 'quizRes').style.display = 'block';
+            if(type === 'map') {
+                 const m3 = document.getElementById('m3');
+                 m3.style.color = '#58cc02';
+                 m3.innerHTML = '<i class="fa-solid fa-circle-check"></i> مراجعة خريطة ذهنية واحدة';
             }
         }, 1500);
     }
 
     function openModal(id) {
         const contents = { 
-            privacy: `<h3>الخصوصية 🔒</h3><p style="font-size:0.85rem; color:#94a3b8;">بياناتك محمية بتقنيات البلوكشين والتشفير الكامل.</p>`, 
-            guide: `<h3>إرشادات 📖</h3><p style="font-size:0.85rem; color:#94a3b8;">ارفع الملف، ذاكر عبر الأدوات، واكسب المكافآت.</p>`, 
-            contact: `<h3>تواصل معنا 📞</h3><div style="text-align:center;"><p>support@edusync.ai</p></div>`,
-            league: `<h3>الدوري الماسي 🏆</h3><p>أنت حالياً في المركز الثاني بالجامعة!</p>`
+            privacy: `<h3>الخصوصية 🔒</h3><p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">نحن نستخدم تقنيات التشفير والبلوكشين لضمان حماية بياناتك التعليمية وملكيتك الفكرية بالكامل.</p>`, 
+            guide: `<h3>إرشادات 📖</h3><p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">ارفع منهجك، ابدأ الاختبارات الذكية، اجمع نقاط $SYNC، وقم بتحويلها إلى عملات رقمية في محفظتك.</p>`, 
+            contact: `<h3>تواصل معنا 📞</h3><div style="text-align:center; margin-top:15px;"><p style="font-size:0.9rem; margin-bottom:10px;">للاستفسارات والشراكات:</p><div style="color:var(--primary); font-weight:bold; margin-bottom:15px; font-size:1.1rem;">support@edusync.ai</div><div style="display:flex; justify-content:center; gap:25px; font-size:1.8rem;"><i class="fa-brands fa-x-twitter"></i><i class="fa-brands fa-linkedin" style="color:#0a66c2;"></i><i class="fa-solid fa-envelope" style="color:var(--primary);"></i></div></div>`,
+            league: `<div style="text-align:center;"><i class="fa-solid fa-trophy" style="font-size:3rem; color:var(--gold); margin-bottom:15px;"></i><h3 style="color:var(--gold);">الدوري الماسي</h3><p style="font-size:0.8rem; color:#94a3b8; margin-bottom:20px;">أنت ضمن أفضل 5% من طلاب الجامعة هذا الأسبوع!</p><div style="text-align:right; background:rgba(255,255,255,0.05); border-radius:10px; padding:10px;"><div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--line); color:var(--gold);"><span>1. أحمد محمد</span> <span>2450 pts</span></div><div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--line); background:rgba(34, 211, 238, 0.1);"><span>2. أنت (مشارك)</span> <span>1850 pts</span></div><div style="display:flex; justify-content:space-between; padding:8px;"><span>3. سارة خالد</span> <span>1200 pts</span></div></div></div>`
         };
-        document.getElementById('modalBody').innerHTML = contents[id] || "قريباً...";
+        document.getElementById('modalBody').innerHTML = contents[id];
         document.getElementById('infoModal').style.display = 'flex';
     }
 </script>
