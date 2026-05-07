@@ -7,7 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #22d3ee; --bg: #020617; --card: rgba(15, 23, 42, 0.4); --line: rgba(30, 41, 59, 0.5); --danger: #f43f5e; --success: #10b981; --gold: #f59e0b; --duo: #58cc02; }
+        :root { 
+            --primary: #22d3ee; 
+            --bg: #020617; 
+            --card: rgba(15, 23, 42, 0.3); /* جعلتها شفافة جداً */
+            --line: rgba(30, 41, 59, 0.4); 
+            --danger: #f43f5e; 
+            --success: #10b981; 
+            --gold: #f59e0b; 
+            --duo: #58cc02; 
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
         
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
@@ -33,7 +42,7 @@
         }
 
         header { 
-            background: rgba(2, 6, 23, 0.7); padding: 15px 20px; display: flex; 
+            background: rgba(2, 6, 23, 0.6); padding: 15px 20px; display: flex; 
             justify-content: space-between; align-items: center; 
             border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000;
             backdrop-filter: blur(15px);
@@ -105,11 +114,11 @@
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .result-panel { display: none; margin-top: 20px; padding: 20px; background: rgba(11, 18, 36, 0.5); border-radius: 20px; border: 1px solid var(--primary); backdrop-filter: blur(15px); }
+        .result-panel { display: none; margin-top: 20px; padding: 20px; background: rgba(11, 18, 36, 0.4); border-radius: 20px; border: 1px solid var(--primary); backdrop-filter: blur(15px); }
         .quiz-option { background: rgba(30, 41, 59, 0.5); border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
 
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
-        .modal-content { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; backdrop-filter: blur(20px); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
+        .modal-content { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; backdrop-filter: blur(20px); }
 
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3); }
         .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
@@ -359,23 +368,23 @@
         canvas.width = window.innerWidth; 
         canvas.height = window.innerHeight;
         particles = [];
-        const count = window.innerWidth < 600 ? 40 : 80;
+        const count = window.innerWidth < 600 ? 50 : 100;
         for (let i = 0; i < count; i++) {
             particles.push({ 
                 x: Math.random() * canvas.width, 
                 y: Math.random() * canvas.height, 
-                vx: (Math.random() - 0.5) * 0.5, 
-                vy: (Math.random() - 0.5) * 0.5, 
-                size: Math.random() * 2 
+                vx: (Math.random() - 0.5) * 0.6, 
+                vy: (Math.random() - 0.5) * 0.6, 
+                size: Math.random() * 2 + 1
             });
         }
     }
 
     function drawParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.6)";
-        ctx.strokeStyle = "rgba(34, 211, 238, 0.15)";
-        ctx.lineWidth = 0.5;
+        ctx.fillStyle = "rgba(34, 211, 238, 0.9)";
+        ctx.strokeStyle = "rgba(34, 211, 238, 0.4)";
+        ctx.lineWidth = 1;
 
         particles.forEach((p, i) => {
             p.x += p.vx;
@@ -391,7 +400,7 @@
             for (let j = i + 1; j < particles.length; j++) {
                 const p2 = particles[j];
                 const dist = Math.sqrt((p.x - p2.x)**2 + (p.y - p2.y)**2);
-                if (dist < 120) {
+                if (dist < 130) {
                     ctx.beginPath();
                     ctx.moveTo(p.x, p.y);
                     ctx.lineTo(p2.x, p2.y);
