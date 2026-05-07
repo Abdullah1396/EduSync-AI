@@ -276,10 +276,25 @@
         else { speak("كرر الطلب من فضلك"); }
     }
 
-    function updateClaimButton() {
-        const btn = document.getElementById('claimBtn');
-        const icon = document.getElementById('claimIcon');
-        if (points >= 1000) { btn.classList.add('ready'); icon.className = 'fa-solid fa-unlock-keyhole'; } 
+    function openModal(id) {
+    const contents = { 
+        privacy: `<h3>الخصوصية 🔒</h3><p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">بياناتك محمية بتقنيات التشفير والبلوكشين لضمان الخصوصية التامة.</p>`, 
+        guide: `<h3>إرشادات 📖</h3><p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">ارفع ملفك، ابدأ الاختبار، واجمع عملات $SYNC الرقمية.</p>`, 
+        contact: `<h3>تواصل معنا 📞</h3>
+                  <div style="text-align:center; margin-top:15px;">
+                    <p style="font-size:0.9rem; margin-bottom:10px;">للاستفسارات والشراكات:</p>
+                    <div style="color:var(--primary); font-weight:bold; margin-bottom:15px;">support@edusync.ai</div>
+                    <div style="display:flex; justify-content:center; gap:20px; font-size:1.5rem;">
+                        <i class="fa-brands fa-x-twitter"></i>
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                  </div>` 
+    };
+    document.getElementById('modalBody').innerHTML = contents[id];
+    document.getElementById('infoModal').style.display = 'flex';
+}
+
         else { btn.classList.remove('ready'); icon.className = 'fa-solid fa-lock'; }
     }
 
