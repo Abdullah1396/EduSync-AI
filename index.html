@@ -40,19 +40,18 @@
         .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
         .menu-icon { color: var(--primary); font-size: 1.5rem; cursor: pointer; }
 
-        /* --- إضافات التحفيز الجديدة --- */
-        .gamified-banner { 
-            display: flex; justify-content: space-around; align-items: center; 
-            background: rgba(34, 211, 238, 0.1); padding: 12px; border-radius: 15px; 
-            margin-bottom: 20px; border: 1px solid var(--line); 
+        /* --- لمسة دولينجو المضافة --- */
+        .duo-status {
+            display: flex; justify-content: space-around; align-items: center;
+            background: rgba(34, 211, 238, 0.1); padding: 12px; border-radius: 15px;
+            margin-bottom: 15px; border: 1px solid var(--line);
         }
-        .streak-fire { color: #ff4500; font-weight: bold; animation: fire-glow 2s infinite; }
-        @keyframes fire-glow { 0%, 100% { opacity: 0.8; text-shadow: 0 0 5px #ff4500; } 50% { opacity: 1; text-shadow: 0 0 15px #ff4500; } }
-        .rank-badge { background: rgba(34, 211, 238, 0.2); color: var(--primary); padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; border: 1px solid var(--primary); font-weight: bold; }
+        .fire-streak { color: #ff4500; font-weight: bold; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         
-        .daily-missions { background: rgba(15, 23, 42, 0.5); border: 1px solid var(--line); border-radius: 15px; padding: 15px; margin-top: 20px; }
-        .mission-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; margin-top: 8px; color: #94a3b8; }
-        .mission-item i.done { color: var(--success); }
+        .mission-card { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 15px; margin-top: 15px; }
+        .mission-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; margin-bottom: 8px; color: #94a3b8; }
+        /* --------------------------- */
 
         .sidebar { 
             position: fixed; right: -280px; top: 0; width: 280px; height: 100%; 
@@ -96,13 +95,6 @@
         .roadmap-item p { font-size: 0.75rem; color: #94a3b8; line-height: 1.4; }
         .roadmap-tag { position: absolute; top: 10px; left: 10px; font-size: 0.6rem; background: var(--line); padding: 2px 8px; border-radius: 5px; color: var(--primary); }
 
-        .progress-bar { width: 100%; height: 8px; background: #1e293b; border-radius: 10px; overflow: hidden; margin-top: 5px; }
-        .progress-fill { height: 100%; transition: 1.5s ease-in-out; }
-
-        #aiLoading { display: none; text-align: center; margin: 20px 0; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         .result-panel { display: none; margin-top: 20px; padding: 20px; background: #0b1224; border-radius: 20px; border: 1px solid var(--primary); }
         .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
 
@@ -110,8 +102,6 @@
         .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
 
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3); }
-        .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
-        @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
         @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
     </style>
 </head>
@@ -157,26 +147,21 @@
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
         <div class="portal-grid">
-            <div class="blue-btn" onclick="showSection('student')"><i class="fa-solid fa-user-graduate" style="font-size: 1.2rem;"></i> بوابة الطالب</div>
-            <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')"><i class="fa-solid fa-user-doctor" style="font-size: 1.2rem;"></i> بوابة الدكتور</div>
+            <div class="blue-btn" onclick="showSection('student')"><i class="fa-solid fa-user-graduate"></i> بوابة الطالب</div>
+            <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')"><i class="fa-solid fa-user-doctor"></i> بوابة الدكتور</div>
         </div>
         <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
-            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><div style="font-weight:bold;">تحليلات الفجوة</div><div style="font-size:0.8rem; color:#94a3b8;">لرصد تعثر الطلاب مبكراً.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية للمناهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية.</div></div></div>
         </div>
     </div>
 
     <div id="student" class="section">
-        <div class="gamified-banner">
-            <div class="streak-fire"><i class="fa-solid fa-fire"></i> 5 أيام مستمرة</div>
-            <div class="rank-badge"><i class="fa-solid fa-trophy"></i> أسطورة الكلية</div>
-        </div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="points-badge"><i class="fa-solid fa-star"></i> نقاطي: <span id="studentPoints">450</span></div>
-            <div style="font-size:0.6rem; color:#94a3b8;">اجمع 1000 للمطالبة</div>
+        <div class="duo-status">
+            <div class="fire-streak"><i class="fa-solid fa-fire"></i> 5 أيام</div>
+            <div style="background:var(--primary); color:#000; padding:2px 10px; border-radius:20px; font-size:0.7rem; font-weight:bold;">أسطورة الكلية 🔥</div>
+            <div class="points-badge" style="margin:0;"><i class="fa-solid fa-star"></i> <span id="studentPoints">450</span></div>
         </div>
 
         <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
@@ -186,71 +171,48 @@
         </div>
 
         <div class="tools-grid">
-            <div class="tool-card" onclick="alert('جاري توليد البودكاست التعليمي...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
-            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
-            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي (لربح النقاط)</div>
+            <div class="tool-card"><i class="fa-solid fa-headphones"></i>بودكاست</div>
+            <div class="tool-card" onclick="document.getElementById('quizRes').style.display='block'"><i class="fa-solid fa-bolt"></i>تحدي سريع</div>
         </div>
 
-        <div class="daily-missions">
-            <h4 style="font-size:0.85rem; color:var(--primary); margin-bottom:10px; border-bottom:1px solid var(--line); padding-bottom:5px;">مهام اليوم 🎯</h4>
-            <div class="mission-item"><i class="fa-solid fa-circle-check done"></i> رفع ملف المنهج (مكتمل)</div>
-            <div class="mission-item"><i class="fa-solid fa-circle" style="font-size:0.4rem;"></i> حل تحدي سريع (+50 نقطة)</div>
+        <div class="mission-card">
+            <h4 style="font-size:0.8rem; color:var(--primary); margin-bottom:10px;">المهام اليومية 🎯</h4>
+            <div class="mission-item"><i class="fa-solid fa-check-circle" style="color:var(--success)"></i> رفع منهج اليوم</div>
+            <div class="mission-item"><i class="fa-regular fa-circle"></i> إتمام اختبار المراجعة (+100)</div>
         </div>
 
-        <div id="aiLoading"><div class="loader"></div><div style="font-size:0.8rem; color:var(--primary); margin-top:5px;" id="loadingText">جاري المعالجة...</div></div>
-        
         <div id="quizRes" class="result-panel">
-            <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
-            <p style="font-size:0.9rem; margin-bottom:15px;" id="qVoiceText">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p>
-            <div class="quiz-option" onclick="awardPoints(600, this)">أ) تقنية البلوكشين (Blockchain). <span style="color:var(--success); font-size:0.7rem;">(+600 نقطة)</span></div>
-            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) قواعد بيانات تقليدية فقط.</div>
+            <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع</h4>
+            <p style="font-size:0.9rem; margin-bottom:15px;">ما هي التقنية المستخدمة لتأمين المنهج؟</p>
+            <div class="quiz-option" onclick="awardPoints(100, this)">أ) البلوكشين (+100 نقطة)</div>
+            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) التقليدية</div>
         </div>
     </div>
 
     <div id="doctor" class="section">
-        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
-        <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
-            <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
-            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
-            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي للدفعة</div>
-        </div>
+        <h3>لوحة تحكم الدكتور</h3>
+        <p style="color:#94a3b8; font-size:0.8rem; margin-top:10px;">ارفع المنهج الرسمي لتوثيقه على البلوكشين.</p>
     </div>
 
     <div id="settings" class="section">
-        <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
-        <div class="info-card" style="padding:0;">
-            <div class="sidebar-item" onclick="openModal('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
-            <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
-        </div>
-
-        <h3 style="margin-top:30px; margin-bottom:15px; color:var(--primary);"><i class="fa-solid fa-map-location-dot"></i> Road Map Future</h3>
+        <h3 style="margin-bottom:20px;">الإعدادات</h3>
         <div class="roadmap-container">
-            <div class="roadmap-item"><span class="roadmap-tag">المرحلة 1</span><h4>التوأم الرقمي</h4><p>نسخة افتراضية لمهارات الطالب تتنبأ بجاهزيته.</p></div>
-            <div class="roadmap-item"><span class="roadmap-tag">المرحلة 2</span><h4>غرف المذاكرة الذكية</h4><p>مساحات جماعية يديرها بوت ذكاء اصطناعي.</p></div>
+            <div class="roadmap-item"><h4>المرحلة القادمة</h4><p>التوأم الرقمي لمهارات الطالب.</p></div>
         </div>
     </div>
 </div>
 
-<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
+<div class="chat-float" id="voiceAssistant"><i class="fa-solid fa-microphone"></i></div>
 
 <script>
     let points = 450;
     let balance = 0.00;
-    let isFile = false;
 
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-    
     function showSection(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
-    }
-
-    function handleFile(input) {
-        if(input.files[0]) {
-            isFile = true;
-            document.getElementById('upStatus').innerHTML = "✅ " + input.files[0].name;
-        }
     }
 
     function awardPoints(amount, el) {
@@ -262,9 +224,7 @@
 
     function updateClaimButton() {
         const btn = document.getElementById('claimBtn');
-        const icon = document.getElementById('claimIcon');
-        if (points >= 1000) { btn.classList.add('ready'); icon.className = 'fa-solid fa-unlock-keyhole'; } 
-        else { btn.classList.remove('ready'); icon.className = 'fa-solid fa-lock'; }
+        if (points >= 1000) btn.classList.add('ready');
     }
 
     function mintFromSidebar() {
@@ -273,36 +233,16 @@
         points -= 1000;
         document.getElementById('sidebarBalance').innerText = balance;
         document.getElementById('studentPoints').innerText = points;
-        updateClaimButton();
     }
 
-    function runAI(type) {
-        if(!isFile) return alert("ارفع ملف أولاً!");
-        document.getElementById('aiLoading').style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('aiLoading').style.display = 'none';
-            if(type === 'quiz') document.getElementById('quizRes').style.display = 'block';
-        }, 1500);
-    }
-
-    function openModal(id) {
-        const contents = { 
-            privacy: "<h3>الخصوصية 🔒</h3><p>بياناتك محمية بتقنيات البلوكشين.</p>",
-            contact: "<h3>تواصل معنا 📞</h3><p>support@edusync.ai</p>"
-        };
-        document.getElementById('modalBody').innerHTML = contents[id];
-        document.getElementById('infoModal').style.display = 'flex';
-    }
-
-    // تأثير الخلفية المتصلة
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     let particles = [];
-    for(let i=0; i<50; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: Math.random()-0.5, vy: Math.random()-0.5});
+    for(let i=0; i<50; i++) particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:Math.random()-0.5, vy:Math.random()-0.5});
     function draw() {
         ctx.clearRect(0,0,canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.2)";
+        ctx.fillStyle = "rgba(34, 211, 238, 0.3)";
         particles.forEach(p => {
             p.x += p.vx; p.y += p.vy;
             if(p.x<0 || p.x>canvas.width) p.vx*=-1;
