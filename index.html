@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* التعديل هنا: إضافة متغيرات الشفافية الزجاجية */
         :root { 
             --primary: #22d3ee; 
             --bg: #020617; 
-            /* السر في الشفافية العالية هنا */
-            --glass-bg: rgba(255, 255, 255, 0.02); 
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --line: rgba(34, 211, 238, 0.15); 
+            --glass: rgba(255, 255, 255, 0.03); /* شفافية عالية */
+            --glass-border: rgba(255, 255, 255, 0.1); 
+            --line: rgba(30, 41, 59, 0.5); 
             --danger: #f43f5e; 
             --success: #10b981; 
             --gold: #f59e0b; 
@@ -21,10 +21,8 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
-        
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
         
-        /* خلفية متحركة لرؤية تأثير الشفافية */
         #bg-canvas { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             z-index: -1; pointer-events: none; 
@@ -33,7 +31,7 @@
 
         body::before {
             content: ""; position: fixed; top: 50%; left: 50%; width: 140vw; height: 140vh;
-            background: radial-gradient(circle, rgba(34, 211, 238, 0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.03) 0%, transparent 70%);
             transform: translate(-50%, -50%);
             animation: breathe 10s infinite ease-in-out;
             z-index: -2; pointer-events: none;
@@ -43,44 +41,46 @@
             50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
         }
 
-        /* هيدر شفاف زجاجي */
+        /* تعديل الهيدر للشفافية */
         header { 
-            background: rgba(2, 6, 23, 0.3); padding: 15px 20px; display: flex; 
+            background: rgba(2, 6, 23, 0.4); padding: 15px 20px; display: flex; 
             justify-content: space-between; align-items: center; 
-            border-bottom: 1px solid var(--primary); position: sticky; top: 0; z-index: 1000;
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         }
-
         .logo-box { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
         .menu-icon { color: var(--primary); font-size: 1.5rem; cursor: pointer; }
 
-        /* تعديل الكروت لتصبح زجاجية بالكامل */
-        .info-card, .mission-card, .tool-card, .roadmap-item, .result-panel, .wallet-mini, .modal-content, .gamified-header { 
-            background: var(--glass-bg) !important; 
+        /* تعديل الكروت لتصبح زجاجية شفافة */
+        .info-card, .mission-card, .tool-card, .roadmap-item, .result-panel, .modal-content, .gamified-header { 
+            background: var(--glass) !important; 
             border: 1px solid var(--glass-border) !important; 
-            border-radius: 20px; 
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border-radius: 20px;
         }
 
         .gamified-header { 
             display: flex; justify-content: space-around; align-items: center; 
-            padding: 12px; margin-bottom: 20px; border-color: var(--duo) !important;
+            padding: 12px; border-radius: 18px; margin-bottom: 20px; border-color: var(--duo) !important;
         }
+        .streak-fire { color: #ff4500; font-weight: bold; animation: pulse-voice 1.5s infinite; }
+        .mission-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; margin-bottom: 8px; color: #94a3b8; }
+        .mission-item.done { color: var(--duo); }
 
+        /* تعديل السايد بار للشفافية */
         .sidebar { 
             position: fixed; right: -280px; top: 0; width: 280px; height: 100%; 
-            background: rgba(15, 23, 42, 0.4); border-left: 1px solid var(--primary); 
-            z-index: 2000; padding: 20px;
-            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            background: rgba(15, 23, 42, 0.5); border-left: 2px solid var(--primary); 
+            z-index: 2000; padding: 20px; backdrop-filter: blur(25px);
         }
         .sidebar.active { right: 0; }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
 
+        .wallet-mini { background: rgba(255,255,255,0.05); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
         .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 10px; }
         .claim-btn { 
-            width: 100%; background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid var(--glass-border); 
+            width: 100%; background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid #475569; 
             padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: not-allowed;
         }
         .claim-btn.ready { background: var(--gold); color: black; border: none; cursor: pointer; animation: pulse-gold 2s infinite; }
@@ -89,19 +89,32 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; backdrop-filter: blur(5px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
         
-        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.02); backdrop-filter: blur(5px); }
+        .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
+        .feature-item i { color: var(--primary); font-size: 1.3rem; }
+        .points-badge { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px; }
+
+        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); backdrop-filter: blur(5px); }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .tool-card { text-align: center; cursor: pointer; padding: 15px; }
+        .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
 
-        .roadmap-item { border-right: 4px solid var(--primary) !important; padding: 15px; margin-bottom: 15px; position: relative; }
+        .roadmap-item { border-right: 4px solid var(--primary) !important; position: relative; }
         .progress-bar { width: 100%; height: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-top: 5px; }
+        .progress-fill { height: 100%; transition: 1.5s ease-in-out; }
 
+        #aiLoading { display: none; text-align: center; margin: 20px 0; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .quiz-option { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
+
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; }
         .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
-        
-        /* Modal Glass */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
+        @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
+        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
     </style>
 </head>
 <body>
@@ -129,7 +142,7 @@
 <div class="sidebar" id="sidebar">
     <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
     <div class="wallet-mini">
-        <i class="fa-solid fa-wallet"></i>
+        <i class="fa-solid fa-wallet" style="color:var(--gold);"></i>
         <div style="font-size:0.7rem; color:#94a3b8;">رصيد محفظة $SYNC</div>
         <div class="balance-val" id="sidebarBalance">0.00</div>
         <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
@@ -139,22 +152,25 @@
     <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
     <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
+    <div class="sidebar-item" onclick="showSection('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</div>
 </div>
 
 <div class="container">
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
-        <div class="info-card">
+        <div class="info-card" style="padding:25px;">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
-            <div style="display:flex; gap:15px; margin-bottom:20px;"><i class="fa-solid fa-brain" style="color:var(--primary);"></i> <div><b>تحليل NLP</b><p style="font-size:0.8rem; color:#94a3b8;">معالجة لغات متقدمة.</p></div></div>
-            <div style="display:flex; gap:15px; margin-bottom:20px;"><i class="fa-solid fa-shield-halved" style="color:var(--primary);"></i> <div><b>توثيق Blockchain</b><p style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت بأمان.</p></div></div>
+            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><div style="font-weight:bold;">تحليلات الفجوة</div><div style="font-size:0.8rem; color:#94a3b8;">لرصد تعثر الطلاب مبكراً.</div></div></div>
         </div>
     </div>
 
     <div id="student" class="section">
         <div class="gamified-header">
-            <div style="color:#ff4500; font-weight:bold;"><i class="fa-solid fa-fire"></i> 7 أيام</div>
-            <div style="background:rgba(16,185,129,0.1); border:1px solid var(--success); padding:5px 15px; border-radius:50px; font-size:0.8rem;"><i class="fa-solid fa-star"></i> <span id="studentPoints">450</span></div>
+            <div class="streak-fire"><i class="fa-solid fa-fire"></i> 7 أيام</div>
+            <div class="points-badge" style="margin-bottom:0;"><i class="fa-solid fa-star"></i> <span id="studentPoints">450</span></div>
+            <div style="color:var(--duo); font-weight:bold; font-size:0.75rem; cursor:pointer;" onclick="openModal('league')"><i class="fa-solid fa-trophy"></i> الدوري الماسي</div>
         </div>
 
         <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
@@ -163,19 +179,51 @@
             <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
         </div>
         <div class="tools-grid">
-            <div class="tool-card" style="padding:15px; text-align:center;"><i class="fa-solid fa-headphones"></i>بودكاست</div>
-            <div class="tool-card" style="padding:15px; text-align:center;"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
+            <div class="tool-card" onclick="alert('جاري توليد البودكاست التعليمي...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
+            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
+            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي (لربح النقاط)</div>
         </div>
+
+        <div class="mission-card" style="padding:15px; margin-top:15px;">
+            <h4 style="color:var(--duo); font-size:0.85rem; margin-bottom:10px;"><i class="fa-solid fa-bolt"></i> المهام اليومية</h4>
+            <div class="mission-item" id="m1"><i class="fa-regular fa-circle-check"></i> رفع ملف المنهج</div>
+            <div class="mission-item" id="m2"><i class="fa-regular fa-circle"></i> اجتياز اختبار ذكي</div>
+        </div>
+
+        <div id="aiLoading"><div class="loader"></div></div>
+        <div id="mapRes" class="result-panel" style="padding:20px; margin-top:20px;">
+            <div id="mapTitle" style="font-weight:bold; color:var(--primary);">العنوان</div>
+            <p>خريطة ذهنية ذكية للمحتوى...</p>
+        </div>
+        <div id="quizRes" class="result-panel" style="padding:20px; margin-top:20px;">
+            <h4 id="quizTitle">الاختبار</h4>
+            <div class="quiz-option" onclick="awardPoints(600, this)">أ) الخيار الصحيح <span style="color:var(--success);">+600</span></div>
+        </div>
+    </div>
+
+    <div id="doctor" class="section">
+         <h3 style="margin-bottom:15px;"><i class="fa-solid fa-user-shield"></i> لوحة الدكتور</h3>
+         <div class="info-card" style="padding:20px;">
+            <p>تقرير الاستيعاب العام للطلاب يظهر هنا...</p>
+         </div>
+    </div>
+
+    <div id="settings" class="section">
+         <h3 style="margin-bottom:20px;">الإعدادات</h3>
+         <div class="roadmap-item" style="padding:15px;">
+            <h4><i class="fa-solid fa-map-location-dot"></i> خارطة الطريق</h4>
+            <p>المرحلة 1: التوأم الرقمي...</p>
+         </div>
     </div>
 </div>
 
 <div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
 
 <script>
-    // جميع الوظائف البرمجية (Logic) كما هي لضمان عمل التطبيق
     let points = 450;
     let balance = 0.00;
     let isFile = false;
+    let nameF = "";
 
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSection(id) {
@@ -184,14 +232,7 @@
         document.getElementById('sidebar').classList.remove('active');
     }
 
-    function handleFile(input) {
-        if(input.files[0]) {
-            isFile = true;
-            document.getElementById('upStatus').innerHTML = "✅ " + input.files[0].name;
-        }
-    }
-
-    // جزيئات الخلفية
+    // جزيئات الخلفية (مهمة جداً لرؤية الشفافية)
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -205,7 +246,8 @@
     function drawParticles() {
         ctx.clearRect(0,0,canvas.width,canvas.height);
         ctx.fillStyle = "rgba(34, 211, 238, 0.4)";
-        particles.forEach(p => {
+        ctx.strokeStyle = "rgba(34, 211, 238, 0.1)";
+        particles.forEach((p, i) => {
             p.x += p.vx; p.y += p.vy;
             if(p.x<0 || p.x>canvas.width) p.vx*=-1;
             if(p.y<0 || p.y>canvas.height) p.vy*=-1;
@@ -215,6 +257,45 @@
     }
     window.addEventListener('resize', initParticles);
     initParticles(); drawParticles();
+
+    // باقي الدوال الأصلية (File, AI, Wallet, Modal...)
+    function handleFile(input) {
+        if(input.files[0]) {
+            isFile = true; nameF = input.files[0].name;
+            document.getElementById('upStatus').innerHTML = "✅ " + nameF;
+        }
+    }
+
+    function runAI(type) {
+        if(!isFile) return alert("ارفع ملف أولاً!");
+        document.getElementById('aiLoading').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('aiLoading').style.display = 'none';
+            document.getElementById(type === 'map' ? 'mapRes' : 'quizRes').style.display = 'block';
+        }, 1000);
+    }
+
+    function awardPoints(amount, el) {
+        el.style.backgroundColor = 'rgba(16, 185, 129, 0.2)';
+        points += amount;
+        document.getElementById('studentPoints').innerText = points;
+        if(points >= 1000) document.getElementById('claimBtn').classList.add('ready');
+    }
+
+    function mintFromSidebar() {
+        if (points < 1000) return;
+        balance = (parseFloat(balance) + 10.0).toFixed(2);
+        points -= 1000;
+        document.getElementById('sidebarBalance').innerText = balance;
+        document.getElementById('studentPoints').innerText = points;
+    }
+
+    function openModal(id) {
+        document.getElementById('modalBody').innerHTML = "معلومات الدوري الماسي والتحديات...";
+        document.getElementById('infoModal').style.display = 'flex';
+    }
+    
+    function startVoiceRecognition() { alert("تحدث الآن..."); }
 </script>
 </body>
 </html>
