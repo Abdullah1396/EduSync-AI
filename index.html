@@ -12,24 +12,24 @@
         
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
         
-        /* تحسين الخلفية لتصبح "متنفسة" وعميقة */
+        /* تحسين الخلفية الرئيسية لتصبح "حيه" وتتنفس */
         #bg-canvas { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             z-index: -1; pointer-events: none; 
             background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
         }
 
-        /* تأثير النبض التقني خلف المحتوى */
+        /* تأثير النبض العام خلف المحتوى */
         body::before {
             content: ""; position: fixed; top: 50%; left: 50%; width: 140vw; height: 140vh;
-            background: radial-gradient(circle, rgba(34, 211, 238, 0.03) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.04) 0%, transparent 70%);
             transform: translate(-50%, -50%);
-            animation: breathe 10s infinite ease-in-out;
+            animation: breatheBackground 10s infinite ease-in-out;
             z-index: -2; pointer-events: none;
         }
-        @keyframes breathe {
+        @keyframes breatheBackground {
             0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
+            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
         }
 
         header { 
@@ -94,8 +94,18 @@
         .result-panel { display: none; margin-top: 20px; padding: 20px; background: #0b1224; border-radius: 20px; border: 1px solid var(--primary); }
         .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
 
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
+        /* --- تحديث النوافذ لتصبح "متنفسة" وشفافة --- */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
+        .modal-content { 
+            background: rgba(15, 23, 42, 0.7); border: 1px solid var(--primary); border-radius: 20px; 
+            padding: 25px; width: 100%; max-width: 400px; backdrop-filter: blur(15px);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+            animation: modalBreathe 6s infinite ease-in-out;
+        }
+        @keyframes modalBreathe {
+            0%, 100% { border-color: rgba(34, 211, 238, 0.4); box-shadow: 0 0 15px rgba(34, 211, 238, 0.1); }
+            50% { border-color: var(--primary); box-shadow: 0 0 30px rgba(34, 211, 238, 0.4); }
+        }
 
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3); }
         .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
@@ -321,11 +331,10 @@
         }, 2000);
     }
 
-    // --- تحديث نظام الخلفية التقنية المتصلة ---
+    // --- تحديث نظام الخلفية التقنية المتنفسة والشبكية ---
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    
     function initParticles() {
         canvas.width = window.innerWidth; 
         canvas.height = window.innerHeight;
@@ -342,40 +351,31 @@
         }
     }
 
-    function drawParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); 
         ctx.fillStyle = "rgba(34, 211, 238, 0.6)";
         ctx.strokeStyle = "rgba(34, 211, 238, 0.15)";
         ctx.lineWidth = 0.5;
 
         particles.forEach((p, i) => {
-            p.x += p.vx;
-            p.y += p.vy;
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1; if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
 
-            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fill();
-
+            // ربط النقاط (الشبكة العصبية)
             for (let j = i + 1; j < particles.length; j++) {
                 const p2 = particles[j];
                 const dist = Math.sqrt((p.x - p2.x)**2 + (p.y - p2.y)**2);
                 if (dist < 120) {
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
                 }
             }
         });
-        requestAnimationFrame(drawParticles);
+        requestAnimationFrame(animate);
     }
-
     window.addEventListener('resize', initParticles);
-    initParticles();
-    drawParticles();
+    initParticles(); animate();
 
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
     function showSection(id) {
@@ -398,7 +398,7 @@
     }
 
     function runAI(type) {
-        if(!isFile) return alert("ارفع ملف أولاً!");
+        if(!isFile) return alert("ارفع ملف!");
         document.getElementById('aiLoading').style.display = 'block';
         setTimeout(() => {
             document.getElementById('aiLoading').style.display = 'none';
@@ -406,19 +406,19 @@
         }, 1500);
     }
 
-    // --- تحديث دالة الـ Modal لتشمل تواصل حقيقي ---
+    // --- تحديث دالة الـ Modal مع محتوى التواصل المتنفس ---
     function openModal(id) {
         const contents = { 
-            privacy: `<h3>الخصوصية 🔒</h3><p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">نحن نستخدم تقنيات التشفير والبلوكشين لضمان حماية بياناتك التعليمية وملكيتك الفكرية بالكامل.</p>`, 
-            guide: `<h3>إرشادات 📖</h3><p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">ارفع منهجك، ابدأ الاختبارات الذكية، اجمع نقاط $SYNC، وقم بتحويلها إلى عملات رقمية في محفظتك.</p>`, 
+            privacy: `<h3>الخصوصية 🔒</h3><p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">بياناتك محمية بتقنيات التشفير والبلوكشين لضمان الخصوصية التامة.</p>`, 
+            guide: `<h3>إرشادات 📖</h3><p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">ارفع ملفك، ابدأ الاختبار، واجمع عملات $SYNC الرقمية.</p>`, 
             contact: `<h3>تواصل معنا 📞</h3>
                       <div style="text-align:center; margin-top:15px;">
                         <p style="font-size:0.9rem; margin-bottom:10px;">للاستفسارات والشراكات:</p>
-                        <div style="color:var(--primary); font-weight:bold; margin-bottom:15px; font-size:1.1rem;">support@edusync.ai</div>
-                        <div style="display:flex; justify-content:center; gap:25px; font-size:1.8rem;">
-                            <i class="fa-brands fa-x-twitter" style="cursor:pointer;"></i>
-                            <i class="fa-brands fa-linkedin" style="cursor:pointer; color:#0a66c2;"></i>
-                            <i class="fa-solid fa-envelope" style="cursor:pointer; color:var(--primary);"></i>
+                        <div style="color:var(--primary); font-weight:bold; margin-bottom:15px; text-shadow: 0 0 10px rgba(34,211,238,0.5);">support@edusync.ai</div>
+                        <div style="display:flex; justify-content:center; gap:20px; font-size:1.5rem;">
+                            <i class="fa-brands fa-x-twitter" style="animation: pulse-voice 2s infinite; cursor:pointer;"></i>
+                            <i class="fa-brands fa-linkedin" style="animation: pulse-voice 2.5s infinite; cursor:pointer; color:#0a66c2;"></i>
+                            <i class="fa-solid fa-envelope" style="animation: pulse-voice 3s infinite; cursor:pointer; color:var(--primary);"></i>
                         </div>
                       </div>` 
         };
