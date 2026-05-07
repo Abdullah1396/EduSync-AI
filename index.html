@@ -7,17 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* التعديل: استخدام ألوان شفافة وتأثير Backdrop-filter */
-        :root { 
-            --primary: #22d3ee; 
-            --bg: #020617; 
-            --card: rgba(15, 23, 42, 0.4); /* شفاف */
-            --line: rgba(30, 41, 59, 0.5); 
-            --danger: #f43f5e; 
-            --success: #10b981; 
-            --gold: #f59e0b; 
-            --duo: #58cc02; 
-        }
+        :root { --primary: #22d3ee; --bg: #020617; --card: #0f172a; --line: #1e293b; --danger: #f43f5e; --success: #10b981; --gold: #f59e0b; --duo: #58cc02; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
         
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
@@ -41,58 +31,83 @@
         }
 
         header { 
-            background: rgba(2, 6, 23, 0.5); padding: 15px 20px; display: flex; 
+            background: rgba(2, 6, 23, 0.9); padding: 15px 20px; display: flex; 
             justify-content: space-between; align-items: center; 
             border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(15px);
         }
         .logo-box { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
         .menu-icon { color: var(--primary); font-size: 1.5rem; cursor: pointer; }
 
-        /* الكروت الشفافة */
-        .gamified-header, .info-card, .mission-card, .tool-card, .roadmap-item, .result-panel, .modal-content { 
-            background: var(--card) !important; 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        .gamified-header { 
+            display: flex; justify-content: space-around; align-items: center; 
+            background: rgba(88, 204, 2, 0.1); border: 1px solid var(--duo); 
+            padding: 12px; border-radius: 18px; margin-bottom: 20px;
         }
-
-        .gamified-header { display: flex; justify-content: space-around; align-items: center; padding: 12px; border-radius: 18px; margin-bottom: 20px; border-color: var(--duo) !important; }
         .streak-fire { color: #ff4500; font-weight: bold; animation: pulse-voice 1.5s infinite; }
-        .mission-card { border-radius: 15px; padding: 15px; margin-top: 15px; }
+        .mission-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--line); border-radius: 15px; padding: 15px; margin-top: 15px; }
         .mission-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; margin-bottom: 8px; color: #94a3b8; }
         .mission-item.done { color: var(--duo); }
-        
+        .mission-item i { font-size: 1rem; }
+
         .sidebar { 
             position: fixed; right: -280px; top: 0; width: 280px; height: 100%; 
-            background: rgba(15, 23, 42, 0.8); border-left: 2px solid var(--primary); 
-            z-index: 2000; padding: 20px; backdrop-filter: blur(20px);
+            background: #0f172a; border-left: 2px solid var(--primary); 
+            z-index: 2000; padding: 20px;
         }
         .sidebar.active { right: 0; }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
 
-        .wallet-mini { background: rgba(255,255,255,0.05); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; }
+        .wallet-mini { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; }
+        .wallet-mini i { color: var(--gold); font-size: 1.2rem; margin-bottom: 5px; }
         .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 10px; }
-        .claim-btn { width: 100%; background: rgba(255,255,255,0.1); color: #94a3b8; border: 1px solid #475569; padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .claim-btn { 
+            width: 100%; background: #334155; color: #94a3b8; border: 1px solid #475569; 
+            padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: not-allowed;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
         .claim-btn.ready { background: var(--gold); color: black; border: none; cursor: pointer; animation: pulse-gold 2s infinite; }
 
         .container { padding: 20px; max-width: 500px; margin: auto; position: relative; z-index: 1; }
         .section { display: none; }
         .section.active { display: block; }
 
-        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
-        .info-card { border-radius: 20px; padding: 25px; margin-top: 25px; }
+        .portal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+        .blue-btn { background: rgba(34, 211, 238, 0.05); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; backdrop-filter: blur(5px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
+        
+        .info-card { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
+        .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
+        .feature-item i { color: var(--primary); font-size: 1.3rem; }
+        
         .points-badge { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px; }
 
-        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); backdrop-filter: blur(5px); }
-        .tool-card { padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
-        .roadmap-item { border-radius: 15px; padding: 15px; margin-bottom: 15px; border-right: 4px solid var(--primary) !important; position: relative; }
-        .quiz-option { background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
+        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); }
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
+        .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
 
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
-        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; }
-        @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
+        .roadmap-container { margin-top: 30px; padding-bottom: 40px; }
+        .roadmap-item { background: rgba(30, 41, 59, 0.5); border: 1px solid var(--line); border-radius: 15px; padding: 15px; margin-bottom: 15px; border-right: 4px solid var(--primary); position: relative; }
+        .roadmap-item h4 { font-size: 0.9rem; color: var(--primary); margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+        .roadmap-item p { font-size: 0.75rem; color: #94a3b8; line-height: 1.4; }
+        .roadmap-tag { position: absolute; top: 10px; left: 10px; font-size: 0.6rem; background: var(--line); padding: 2px 8px; border-radius: 5px; color: var(--primary); }
+
+        .progress-bar { width: 100%; height: 8px; background: #1e293b; border-radius: 10px; overflow: hidden; margin-top: 5px; }
+        .progress-fill { height: 100%; transition: 1.5s ease-in-out; }
+
+        #aiLoading { display: none; text-align: center; margin: 20px 0; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .result-panel { display: none; margin-top: 20px; padding: 20px; background: #0b1224; border-radius: 20px; border: 1px solid var(--primary); }
+        .quiz-option { background: #1e293b; border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
+
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
+        .modal-content { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
+
+        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3); }
+        .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
     </style>
 </head>
 <body>
@@ -136,6 +151,10 @@
 <div class="container">
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
+        <div class="portal-grid">
+            <div class="blue-btn" onclick="showSection('student')"><i class="fa-solid fa-user-graduate" style="font-size: 1.2rem;"></i> بوابة الطالب</div>
+            <div class="blue-btn" style="color:var(--danger); border-color:var(--danger);" onclick="showSection('doctor')"><i class="fa-solid fa-user-doctor" style="font-size: 1.2rem;"></i> بوابة الدكتور</div>
+        </div>
         <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
             <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
@@ -150,9 +169,11 @@
 
     <div id="student" class="section">
         <div class="gamified-header">
-            <div class="streak-fire"><i class="fa-solid fa-fire"></i> 7 أيام</div>
+            <div class="streak-fire" title="أيام المذاكرة المتتالية"><i class="fa-solid fa-fire"></i> 7 أيام</div>
             <div class="points-badge" style="margin-bottom:0;"><i class="fa-solid fa-star"></i> <span id="studentPoints">450</span></div>
-            <div style="color:var(--duo); font-weight:bold; font-size:0.75rem; cursor:pointer;" onclick="openModal('league')"><i class="fa-solid fa-trophy"></i> الدوري الماسي</div>
+            <div style="color:var(--duo); font-weight:bold; font-size:0.75rem; cursor:pointer;" onclick="openModal('league')">
+                <i class="fa-solid fa-trophy"></i> الدوري الماسي
+            </div>
         </div>
 
         <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
@@ -160,49 +181,57 @@
             <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
             <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
         </div>
-        
-        <div class="tools-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div class="tool-card" onclick="alert('جاري توليد البودكاست...')"><i class="fa-solid fa-headphones" style="color:var(--primary);"></i>بودكاست</div>
-            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project" style="color:var(--primary);"></i>خرائط ذهنية</div>
-            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check" style="color:var(--primary);"></i>بدء اختبار ذكي</div>
+        <div class="tools-grid">
+            <div class="tool-card" onclick="alert('جاري توليد البودكاست التعليمي...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
+            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
+            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي (لربح النقاط)</div>
         </div>
 
         <div class="mission-card">
-            <h4 style="color:var(--duo); font-size:0.85rem; margin-bottom:10px;"><i class="fa-solid fa-bolt"></i> المهام اليومية</h4>
-            <div class="mission-item" id="m1"><i class="fa-regular fa-circle-check"></i> رفع ملف المنهج</div>
-            <div class="mission-item" id="m2"><i class="fa-regular fa-circle"></i> اجتياز اختبار ذكي</div>
-            <div class="mission-item" id="m3"><i class="fa-regular fa-circle"></i> مراجعة خريطة ذهنية</div>
+            <h4 style="color:var(--duo); font-size:0.85rem; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-bolt"></i> المهام اليومية المستهدفة
+            </h4>
+            <div class="mission-item" id="m1"><i class="fa-regular fa-circle"></i> رفع ملف المنهج لهذا اليوم</div>
+            <div class="mission-item" id="m2"><i class="fa-regular fa-circle"></i> اجتياز اختبار ذكي بنسبة 100%</div>
+            <div class="mission-item" id="m3"><i class="fa-regular fa-circle"></i> مراجعة خريطة ذهنية واحدة</div>
         </div>
 
-        <div id="aiLoading" style="display:none; text-align:center; margin:20px;"><div class="loader" style="border:3px solid #f3f3f3; border-top:3px solid var(--primary); border-radius:50%; width:25px; height:25px; animation:spin 1s linear infinite; display:inline-block;"></div></div>
-        <div id="mapRes" class="result-panel" style="display:none; padding:20px; border-radius:20px; margin-top:20px;">
-            <div style="background:var(--primary); color:#000; padding:5px 15px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:10px;" id="mapTitle">العنوان</div>
-            <p style="font-size:0.8rem; color:#94a3b8;">تم توليد الخريطة الذهنية بنجاح.</p>
+        <div id="aiLoading"><div class="loader"></div><div style="font-size:0.8rem; color:var(--primary); margin-top:5px;" id="loadingText">جاري المعالجة...</div></div>
+        <div id="mapRes" class="result-panel">
+            <div style="background:var(--primary); color:#000; padding:8px 20px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:15px;" id="mapTitle">العنوان</div>
+            <div style="text-align:center;">
+                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">مفاهيم الوحدة الأولى</div>
+                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">العلاقات والروابط</div>
+            </div>
         </div>
-        <div id="quizRes" class="result-panel" style="display:none; padding:20px; border-radius:20px; margin-top:20px;">
-            <h4 style="color:var(--primary); margin-bottom:10px;">اختبار سريع: <span id="quizTitle"></span></h4>
-            <div class="quiz-option" onclick="awardPoints(600, this)">أ) تقنية البلوكشين (Blockchain) <span style="color:var(--success);">+600</span></div>
+        <div id="quizRes" class="result-panel">
+            <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
+            <p style="font-size:0.9rem; margin-bottom:15px;" id="qVoiceText">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p>
+            <div class="quiz-option" onclick="awardPoints(600, this)">أ) تقنية البلوكشين (Blockchain). <span style="color:var(--success); font-size:0.7rem;">(+600 نقطة)</span></div>
+            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) قواعد بيانات تقليدية فقط.</div>
         </div>
     </div>
 
     <div id="doctor" class="section">
-        <h3 style="margin-bottom:15px;"><i class="fa-solid fa-user-shield"></i> لوحة المحاضر</h3>
+        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
         <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
             <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
-            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary);"></i>
-            <div id="docUpStatus">رفع المرجع الرسمي</div>
+            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
+            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي للدفعة</div>
         </div>
         <div class="info-card">
-            <h4>📊 تقرير الاستيعاب العام</h4>
-            <div style="width:100%; height:8px; background:rgba(255,255,255,0.1); border-radius:10px; margin-top:10px; overflow:hidden;"><div style="width:35%; height:100%; background:var(--danger);"></div></div>
+            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تقرير الاستيعاب العام</h4>
+            <div class="progress-container"><div style="display: flex; justify-content: space-between; font-size: 0.75rem;"><span>تحليل شابتر 1</span><span style="color: var(--danger);">ضعيف (35%)</span></div><div class="progress-bar"><div class="progress-fill" style="width: 35%; background: var(--danger);"></div></div></div>
+            <button class="blue-btn" style="margin-top: 15px; font-size: 0.8rem;" onclick="alert('تم إرسال تنبيه مراجعة لجميع الطلاب!')">إرسال إشعار مراجعة</button>
         </div>
     </div>
 
     <div id="settings" class="section">
         <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
-        <div class="roadmap-container">
-            <div class="roadmap-item"><h4>المرحلة 1: التوأم الرقمي</h4><p>نسخة افتراضية لمهارات الطالب.</p></div>
-            <div class="roadmap-item"><h4>المرحلة 2: غرف المذاكرة</h4><p>مساحات جماعية ذكية.</p></div>
+        <div class="info-card" style="padding:0;">
+            <div class="sidebar-item" onclick="openModal('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('guide')"><span>إرشادات المستخدم</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
         </div>
     </div>
 </div>
@@ -210,22 +239,165 @@
 <div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
 
 <script>
-    let points = 450; let balance = 0.00; let isFile = false; let nameF = ""; const synth = window.speechSynthesis;
-    function speak(text) { if (synth.speaking) synth.cancel(); const utter = new SpeechSynthesisUtterance(text); utter.lang = 'ar-SA'; synth.speak(utter); }
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-    function showSection(id) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.getElementById('sidebar').classList.remove('active'); }
-    function handleFile(input) { if(input.files[0]) { isFile = true; nameF = input.files[0].name.split('.')[0]; document.getElementById('upStatus').innerHTML = "✅ " + input.files[0].name; document.getElementById('mapTitle').innerText = nameF; document.getElementById('quizTitle').innerText = nameF; document.getElementById('m1').style.color = '#58cc02'; } }
-    function runAI(type) { if(!isFile) return alert("ارفع ملف أولاً!"); document.getElementById('aiLoading').style.display = 'block'; setTimeout(() => { document.getElementById('aiLoading').style.display = 'none'; document.getElementById(type === 'map' ? 'mapRes' : 'quizRes').style.display = 'block'; if(type === 'map') document.getElementById('m3').style.color = '#58cc02'; }, 1500); }
-    function awardPoints(amount, el) { el.style.backgroundColor = 'rgba(16, 185, 129, 0.3)'; points += amount; document.getElementById('studentPoints').innerText = points; document.getElementById('m2').style.color = '#58cc02'; updateClaimButton(); }
-    function updateClaimButton() { if (points >= 1000) document.getElementById('claimBtn').classList.add('ready'); }
-    function mintFromSidebar() { if (points < 1000) return; balance = (parseFloat(balance) + 10.0).toFixed(2); points -= 1000; document.getElementById('sidebarBalance').innerText = balance; document.getElementById('studentPoints').innerText = points; }
+    let points = 450;
+    let balance = 0.00;
+    let isFile = false;
+    let nameF = "";
+    const synth = window.speechSynthesis;
     
-    // محرك الجزيئات
-    const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
-    function init() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; particles = []; for(let i=0; i<70; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5, size: Math.random()*2}); }
-    function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = "rgba(34, 211, 238, 0.4)"; particles.forEach(p => { p.x+=p.vx; p.y+=p.vy; if(p.x<0 || p.x>canvas.width) p.vx*=-1; if(p.y<0 || p.y>canvas.height) p.vy*=-1; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); }); requestAnimationFrame(animate); }
-    window.onload = () => { init(); animate(); };
-    function startVoiceRecognition() { speak("أنا أسمعك"); }
+    function speak(text) {
+        if (synth.speaking) synth.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ar-SA';
+        utter.rate = 0.9;
+        synth.speak(utter);
+    }
+
+    function startVoiceRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) return alert("متصفحك لا يدعم التعرف على الصوت.");
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ar-SA';
+        const btn = document.getElementById('voiceAssistant');
+        recognition.onstart = () => { btn.classList.add('voice-active'); speak("أنا أسمعك، تفضل؟"); };
+        recognition.onresult = (event) => { processVoiceCommand(event.results[0][0].transcript); };
+        recognition.onend = () => { btn.classList.remove('voice-active'); };
+        recognition.start();
+    }
+
+    function processVoiceCommand(cmd) {
+        if (cmd.includes("طالب")) { showSection('student'); speak("بوابة الطالب"); }
+        else if (cmd.includes("اختبار")) { runAI('quiz'); }
+        else { speak("كرر الطلب من فضلك"); }
+    }
+
+    function updateClaimButton() {
+        const btn = document.getElementById('claimBtn');
+        const icon = document.getElementById('claimIcon');
+        if (points >= 1000) { btn.classList.add('ready'); icon.className = 'fa-solid fa-unlock-keyhole'; } 
+        else { btn.classList.remove('ready'); icon.className = 'fa-solid fa-lock'; }
+    }
+
+    function awardPoints(amount, el) {
+        el.style.backgroundColor = '#10b981';
+        points += amount;
+        document.getElementById('studentPoints').innerText = points;
+        const m2 = document.getElementById('m2');
+        m2.style.color = '#58cc02';
+        m2.innerHTML = '<i class="fa-solid fa-circle-check"></i> اجتياز اختبار ذكي بنسبة 100%';
+        updateClaimButton();
+        if(points >= 1000) speak("يمكنك الآن سحب العملات");
+    }
+
+    function mintFromSidebar() {
+        if (points < 1000) return;
+        const btn = document.getElementById('claimBtn');
+        btn.innerHTML = 'Minting...';
+        setTimeout(() => {
+            balance = (parseFloat(balance) + 10.0).toFixed(2);
+            points -= 1000;
+            document.getElementById('sidebarBalance').innerText = balance;
+            document.getElementById('studentPoints').innerText = points;
+            btn.innerHTML = '<i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)';
+            updateClaimButton();
+        }, 2000);
+    }
+
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    
+    function initParticles() {
+        canvas.width = window.innerWidth; 
+        canvas.height = window.innerHeight;
+        particles = [];
+        const count = window.innerWidth < 600 ? 40 : 80;
+        for (let i = 0; i < count; i++) {
+            particles.push({ 
+                x: Math.random() * canvas.width, 
+                y: Math.random() * canvas.height, 
+                vx: (Math.random() - 0.5) * 0.5, 
+                vy: (Math.random() - 0.5) * 0.5, 
+                size: Math.random() * 2 
+            });
+        }
+    }
+
+    function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(34, 211, 238, 0.6)";
+        ctx.strokeStyle = "rgba(34, 211, 238, 0.15)";
+        ctx.lineWidth = 0.5;
+        particles.forEach((p, i) => {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+            for (let j = i + 1; j < particles.length; j++) {
+                const p2 = particles[j];
+                const dist = Math.sqrt((p.x - p2.x)**2 + (p.y - p2.y)**2);
+                if (dist < 120) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke(); }
+            }
+        });
+        requestAnimationFrame(drawParticles);
+    }
+    window.addEventListener('resize', initParticles);
+    initParticles(); drawParticles();
+
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('sidebar').classList.remove('active');
+    }
+
+    function handleFile(input) {
+        if(input.files[0]) {
+            isFile = true; nameF = input.files[0].name.split('.')[0];
+            document.getElementById('upStatus').innerHTML = "✅ " + input.files[0].name;
+            document.getElementById('mapTitle').innerText = nameF;
+            document.getElementById('quizTitle').innerText = nameF;
+            const m1 = document.getElementById('m1');
+            m1.style.color = '#58cc02';
+            m1.innerHTML = '<i class="fa-solid fa-circle-check"></i> رفع ملف المنهج لهذا اليوم';
+        }
+    }
+
+    function runAI(type) {
+        if(!isFile) return alert("ارفع ملف أولاً!");
+        document.getElementById('aiLoading').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('aiLoading').style.display = 'none';
+            document.getElementById(type === 'map' ? 'mapRes' : 'quizRes').style.display = 'block';
+            if(type === 'map') {
+                 const m3 = document.getElementById('m3');
+                 m3.style.color = '#58cc02';
+                 m3.innerHTML = '<i class="fa-solid fa-circle-check"></i> مراجعة خريطة ذهنية واحدة';
+            }
+        }, 1500);
+    }
+
+    function openModal(id) {
+        const contents = { 
+            privacy: `<h3>الخصوصية 🔒</h3><p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">نحن نستخدم تقنيات التشفير والبلوكشين لضمان حماية بياناتك التعليمية وملكيتك الفكرية بالكامل.</p>`, 
+            guide: `<h3>إرشادات 📖</h3><p style="font-size:0.85rem; color:#94a3b8; margin-top:10px;">ارفع منهجك، ابدأ الاختبارات الذكية، اجمع نقاط $SYNC، وقم بتحويلها إلى عملات رقمية في محفظتك.</p>`, 
+            contact: `<h3>تواصل معنا 📞</h3><div style="text-align:center; margin-top:15px;"><p style="font-size:0.9rem; margin-bottom:10px;">للاستفسارات والشراكات:</p><div style="color:var(--primary); font-weight:bold; margin-bottom:15px; font-size:1.1rem;">support@edusync.ai</div></div>`,
+            league: `
+                <div style="text-align:center;">
+                    <i class="fa-solid fa-trophy" style="font-size:3rem; color:var(--gold); margin-bottom:15px;"></i>
+                    <h3 style="color:var(--gold);">الدوري الماسي</h3>
+                    <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:20px;">أنت ضمن أفضل 5% من طلاب الجامعة هذا الأسبوع!</p>
+                    <div style="text-align:right; background:rgba(255,255,255,0.05); border-radius:10px; padding:10px;">
+                        <div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--line); color:var(--gold);"><span>1. أحمد محمد</span> <span>2450 pts</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--line); background:rgba(34, 211, 238, 0.1);"><span>2. أنت (مشارك)</span> <span>1850 pts</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px;"><span>3. سارة خالد</span> <span>1200 pts</span></div>
+                    </div>
+                    <p style="font-size:0.7rem; margin-top:15px; color:var(--success);">يتبقى 3 أيام على نهاية الجولة الأسبوعية ⏳</p>
+                </div>`
+        };
+        document.getElementById('modalBody').innerHTML = contents[id];
+        document.getElementById('infoModal').style.display = 'flex';
+    }
 </script>
 </body>
 </html>
