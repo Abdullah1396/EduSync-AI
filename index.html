@@ -177,7 +177,7 @@
         <div class="gamified-header">
             <div class="streak-fire" title="أيام المذاكرة المتتالية"><i class="fa-solid fa-fire"></i> 7 أيام</div>
             <div class="points-badge" style="margin-bottom:0;"><i class="fa-solid fa-star"></i> <span id="studentPoints">450</span></div>
-            <div style="color:var(--duo); font-weight:bold; font-size:0.75rem;"><i class="fa-solid fa-trophy"></i> الدوري الماسي</div>
+            <div style="color:var(--duo); font-weight:bold; font-size:0.75rem; cursor:pointer;" onclick="openModal('league')"><i class="fa-solid fa-trophy"></i> الدوري الماسي</div>
         </div>
 
         <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
@@ -461,7 +461,19 @@
                             <i class="fa-brands fa-linkedin" style="cursor:pointer; color:#0a66c2;"></i>
                             <i class="fa-solid fa-envelope" style="cursor:pointer; color:var(--primary);"></i>
                         </div>
-                      </div>` 
+                      </div>`,
+            league: `
+                <div style="text-align:center;">
+                    <i class="fa-solid fa-trophy" style="font-size:3rem; color:var(--gold); margin-bottom:15px;"></i>
+                    <h3 style="color:var(--gold);">الدوري الماسي</h3>
+                    <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:20px;">أنت ضمن أفضل 5% من طلاب الجامعة هذا الأسبوع!</p>
+                    <div style="text-align:right; background:rgba(255,255,255,0.05); border-radius:10px; padding:10px;">
+                        <div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--line); color:var(--gold);"><span>1. أحمد محمد</span> <span>2450 pts</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid var(--line); background:rgba(34, 211, 238, 0.1);"><span>2. أنت (مشارك)</span> <span>1850 pts</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px;"><span>3. سارة خالد</span> <span>1200 pts</span></div>
+                    </div>
+                    <p style="font-size:0.7rem; margin-top:15px; color:var(--success);">يتبقى 3 أيام على نهاية الجولة الأسبوعية ⏳</p>
+                </div>`
         };
         document.getElementById('modalBody').innerHTML = contents[id];
         document.getElementById('infoModal').style.display = 'flex';
