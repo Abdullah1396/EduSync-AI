@@ -57,7 +57,6 @@
         }
         .streak-fire { color: #ff4500; font-weight: bold; animation: pulse-voice 1.5s infinite; }
 
-        /* ستايل المهام الأفقي المحدث */
         .mission-card { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; margin-top: 15px; backdrop-filter: blur(10px); text-align: center; }
         .task-circle { width: 40px; height: 40px; background: var(--bg); border: 2px solid var(--line); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 3; transition: 0.5s; color: #475569; font-size: 0.9rem; position: relative; }
         .task-circle.completed { background: var(--duo); border-color: #fff; color: white; box-shadow: 0 0 15px rgba(88, 204, 2, 0.5); transform: scale(1.1); }
@@ -244,6 +243,9 @@
             <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
             <div class="tool-card" onclick="runAI('flash')"><i class="fa-solid fa-layer-group"></i>بطاقات تعليمية</div>
             <div class="tool-card" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي</div>
+            <div class="tool-card" onclick="runAI('visual')" style="grid-column: span 2; background: rgba(34, 211, 238, 0.1); border-color: var(--primary);">
+                <i class="fa-solid fa-eye"></i>البصمة الذهنية (صورة المنهج)
+            </div>
         </div>
 
         <div id="aiLoading"><div class="loader"></div><div style="font-size:0.8rem; color:var(--primary); margin-top:5px;" id="loadingText">جاري المعالجة...</div></div>
@@ -265,6 +267,19 @@
                 <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">العلاقات والروابط</div>
             </div>
         </div>
+
+        <div id="visualRes" class="result-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h4 style="color: var(--primary); font-size: 0.9rem;"><i class="fa-solid fa-wand-magic-sparkles"></i> البصمة البصرية للمنهج</h4>
+                <button onclick="alert('جاري تحميل الصورة...')" style="background: var(--primary); border:none; color:black; padding:5px 10px; border-radius:5px; font-size:0.6rem; font-weight:bold;"><i class="fa-solid fa-image"></i> حفظ</button>
+            </div>
+            <div id="visualCanvas" style="background: linear-gradient(145deg, #0f172a, #1e293b); padding: 20px; border-radius: 15px; border: 1px solid var(--primary); position: relative;">
+                <h3 id="visualTitle" style="color: var(--primary); font-size: 1rem; margin-bottom: 15px; border-bottom: 1px solid var(--line); padding-bottom: 8px;">العنوان</h3>
+                <div id="visualPoints" style="display: grid; gap: 10px;"></div>
+                <div style="text-align: center; margin-top: 15px; opacity: 0.3;"><img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" style="width:20px;"></div>
+            </div>
+        </div>
+
         <div id="quizRes" class="result-panel">
             <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
             <p style="font-size:0.9rem; margin-bottom:15px;" id="qVoiceText">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p>
@@ -366,11 +381,13 @@
     }
 
     function markTaskDone(type) {
-        if (!completedTasks[type]) {
+        if (completedTasks.hasOwnProperty(type)) {
             completedTasks[type] = true;
             const circle = document.getElementById('circle-' + type);
-            circle.classList.add('completed');
-            circle.innerHTML = '<i class="fa-solid fa-check"></i>';
+            if(circle) {
+                circle.classList.add('completed');
+                circle.innerHTML = '<i class="fa-solid fa-check"></i>';
+            }
             updateProgress();
         }
     }
@@ -546,6 +563,7 @@
             document.getElementById('upStatus').innerHTML = "✅ " + input.files[0].name;
             document.getElementById('mapTitle').innerText = nameF;
             document.getElementById('quizTitle').innerText = nameF;
+            document.getElementById('visualTitle').innerText = "بصمة: " + nameF;
         }
     }
 
@@ -556,9 +574,7 @@
     function runAI(type) {
         if(!isFile) return alert("ارفع ملف أولاً!");
         document.getElementById('aiLoading').style.display = 'block';
-        document.getElementById('mapRes').style.display = 'none';
-        document.getElementById('quizRes').style.display = 'none';
-        document.getElementById('flashRes').style.display = 'none';
+        document.querySelectorAll('.result-panel').forEach(p => p.style.display = 'none');
 
         setTimeout(() => {
             document.getElementById('aiLoading').style.display = 'none';
@@ -572,6 +588,21 @@
                 document.getElementById('flashQ').innerText = flashcardsData[0].q;
                 document.getElementById('flashA').innerText = flashcardsData[0].a;
                 markTaskDone('flash');
+            }
+            if(type === 'visual') {
+                document.getElementById('visualRes').style.display = 'block';
+                const summaryPoints = [
+                    { title: "المحور الأساسي", text: "شرح شامل للنظريات المذكورة في PDF." },
+                    { title: "الربط المنطقي", text: "توضيح العلاقة بين الفصول المختلفة للمنهج." },
+                    { title: "الكلمات المفتاحية", text: "الذكاء، التعلم، البيانات، المستقبل." }
+                ];
+                document.getElementById('visualPoints').innerHTML = summaryPoints.map(p => `
+                    <div style="background: rgba(34, 211, 238, 0.05); border-right: 3px solid var(--primary); padding: 10px; border-radius: 5px;">
+                        <div style="color: var(--primary); font-weight: bold; font-size: 0.75rem;">${p.title}</div>
+                        <div style="color: #cbd5e1; font-size: 0.7rem;">${p.text}</div>
+                    </div>
+                `).join('');
+                speak("تم استخراج البصمة البصرية بنجاح");
             }
         }, 1200);
     }
