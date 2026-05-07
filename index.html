@@ -7,7 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root { --primary: #22d3ee; --bg: #020617; --card: rgba(15, 23, 42, 0.4); --line: rgba(34, 211, 238, 0.2); --danger: #f43f5e; --success: #10b981; --gold: #f59e0b; --duo: #58cc02; }
+        /* التعديل هنا: جعل كارد الأساس شفاف جداً */
+        :root { --primary: #22d3ee; --bg: #020617; --card: rgba(255, 255, 255, 0.05); --line: rgba(34, 211, 238, 0.2); --danger: #f43f5e; --success: #10b981; --gold: #f59e0b; --duo: #58cc02; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
         
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
@@ -31,10 +32,11 @@
         }
 
         header { 
-            background: rgba(2, 6, 23, 0.7); padding: 15px 20px; display: flex; 
+            /* التعديل: هيدر شفاف زجاجي */
+            background: rgba(255, 255, 255, 0.03); padding: 15px 20px; display: flex; 
             justify-content: space-between; align-items: center; 
             border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         }
         .logo-box { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
@@ -46,20 +48,21 @@
             padding: 12px; border-radius: 18px; margin-bottom: 20px; backdrop-filter: blur(10px);
         }
         .streak-fire { color: #ff4500; font-weight: bold; animation: pulse-voice 1.5s infinite; }
-        .mission-card { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 15px; margin-top: 15px; backdrop-filter: blur(10px); }
+        .mission-card { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 15px; margin-top: 15px; backdrop-filter: blur(15px); }
         .mission-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; margin-bottom: 8px; color: #94a3b8; }
         .mission-item.done { color: var(--duo); }
         .mission-item i { font-size: 1rem; }
 
         .sidebar { 
             position: fixed; right: -280px; top: 0; width: 280px; height: 100%; 
-            background: rgba(15, 23, 42, 0.8); border-left: 2px solid var(--primary); 
-            z-index: 2000; padding: 20px; backdrop-filter: blur(20px);
+            /* التعديل: سايد بار شفاف زجاجي */
+            background: rgba(15, 23, 42, 0.5); border-left: 2px solid var(--primary); 
+            z-index: 2000; padding: 20px; backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
         }
         .sidebar.active { right: 0; }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
 
-        .wallet-mini { background: rgba(30, 41, 59, 0.4); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
+        .wallet-mini { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
         .wallet-mini i { color: var(--gold); font-size: 1.2rem; margin-bottom: 5px; }
         .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 10px; }
         .claim-btn { 
@@ -73,15 +76,15 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        .info-card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(10px); }
+        .info-card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 25px; margin-top: 25px; backdrop-filter: blur(15px); }
         .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
         .feature-item i { color: var(--primary); font-size: 1.3rem; }
         
         .points-badge { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px; }
 
-        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.08); backdrop-filter: blur(8px); }
+        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; backdrop-filter: blur(10px); }
+        .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; backdrop-filter: blur(15px); }
         .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
 
         .roadmap-container { margin-top: 30px; padding-bottom: 40px; }
@@ -97,11 +100,11 @@
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .result-panel { display: none; margin-top: 20px; padding: 20px; background: rgba(11, 18, 36, 0.7); border-radius: 20px; border: 1px solid var(--primary); backdrop-filter: blur(15px); }
-        .quiz-option { background: rgba(30, 41, 59, 0.6); border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
+        .result-panel { display: none; margin-top: 20px; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 20px; border: 1px solid var(--primary); backdrop-filter: blur(20px); }
+        .quiz-option { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
 
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
-        .modal-content { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(20px); }
+        .modal-content { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; backdrop-filter: blur(30px); }
 
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3); }
         .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
