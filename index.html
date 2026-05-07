@@ -7,20 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* التعديل هنا: إضافة متغيرات الشفافية الزجاجية */
+        /* التعديل: استخدام ألوان شفافة وتأثير Backdrop-filter */
         :root { 
             --primary: #22d3ee; 
             --bg: #020617; 
-            --glass: rgba(255, 255, 255, 0.03); /* شفافية عالية */
-            --glass-border: rgba(255, 255, 255, 0.1); 
+            --card: rgba(15, 23, 42, 0.4); /* شفاف */
             --line: rgba(30, 41, 59, 0.5); 
             --danger: #f43f5e; 
             --success: #10b981; 
             --gold: #f59e0b; 
             --duo: #58cc02; 
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
+        
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
         
         #bg-canvas { 
@@ -41,9 +40,8 @@
             50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
         }
 
-        /* تعديل الهيدر للشفافية */
         header { 
-            background: rgba(2, 6, 23, 0.4); padding: 15px 20px; display: flex; 
+            background: rgba(2, 6, 23, 0.5); padding: 15px 20px; display: flex; 
             justify-content: space-between; align-items: center; 
             border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000;
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -52,69 +50,49 @@
         .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
         .menu-icon { color: var(--primary); font-size: 1.5rem; cursor: pointer; }
 
-        /* تعديل الكروت لتصبح زجاجية شفافة */
-        .info-card, .mission-card, .tool-card, .roadmap-item, .result-panel, .modal-content, .gamified-header { 
-            background: var(--glass) !important; 
-            border: 1px solid var(--glass-border) !important; 
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px;
+        /* الكروت الشفافة */
+        .gamified-header, .info-card, .mission-card, .tool-card, .roadmap-item, .result-panel, .modal-content { 
+            background: var(--card) !important; 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
 
-        .gamified-header { 
-            display: flex; justify-content: space-around; align-items: center; 
-            padding: 12px; border-radius: 18px; margin-bottom: 20px; border-color: var(--duo) !important;
-        }
+        .gamified-header { display: flex; justify-content: space-around; align-items: center; padding: 12px; border-radius: 18px; margin-bottom: 20px; border-color: var(--duo) !important; }
         .streak-fire { color: #ff4500; font-weight: bold; animation: pulse-voice 1.5s infinite; }
+        .mission-card { border-radius: 15px; padding: 15px; margin-top: 15px; }
         .mission-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; margin-bottom: 8px; color: #94a3b8; }
         .mission-item.done { color: var(--duo); }
-
-        /* تعديل السايد بار للشفافية */
+        
         .sidebar { 
             position: fixed; right: -280px; top: 0; width: 280px; height: 100%; 
-            background: rgba(15, 23, 42, 0.5); border-left: 2px solid var(--primary); 
-            z-index: 2000; padding: 20px; backdrop-filter: blur(25px);
+            background: rgba(15, 23, 42, 0.8); border-left: 2px solid var(--primary); 
+            z-index: 2000; padding: 20px; backdrop-filter: blur(20px);
         }
         .sidebar.active { right: 0; }
         .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
 
-        .wallet-mini { background: rgba(255,255,255,0.05); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
+        .wallet-mini { background: rgba(255,255,255,0.05); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center; }
         .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 10px; }
-        .claim-btn { 
-            width: 100%; background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid #475569; 
-            padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: not-allowed;
-        }
+        .claim-btn { width: 100%; background: rgba(255,255,255,0.1); color: #94a3b8; border: 1px solid #475569; padding: 8px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .claim-btn.ready { background: var(--gold); color: black; border: none; cursor: pointer; animation: pulse-gold 2s infinite; }
 
         .container { padding: 20px; max-width: 500px; margin: auto; position: relative; z-index: 1; }
         .section { display: none; }
         .section.active { display: block; }
 
-        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
-        
-        .feature-item { display: flex; gap: 15px; margin-bottom: 20px; }
-        .feature-item i { color: var(--primary); font-size: 1.3rem; }
+        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--line); padding: 18px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
+        .info-card { border-radius: 20px; padding: 25px; margin-top: 25px; }
         .points-badge { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px; }
 
         .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); backdrop-filter: blur(5px); }
-        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .tool-card { text-align: center; cursor: pointer; padding: 15px; }
-        .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
+        .tool-card { padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
+        .roadmap-item { border-radius: 15px; padding: 15px; margin-bottom: 15px; border-right: 4px solid var(--primary) !important; position: relative; }
+        .quiz-option { background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
 
-        .roadmap-item { border-right: 4px solid var(--primary) !important; position: relative; }
-        .progress-bar { width: 100%; height: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-top: 5px; }
-        .progress-fill { height: 100%; transition: 1.5s ease-in-out; }
-
-        #aiLoading { display: none; text-align: center; margin: 20px 0; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; display: inline-block; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .quiz-option { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); padding: 12px; border-radius: 10px; margin-top: 10px; cursor: pointer; text-align: right; }
-
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); }
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; }
-        .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
         @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
-        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
     </style>
 </head>
 <body>
@@ -142,7 +120,7 @@
 <div class="sidebar" id="sidebar">
     <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
     <div class="wallet-mini">
-        <i class="fa-solid fa-wallet" style="color:var(--gold);"></i>
+        <i class="fa-solid fa-wallet"></i>
         <div style="font-size:0.7rem; color:#94a3b8;">رصيد محفظة $SYNC</div>
         <div class="balance-val" id="sidebarBalance">0.00</div>
         <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
@@ -158,11 +136,15 @@
 <div class="container">
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
-        <div class="info-card" style="padding:25px;">
+        <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
             <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
             <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
             <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><div style="font-weight:bold;">تحليلات الفجوة</div><div style="font-size:0.8rem; color:#94a3b8;">لرصد تعثر الطلاب مبكراً.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-id-card"></i><div><div style="font-weight:bold;">هوية رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">لتوثيق المهارات لجهات التوظيف.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><div style="font-weight:bold;">تعلم متكيف</div><div style="font-size:0.8rem; color:#94a3b8;">تخصيص المحتوى لكل طالب.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-copyright"></i><div><div style="font-weight:bold;">حقوق رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">حماية الملكية الفكرية للمناهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-square-poll-vertical"></i><div><div style="font-weight:bold;">اختبارات ومكافآت</div><div style="font-size:0.8rem; color:#94a3b8;">حوّل مذاكرتك إلى عملات رقمية.</div></div></div>
         </div>
     </div>
 
@@ -178,124 +160,72 @@
             <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
             <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
         </div>
-        <div class="tools-grid">
-            <div class="tool-card" onclick="alert('جاري توليد البودكاست التعليمي...')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
-            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
-            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي (لربح النقاط)</div>
+        
+        <div class="tools-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="tool-card" onclick="alert('جاري توليد البودكاست...')"><i class="fa-solid fa-headphones" style="color:var(--primary);"></i>بودكاست</div>
+            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project" style="color:var(--primary);"></i>خرائط ذهنية</div>
+            <div class="tool-card" style="grid-column: span 2;" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check" style="color:var(--primary);"></i>بدء اختبار ذكي</div>
         </div>
 
-        <div class="mission-card" style="padding:15px; margin-top:15px;">
+        <div class="mission-card">
             <h4 style="color:var(--duo); font-size:0.85rem; margin-bottom:10px;"><i class="fa-solid fa-bolt"></i> المهام اليومية</h4>
             <div class="mission-item" id="m1"><i class="fa-regular fa-circle-check"></i> رفع ملف المنهج</div>
             <div class="mission-item" id="m2"><i class="fa-regular fa-circle"></i> اجتياز اختبار ذكي</div>
+            <div class="mission-item" id="m3"><i class="fa-regular fa-circle"></i> مراجعة خريطة ذهنية</div>
         </div>
 
-        <div id="aiLoading"><div class="loader"></div></div>
-        <div id="mapRes" class="result-panel" style="padding:20px; margin-top:20px;">
-            <div id="mapTitle" style="font-weight:bold; color:var(--primary);">العنوان</div>
-            <p>خريطة ذهنية ذكية للمحتوى...</p>
+        <div id="aiLoading" style="display:none; text-align:center; margin:20px;"><div class="loader" style="border:3px solid #f3f3f3; border-top:3px solid var(--primary); border-radius:50%; width:25px; height:25px; animation:spin 1s linear infinite; display:inline-block;"></div></div>
+        <div id="mapRes" class="result-panel" style="display:none; padding:20px; border-radius:20px; margin-top:20px;">
+            <div style="background:var(--primary); color:#000; padding:5px 15px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:10px;" id="mapTitle">العنوان</div>
+            <p style="font-size:0.8rem; color:#94a3b8;">تم توليد الخريطة الذهنية بنجاح.</p>
         </div>
-        <div id="quizRes" class="result-panel" style="padding:20px; margin-top:20px;">
-            <h4 id="quizTitle">الاختبار</h4>
-            <div class="quiz-option" onclick="awardPoints(600, this)">أ) الخيار الصحيح <span style="color:var(--success);">+600</span></div>
+        <div id="quizRes" class="result-panel" style="display:none; padding:20px; border-radius:20px; margin-top:20px;">
+            <h4 style="color:var(--primary); margin-bottom:10px;">اختبار سريع: <span id="quizTitle"></span></h4>
+            <div class="quiz-option" onclick="awardPoints(600, this)">أ) تقنية البلوكشين (Blockchain) <span style="color:var(--success);">+600</span></div>
         </div>
     </div>
 
     <div id="doctor" class="section">
-         <h3 style="margin-bottom:15px;"><i class="fa-solid fa-user-shield"></i> لوحة الدكتور</h3>
-         <div class="info-card" style="padding:20px;">
-            <p>تقرير الاستيعاب العام للطلاب يظهر هنا...</p>
-         </div>
+        <h3 style="margin-bottom:15px;"><i class="fa-solid fa-user-shield"></i> لوحة المحاضر</h3>
+        <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
+            <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
+            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary);"></i>
+            <div id="docUpStatus">رفع المرجع الرسمي</div>
+        </div>
+        <div class="info-card">
+            <h4>📊 تقرير الاستيعاب العام</h4>
+            <div style="width:100%; height:8px; background:rgba(255,255,255,0.1); border-radius:10px; margin-top:10px; overflow:hidden;"><div style="width:35%; height:100%; background:var(--danger);"></div></div>
+        </div>
     </div>
 
     <div id="settings" class="section">
-         <h3 style="margin-bottom:20px;">الإعدادات</h3>
-         <div class="roadmap-item" style="padding:15px;">
-            <h4><i class="fa-solid fa-map-location-dot"></i> خارطة الطريق</h4>
-            <p>المرحلة 1: التوأم الرقمي...</p>
-         </div>
+        <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
+        <div class="roadmap-container">
+            <div class="roadmap-item"><h4>المرحلة 1: التوأم الرقمي</h4><p>نسخة افتراضية لمهارات الطالب.</p></div>
+            <div class="roadmap-item"><h4>المرحلة 2: غرف المذاكرة</h4><p>مساحات جماعية ذكية.</p></div>
+        </div>
     </div>
 </div>
 
 <div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
 
 <script>
-    let points = 450;
-    let balance = 0.00;
-    let isFile = false;
-    let nameF = "";
-
+    let points = 450; let balance = 0.00; let isFile = false; let nameF = ""; const synth = window.speechSynthesis;
+    function speak(text) { if (synth.speaking) synth.cancel(); const utter = new SpeechSynthesisUtterance(text); utter.lang = 'ar-SA'; synth.speak(utter); }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-    function showSection(id) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.getElementById('sidebar').classList.remove('active');
-    }
-
-    // جزيئات الخلفية (مهمة جداً لرؤية الشفافية)
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    function initParticles() {
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        particles = [];
-        for(let i=0; i<60; i++) {
-            particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5, size: Math.random()*2});
-        }
-    }
-    function drawParticles() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.4)";
-        ctx.strokeStyle = "rgba(34, 211, 238, 0.1)";
-        particles.forEach((p, i) => {
-            p.x += p.vx; p.y += p.vy;
-            if(p.x<0 || p.x>canvas.width) p.vx*=-1;
-            if(p.y<0 || p.y>canvas.height) p.vy*=-1;
-            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-        });
-        requestAnimationFrame(drawParticles);
-    }
-    window.addEventListener('resize', initParticles);
-    initParticles(); drawParticles();
-
-    // باقي الدوال الأصلية (File, AI, Wallet, Modal...)
-    function handleFile(input) {
-        if(input.files[0]) {
-            isFile = true; nameF = input.files[0].name;
-            document.getElementById('upStatus').innerHTML = "✅ " + nameF;
-        }
-    }
-
-    function runAI(type) {
-        if(!isFile) return alert("ارفع ملف أولاً!");
-        document.getElementById('aiLoading').style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('aiLoading').style.display = 'none';
-            document.getElementById(type === 'map' ? 'mapRes' : 'quizRes').style.display = 'block';
-        }, 1000);
-    }
-
-    function awardPoints(amount, el) {
-        el.style.backgroundColor = 'rgba(16, 185, 129, 0.2)';
-        points += amount;
-        document.getElementById('studentPoints').innerText = points;
-        if(points >= 1000) document.getElementById('claimBtn').classList.add('ready');
-    }
-
-    function mintFromSidebar() {
-        if (points < 1000) return;
-        balance = (parseFloat(balance) + 10.0).toFixed(2);
-        points -= 1000;
-        document.getElementById('sidebarBalance').innerText = balance;
-        document.getElementById('studentPoints').innerText = points;
-    }
-
-    function openModal(id) {
-        document.getElementById('modalBody').innerHTML = "معلومات الدوري الماسي والتحديات...";
-        document.getElementById('infoModal').style.display = 'flex';
-    }
+    function showSection(id) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.getElementById('sidebar').classList.remove('active'); }
+    function handleFile(input) { if(input.files[0]) { isFile = true; nameF = input.files[0].name.split('.')[0]; document.getElementById('upStatus').innerHTML = "✅ " + input.files[0].name; document.getElementById('mapTitle').innerText = nameF; document.getElementById('quizTitle').innerText = nameF; document.getElementById('m1').style.color = '#58cc02'; } }
+    function runAI(type) { if(!isFile) return alert("ارفع ملف أولاً!"); document.getElementById('aiLoading').style.display = 'block'; setTimeout(() => { document.getElementById('aiLoading').style.display = 'none'; document.getElementById(type === 'map' ? 'mapRes' : 'quizRes').style.display = 'block'; if(type === 'map') document.getElementById('m3').style.color = '#58cc02'; }, 1500); }
+    function awardPoints(amount, el) { el.style.backgroundColor = 'rgba(16, 185, 129, 0.3)'; points += amount; document.getElementById('studentPoints').innerText = points; document.getElementById('m2').style.color = '#58cc02'; updateClaimButton(); }
+    function updateClaimButton() { if (points >= 1000) document.getElementById('claimBtn').classList.add('ready'); }
+    function mintFromSidebar() { if (points < 1000) return; balance = (parseFloat(balance) + 10.0).toFixed(2); points -= 1000; document.getElementById('sidebarBalance').innerText = balance; document.getElementById('studentPoints').innerText = points; }
     
-    function startVoiceRecognition() { alert("تحدث الآن..."); }
+    // محرك الجزيئات
+    const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
+    function init() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; particles = []; for(let i=0; i<70; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5, size: Math.random()*2}); }
+    function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = "rgba(34, 211, 238, 0.4)"; particles.forEach(p => { p.x+=p.vx; p.y+=p.vy; if(p.x<0 || p.x>canvas.width) p.vx*=-1; if(p.y<0 || p.y>canvas.height) p.vy*=-1; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); }); requestAnimationFrame(animate); }
+    window.onload = () => { init(); animate(); };
+    function startVoiceRecognition() { speak("أنا أسمعك"); }
 </script>
 </body>
 </html>
