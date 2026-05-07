@@ -58,7 +58,7 @@
         .streak-fire { color: #ff4500; font-weight: bold; animation: pulse-voice 1.5s infinite; }
         .mission-card { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 15px; margin-top: 15px; backdrop-filter: blur(10px); }
         .mission-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; margin-bottom: 8px; color: #94a3b8; }
-        .mission-item.done { color: var(--duo); }
+        .mission-item.done { color: var(--duo); font-weight: bold; }
         .mission-item i { font-size: 1rem; }
 
         .sidebar { 
@@ -232,9 +232,10 @@
             <h4 style="color:var(--duo); font-size:0.85rem; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
                 <i class="fa-solid fa-bolt"></i> المهام اليومية المستهدفة
             </h4>
-            <div class="mission-item" id="m1"><i class="fa-regular fa-circle-check"></i> رفع ملف المنهج لهذا اليوم</div>
-            <div class="mission-item" id="m2"><i class="fa-regular fa-circle"></i> اجتياز اختبار ذكي بنسبة 100%</div>
-            <div class="mission-item" id="m3"><i class="fa-regular fa-circle"></i> مراجعة خريطة ذهنية واحدة</div>
+            <div class="mission-item" id="task-upload"><i class="fa-regular fa-circle"></i> رفع ملف المنهج لهذا اليوم</div>
+            <div class="mission-item" id="task-map"><i class="fa-regular fa-circle"></i> مراجعة خريطة ذهنية واحدة</div>
+            <div class="mission-item" id="task-flash"><i class="fa-regular fa-circle"></i> مراجعة البطاقات التعليمية</div>
+            <div class="mission-item" id="task-quiz"><i class="fa-regular fa-circle"></i> اجتياز اختبار ذكي بنسبة 100%</div>
         </div>
 
         <div id="aiLoading"><div class="loader"></div><div style="font-size:0.8rem; color:var(--primary); margin-top:5px;" id="loadingText">جاري المعالجة...</div></div>
@@ -339,7 +340,6 @@
     let nameF = "";
     const synth = window.speechSynthesis;
 
-    // بيانات البطاقات التعليمية كمثال
     const flashcardsData = [
         { q: "ما هي المهمة الأساسية لـ EduSync؟", a: "مزامنة المنهج مع قدرات الطالب باستخدام الذكاء الاصطناعي." },
         { q: "كيف يتم ضمان ملكية المحتوى؟", a: "عن طريق تسجيل هاش الملف على البلوكشين." },
@@ -353,6 +353,15 @@
         utter.lang = 'ar-SA';
         utter.rate = 0.9;
         synth.speak(utter);
+    }
+
+    function completeTask(taskId, text) {
+        const el = document.getElementById(taskId);
+        if(el && !el.classList.contains('done')) {
+            el.classList.add('done');
+            el.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${text}`;
+            el.style.color = "var(--duo)";
+        }
     }
 
     function generateNextCard() {
@@ -391,14 +400,12 @@
     }
 
     function awardPoints(amount, el) {
+        if(el.style.backgroundColor === 'rgb(16, 185, 129)') return;
         el.style.backgroundColor = '#10b981';
         points += amount;
         document.getElementById('studentPoints').innerText = points;
         
-        const m2 = document.getElementById('m2');
-        m2.style.color = '#58cc02';
-        m2.innerHTML = '<i class="fa-solid fa-circle-check"></i> اجتياز اختبار ذكي بنسبة 100%';
-
+        completeTask('task-quiz', 'اجتياز اختبار ذكي بنسبة 100%');
         updateClaimButton();
         if(points >= 1000) speak("يمكنك الآن سحب العملات");
     }
@@ -521,9 +528,7 @@
             document.getElementById('upStatus').innerHTML = "✅ " + input.files[0].name;
             document.getElementById('mapTitle').innerText = nameF;
             document.getElementById('quizTitle').innerText = nameF;
-            const m1 = document.getElementById('m1');
-            m1.style.color = '#58cc02';
-            m1.innerHTML = '<i class="fa-solid fa-circle-check"></i> رفع ملف المنهج لهذا اليوم';
+            completeTask('task-upload', 'رفع ملف المنهج لهذا اليوم');
         }
     }
 
@@ -534,25 +539,24 @@
     function runAI(type) {
         if(!isFile) return alert("ارفع ملف أولاً!");
         document.getElementById('aiLoading').style.display = 'block';
-        // إخفاء جميع اللوحات أولاً
         document.getElementById('mapRes').style.display = 'none';
         document.getElementById('quizRes').style.display = 'none';
         document.getElementById('flashRes').style.display = 'none';
 
         setTimeout(() => {
             document.getElementById('aiLoading').style.display = 'none';
-            if(type === 'map') document.getElementById('mapRes').style.display = 'block';
-            if(type === 'quiz') document.getElementById('quizRes').style.display = 'block';
+            if(type === 'map') {
+                document.getElementById('mapRes').style.display = 'block';
+                completeTask('task-map', 'مراجعة خريطة ذهنية واحدة');
+            }
+            if(type === 'quiz') {
+                document.getElementById('quizRes').style.display = 'block';
+            }
             if(type === 'flash') {
                 document.getElementById('flashRes').style.display = 'block';
                 document.getElementById('flashQ').innerText = flashcardsData[0].q;
                 document.getElementById('flashA').innerText = flashcardsData[0].a;
-            }
-
-            if(type === 'map') {
-                 const m3 = document.getElementById('m3');
-                 m3.style.color = '#58cc02';
-                 m3.innerHTML = '<i class="fa-solid fa-circle-check"></i> مراجعة خريطة ذهنية واحدة';
+                completeTask('task-flash', 'مراجعة البطاقات التعليمية');
             }
         }, 1200);
     }
