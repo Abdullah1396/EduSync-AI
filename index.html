@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -50,10 +49,7 @@
         }
         .logo-box { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
-        
-        .header-actions {
-            display: flex; align-items: center; gap: 15px;
-        }
+        .header-actions { display: flex; align-items: center; gap: 15px; }
         .lang-toggle {
             background: rgba(34, 211, 238, 0.1);
             border: 1px solid var(--primary);
@@ -69,23 +65,14 @@
             backdrop-filter: blur(10px);
             white-space: nowrap;
         }
-        .lang-toggle:hover {
-            background: rgba(34, 211, 238, 0.2);
-            transform: scale(1.05);
-        }
-        .lang-toggle i {
-            font-size: 1rem;
-        }
-
+        .lang-toggle:hover { background: rgba(34, 211, 238, 0.2); transform: scale(1.05); }
         .menu-icon { color: var(--primary); font-size: 1.5rem; cursor: pointer; }
 
         .gamified-header { 
             display: flex; justify-content: space-around; align-items: center; 
             background: rgba(88, 204, 2, 0.1); border: 1px solid var(--duo); 
             padding: 12px; border-radius: 18px; margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-            flex-wrap: wrap;
-            gap: 10px;
+            backdrop-filter: blur(10px); flex-wrap: wrap; gap: 10px;
         }
         .streak-fire { color: #ff4500; font-weight: bold; animation: pulse-voice 1.5s infinite; }
 
@@ -201,23 +188,14 @@
             background: linear-gradient(135deg, #f59e0b, #d97706);
             color: #000;
         }
-        .wallet-btn.primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4);
-        }
+        .wallet-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4); }
         .wallet-btn.secondary {
             background: rgba(255,255,255,0.05);
             border: 1px solid #475569;
             color: white;
         }
-        .wallet-btn.secondary:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: #94a3b8;
-        }
-        .wallet-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        .wallet-btn.secondary:hover { background: rgba(255,255,255,0.1); border-color: #94a3b8; }
+        .wallet-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .tx-history { margin-top: 25px; border-top: 1px solid var(--line); padding-top: 15px; }
         .tx-title { font-size: 0.8rem; color: var(--primary); font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
@@ -240,27 +218,8 @@
         
         .points-badge { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 15px; backdrop-filter: blur(5px); }
 
-        /* ============ المتجر ============ */
-        .store-container {
-            margin-top: 20px;
-        }
-        .store-title {
-            font-size: 1.3rem;
-            color: var(--purple);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
-        }
-        .store-title i {
-            color: var(--pink);
-        }
-        .store-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
+        /* المتجر */
+        .store-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
         .store-card {
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.05));
             border: 1px solid rgba(168, 85, 247, 0.3);
@@ -274,84 +233,18 @@
             position: relative;
             overflow: hidden;
         }
-        .store-card:hover {
-            border-color: var(--purple);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
-        }
-        .store-card.featured {
-            border-color: var(--gold);
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05));
-        }
-        .store-card.featured::after {
-            content: '🔥 الأكثر مبيعاً';
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--gold);
-            color: #000;
-            font-size: 0.6rem;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-        .store-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-        .store-icon.excellence {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #000;
-        }
-        .store-icon.nft {
-            background: linear-gradient(135deg, #a855f7, #7c3aed);
-            color: white;
-        }
-        .store-icon.summary {
-            background: linear-gradient(135deg, #06b6d4, #0891b2);
-            color: white;
-        }
-        .store-info {
-            flex: 1;
-        }
-        .store-name {
-            font-weight: bold;
-            font-size: 0.95rem;
-            margin-bottom: 5px;
-        }
-        .store-desc {
-            font-size: 0.7rem;
-            color: #94a3b8;
-            line-height: 1.4;
-        }
-        .store-price {
-            background: rgba(255,255,255,0.05);
-            padding: 8px 15px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            color: var(--gold);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            white-space: nowrap;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .store-price:hover {
-            background: var(--gold);
-            color: #000;
-            border-color: var(--gold);
-        }
-        .store-price i {
-            font-size: 0.7rem;
-        }
+        .store-card:hover { border-color: var(--purple); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2); }
+        .store-card.featured { border-color: var(--gold); background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); }
+        .store-card.featured::after { content: '🔥 الأكثر مبيعاً'; position: absolute; top: 10px; left: 10px; background: var(--gold); color: #000; font-size: 0.6rem; padding: 3px 10px; border-radius: 20px; font-weight: bold; }
+        .store-icon { width: 55px; height: 55px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        .store-icon.excellence { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; }
+        .store-icon.nft { background: linear-gradient(135deg, #a855f7, #7c3aed); color: white; }
+        .store-icon.summary { background: linear-gradient(135deg, #06b6d4, #0891b2); color: white; }
+        .store-info { flex: 1; }
+        .store-name { font-weight: bold; font-size: 0.95rem; margin-bottom: 5px; }
+        .store-desc { font-size: 0.7rem; color: #94a3b8; line-height: 1.4; }
+        .store-price { background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 25px; font-weight: bold; font-size: 0.8rem; color: var(--gold); border: 1px solid rgba(245, 158, 11, 0.3); white-space: nowrap; cursor: pointer; }
+        .store-price:hover { background: var(--gold); color: #000; }
 
         .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); backdrop-filter: blur(10px); }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -381,62 +274,14 @@
         .flashcard-front { background: var(--card); color: white; }
         .flashcard-back { background: var(--primary); color: #000; transform: rotateY(180deg); }
 
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
-        .modal-content { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; backdrop-filter: blur(20px); max-height: 80vh; overflow-y: auto; }
-        
-        .purchase-modal {
-            text-align: center;
-        }
-        .purchase-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-        .purchase-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .purchase-price {
-            font-size: 1rem;
-            color: var(--gold);
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        .confirm-btn {
-            background: linear-gradient(135deg, var(--purple), var(--pink));
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 5px;
-            font-size: 0.9rem;
-        }
-        .confirm-btn.success {
-            background: linear-gradient(135deg, var(--success), #059669);
-        }
-        .confirm-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(168, 85, 247, 0.5);
-        }
-        .cancel-btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid #475569;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            margin: 5px;
-            font-size: 0.9rem;
-        }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
+        .modal-content { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; backdrop-filter: blur(20px); }
 
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3); }
         .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
         @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
         @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
 
-        /* RTL/LTR support */
         html[dir="ltr"] .sidebar { right: auto; left: -320px; }
         html[dir="ltr"] .sidebar.active { left: 0; right: auto; }
         html[dir="ltr"] .roadmap-item { border-right: none; border-left: 4px solid var(--primary); }
@@ -444,72 +289,51 @@
         html[dir="ltr"] .roadmap-tag { left: auto; right: 10px; }
 
         .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--success);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-weight: bold;
-            z-index: 6000;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--success); color: white; padding: 12px 25px;
+            border-radius: 25px; font-weight: bold; z-index: 6000;
             animation: toastIn 0.5s ease-out, toastOut 0.5s ease-in 2.5s forwards;
             box-shadow: 0 5px 25px rgba(16, 185, 129, 0.5);
         }
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-        @keyframes toastOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        @media (max-width: 400px) {
-            .header-actions { gap: 8px; }
-            .lang-toggle { padding: 6px 10px; font-size: 0.7rem; }
-        }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
     </style>
 </head>
 <body>
 
 <canvas id="bg-canvas"></canvas>
 
-<!-- مودال الشراء -->
-<div class="modal" id="purchaseModal" onclick="closePurchaseModal()">
-    <div class="modal-content purchase-modal" onclick="event.stopPropagation()">
-        <div class="purchase-icon" id="purchaseIcon">🛒</div>
-        <div class="purchase-title" id="purchaseTitle">تأكيد الشراء</div>
-        <p style="color:#94a3b8; font-size:0.8rem; margin-bottom:10px;" id="purchaseDesc"></p>
-        <div class="purchase-price" id="purchasePrice">200 SYNC$</div>
-        <p style="font-size:0.7rem; color:#94a3b8; margin-bottom:15px;" id="purchaseBalance"></p>
-        <button class="confirm-btn" id="confirmPurchaseBtn" onclick="confirmPurchase()">تأكيد الشراء</button>
-        <button class="cancel-btn" onclick="closePurchaseModal()">إلغاء</button>
-    </div>
-</div>
-
-<!-- مودال نجاح الشراء -->
-<div class="modal" id="successModal" onclick="closeSuccessModal()">
-    <div class="modal-content purchase-modal" onclick="event.stopPropagation()">
-        <div class="purchase-icon">✅</div>
-        <div class="purchase-title" style="color:var(--success);" id="successTitle">تم الشراء بنجاح!</div>
-        <p style="color:#94a3b8; font-size:0.8rem; margin-bottom:15px;" id="successMsg"></p>
-        <button class="confirm-btn success" onclick="closeSuccessModal()">حسناً</button>
-    </div>
-</div>
-
-<!-- مودال المعلومات -->
 <div class="modal" id="infoModal" onclick="this.style.display='none'">
     <div class="modal-content" onclick="event.stopPropagation()">
         <div id="modalBody"></div>
-        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;" data-i18n="close">إغلاق</button>
+        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">إغلاق</button>
+    </div>
+</div>
+
+<div class="modal" id="purchaseModal" onclick="closePurchaseModal()">
+    <div class="modal-content" onclick="event.stopPropagation()" style="text-align:center;">
+        <div style="font-size:3rem; margin-bottom:15px;" id="purchaseIcon">🛒</div>
+        <div style="font-size:1.2rem; font-weight:bold; margin-bottom:5px;" id="purchaseTitle">تأكيد الشراء</div>
+        <p style="color:#94a3b8; font-size:0.8rem; margin-bottom:10px;" id="purchaseDesc"></p>
+        <div style="font-size:1rem; color:var(--gold); margin-bottom:20px; font-weight:bold;" id="purchasePrice">200 SYNC$</div>
+        <p style="font-size:0.7rem; color:#94a3b8; margin-bottom:15px;" id="purchaseBalance"></p>
+        <button onclick="confirmPurchase()" style="background:linear-gradient(135deg, #a855f7, #ec4899); color:white; border:none; padding:12px 25px; border-radius:25px; font-weight:bold; cursor:pointer; margin:5px;" id="confirmPurchaseBtn">تأكيد الشراء</button>
+        <button onclick="closePurchaseModal()" style="background:rgba(255,255,255,0.1); color:white; border:1px solid #475569; padding:12px 25px; border-radius:25px; cursor:pointer; margin:5px;">إلغاء</button>
+    </div>
+</div>
+
+<div class="modal" id="successModal" onclick="closeSuccessModal()">
+    <div class="modal-content" onclick="event.stopPropagation()" style="text-align:center;">
+        <div style="font-size:3rem; margin-bottom:15px;">✅</div>
+        <div style="font-size:1.2rem; font-weight:bold; color:var(--success); margin-bottom:5px;" id="successTitle">تم الشراء بنجاح!</div>
+        <p style="color:#94a3b8; font-size:0.8rem; margin-bottom:15px;" id="successMsg"></p>
+        <button onclick="closeSuccessModal()" style="background:var(--success); color:white; border:none; padding:12px 25px; border-radius:25px; font-weight:bold; cursor:pointer;">حسناً</button>
     </div>
 </div>
 
 <header>
     <div class="logo-box">
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img" alt="Logo">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
         <div>
             <div style="font-size: 1rem; font-weight: 700;">EduSync AI</div>
             <div style="font-size: 0.65rem; color: #94a3b8;" data-i18n="subtitle">المزامنة التعليمية الذكية</div>
@@ -527,7 +351,6 @@
 <div class="sidebar" id="sidebar">
     <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer; margin-bottom:10px;" onclick="toggleSidebar()">&times;</div>
     
-    <!-- المحفظة المحسنة -->
     <div class="wallet-premium">
         <div class="wallet-header">
             <span class="wallet-label">💰 My Wallet</span>
@@ -572,15 +395,34 @@
 </div>
 
 <div class="container">
-    <!-- الرئيسية -->
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;" data-i18n="welcome">مرحباً بك في EduSync 🚀</h3>
         
         <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;" data-i18n="whyEduSync">لماذا EduSync AI؟ ✨</h4>
-            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;" data-i18n="feature1Title">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;" data-i18n="feature1Desc">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;" data-i18n="feature2Title">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;" data-i18n="feature2Desc">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><div style="font-weight:bold;" data-i18n="feature3Title">تحليلات الفجوة</div><div style="font-size:0.8rem; color:#94a3b8;" data-i18n="feature3Desc">لرصد تعثر الطلاب مبكراً.</div></div></div>
-            <div class="feature-item"><i class="fa-solid fa-id-card"></i><div><div style="font-weight:bold;" data-i18n="feature4Title">هوية رقمية</div><div style="font-size:0.8rem; color:#94a3b8;" data-i18n="feature4Desc">لتوثيق المهارات لجهات التوظيف.</div></div></div>
-            <div
-```
+            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><div style="font-weight:bold;">تحليلات الفجوة</div><div style="font-size:0.8rem; color:#94a3b8;">لرصد تعثر الطلاب مبكراً.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-id-card"></i><div><div style="font-weight:bold;">هوية رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">لتوثيق المهارات لجهات التوظيف.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><div style="font-weight:bold;">تعلم متكيف</div><div style="font-size:0.8rem; color:#94a3b8;">تخصيص المحتوى لكل طالب.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-copyright"></i><div><div style="font-weight:bold;">حقوق رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">حماية الملكية الفكرية للمناهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-square-poll-vertical"></i><div><div style="font-weight:bold;">اختبارات ومكافآت</div><div style="font-size:0.8rem; color:#94a3b8;">حوّل مذاكرتك إلى عملات رقمية.</div></div></div>
+        </div>
+    </div>
+
+    <div id="student" class="section">
+        <div class="gamified-header">
+            <div class="streak-fire" title="أيام المذاكرة المتتالية"><i class="fa-solid fa-fire"></i> 7 أيام</div>
+            <div class="points-badge" style="margin-bottom:0;"><i class="fa-solid fa-star"></i> <span id="studentPoints">450</span></div>
+            <div style="color:var(--duo); font-weight:bold; font-size:0.75rem; cursor:pointer;" onclick="openModal('league')"><i class="fa-solid fa-trophy"></i> الدوري الماسي</div>
+        </div>
+
+        <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
+        <div class="upload-box" onclick="document.getElementById('fInput').click()">
+            <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
+            <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
+        </div>
+
+        <div class="mission-card">
+            <h4 style="color: var(--primary); font-size: 0.9rem; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="fa-solid fa-bolt"></i> مستوى إنجاز المهام: <span id="
