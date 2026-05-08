@@ -6,71 +6,66 @@
     <title>EduSync AI | الهاكاثون</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id="bg-canvas"></canvas>
 
-    <header>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img" style="width:40px; border-radius:5px;">
-            <div>
-                <b style="display:block; font-size:0.9rem;">EduSync AI</b>
-                <small style="color:#22d3ee; font-size:0.7rem;">المزامنة التعليمية الذكية</small>
+<canvas id="bg-canvas"></canvas>
+
+<div class="modal" id="infoModal" onclick="this.style.display='none'">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div id="modalBody"></div>
+        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">إغلاق</button>
+    </div>
+</div>
+
+<header>
+    <div class="logo-box">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+        <div>
+            <div style="font-size: 1rem; font-weight: 700;">EduSync AI</div>
+            <div style="font-size: 0.65rem; color: #94a3b8;">المزامنة التعليمية الذكية</div>
+        </div>
+    </div>
+    <div class="menu-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
+</header>
+
+<div class="sidebar" id="sidebar">
+    <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
+    <div class="wallet-mini">
+        <i class="fa-solid fa-wallet"></i>
+        <div style="font-size:0.7rem; color:#94a3b8;">رصيد محفظة $SYNC</div>
+        <div class="balance-val" id="sidebarBalance">0.00</div>
+        <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
+            <i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)
+        </button>
+    </div>
+    <div class="tx-history">
+        <div class="tx-title"><i class="fa-solid fa-receipt"></i> سجل التحويلات</div>
+        <div id="txList">
+            <div id="emptyTx" style="font-size:0.65rem; color:#475569; text-align:center; padding:15px;">لا توجد عمليات سابقة</div>
+        </div>
+    </div>
+    <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
+    <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
+    <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
+    <div class="sidebar-item" onclick="showSection('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</div>
+</div>
+
+<div class="container">
+    <div id="home" class="section active">
+        <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
+        <div class="info-card">
+            <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
             </div>
-        </div>
-        <i class="fa-solid fa-bars" onclick="toggleSidebar()" style="color:#22d3ee; cursor:pointer; font-size:1.2rem;"></i>
-    </header>
-
-    <div class="sidebar" id="sidebar">
-        <div class="wallet-mini">
-            <i class="fa-solid fa-wallet" style="color:#f59e0b;"></i>
-            <div style="font-size:0.7rem;">رصيد $SYNC</div>
-            <div class="balance-val" id="sidebarBalance" style="color:#f59e0b; font-weight:bold;">0.00</div>
-            <button class="claim-btn ready" onclick="mintFromSidebar()" style="background:#f59e0b; color:#000; border:none; border-radius:5px; padding:5px; width:100%; font-size:0.7rem; cursor:pointer;">Claim (1000 pts)</button>
-        </div>
-        <div class="sidebar-item" onclick="showSection('student')" style="padding:10px; border-bottom:1px solid #1e293b; cursor:pointer;">بوابة الطالب</div>
-        <div class="sidebar-item" onclick="showSection('store')" style="padding:10px; border-bottom:1px solid #1e293b; cursor:pointer;">متجر التميز</div>
+    </div>
+    
     </div>
 
-    <main class="container" style="padding:20px; max-width:500px; margin:auto;">
-        
-        <div id="student" class="section active">
-            <div style="background:rgba(34, 211, 238, 0.1); border:1px solid #22d3ee; border-radius:15px; padding:15px; text-align:center; margin-bottom:20px;">
-                <div style="font-size:0.8rem; color:#94a3b8;">نقاطك الحالية</div>
-                <div id="studentPoints" style="font-size:1.5rem; font-weight:bold; color:#22d3ee;">450</div>
-            </div>
-            <button onclick="showSection('store')" style="width:100%; background:#22d3ee; color:#000; border:none; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">
-                <i class="fa-solid fa-cart-shopping"></i> دخول متجر التميز
-            </button>
-        </div>
+<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
 
-        <div id="store" class="section" style="display:none;">
-            <h3 style="color:#22d3ee; margin-bottom:20px; text-align:center;">متجر التميز $SYNC</h3>
-            
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-                <div style="background:rgba(15, 23, 42, 0.5); border:1px solid #1e293b; padding:15px; border-radius:15px; text-align:center;">
-                    <i class="fa-solid fa-file-pdf" style="color:#f43f5e; font-size:2rem;"></i>
-                    <div style="font-size:0.8rem; margin:10px 0;">ملخص شابتر 1</div>
-                    <div style="color:#f59e0b; font-weight:bold; margin-bottom:10px;">50 $SYNC</div>
-                    <button onclick="buyItem('الملخص', 50)" style="background:#22d3ee; color:#000; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">شراء</button>
-                </div>
-                <div style="background:rgba(15, 23, 42, 0.5); border:1px solid #1e293b; padding:15px; border-radius:15px; text-align:center;">
-                    <i class="fa-solid fa-certificate" style="color:#f59e0b; font-size:2rem;"></i>
-                    <div style="font-size:0.8rem; margin:10px 0;">شهادة NFT موثقة</div>
-                    <div style="color:#f59e0b; font-weight:bold; margin-bottom:10px;">200 $SYNC</div>
-                    <button onclick="buyItem('الشهادة', 200)" style="background:#22d3ee; color:#000; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">امتلاك</button>
-                </div>
-            </div>
-            
-            <button onclick="showSection('student')" style="margin-top:20px; background:none; border:1px solid #475569; color:#94a3b8; padding:8px; border-radius:8px; width:100%; cursor:pointer;">رجوع للرئيسية</button>
-        </div>
-    </main>
+<script src="script.js"></script>
 
-    <div class="chat-float" style="position:fixed; bottom:20px; left:20px; background:#22d3ee; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#000; cursor:pointer;">
-        <i class="fa-solid fa-microphone"></i>
-    </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
