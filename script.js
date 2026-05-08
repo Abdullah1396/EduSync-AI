@@ -135,7 +135,6 @@ function mintFromSidebar() {
     }, 1000);
 }
 
-// كود الجسيمات المتحركة (Particles Background)
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
