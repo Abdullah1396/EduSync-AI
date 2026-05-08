@@ -3,25 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | المزامنة الذكية</title>
+    <title>EduSync AI | الهاكاثون</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <canvas id="bg-canvas"></canvas>
 
-<header>
-    <div style="display:flex; align-items:center; gap:10px;">
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" width="40" style="border-radius:5px;">
-        <span style="font-weight:bold;">EduSync AI</span>
+<div class="modal" id="infoModal" onclick="this.style.display='none'">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div id="modalBody"></div>
+        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">إغلاق</button>
     </div>
-    <i class="fa-solid fa-bars" style="color:#22d3ee; cursor:pointer; font-size:1.5rem;" onclick="toggleSidebar()"></i>
+</div>
+
+<header>
+    <div class="logo-box">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+        <div>
+            <div style="font-size: 1rem; font-weight: 700;">EduSync AI</div>
+            <div style="font-size: 0.65rem; color: #94a3b8;">المزامنة التعليمية الذكية</div>
+        </div>
+    </div>
+    <div class="menu-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
 </header>
 
 <div class="sidebar" id="sidebar">
-    <div style="text-align:left; font-size:2rem; cursor:pointer; color:#22d3ee;" onclick="toggleSidebar()">&times;</div>
+    <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
+    
+    <div class="wallet-mini">
+        <i class="fa-solid fa-wallet"></i>
+        <div style="font-size:0.7rem; color:#94a3b8;">رصيد محفظة $SYNC</div>
+        <div class="balance-val" id="sidebarBalance">0.00</div>
+        <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
+            <i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)
+        </button>
+    </div>
+
+    <div class="tx-history">
+        <div class="tx-title">
+            <i class="fa-solid fa-receipt"></i> سجل التحويلات (History)
+        </div>
+        <div id="txList">
+            <div id="emptyTx" style="font-size:0.65rem; color:#475569; text-align:center; padding:15px; background: rgba(255,255,255,0.02); border-radius: 10px;">
+                <i class="fa-solid fa-timeline" style="display: block; font-size: 1.2rem; margin-bottom: 5px; opacity: 0.5;"></i>
+                لا توجد عمليات سابقة
+            </div>
+        </div>
+    </div>
+
+    <hr style="border:none; border-bottom:1px solid var(--line); margin:15px 0;">
+
     <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
     <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
@@ -30,41 +64,126 @@
 
 <div class="container">
     <div id="home" class="section active">
-        <div style="text-align:center; padding:40px 20px;">
-            <h2 style="color:#22d3ee; margin-bottom:15px;">مرحباً بك في آفاق التعليم الذكي 🚀</h2>
-            <p style="color:#94a3b8;">ابدأ رحلتك التعليمية المدعومة بالذكاء الاصطناعي والبلوكشين.</p>
+        <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
+        
+        <div class="info-card">
+            <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
+            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><div style="font-weight:bold;">تحليلات الفجوة</div><div style="font-size:0.8rem; color:#94a3b8;">لرصد تعثر الطلاب مبكراً.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-id-card"></i><div><div style="font-weight:bold;">هوية رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">لتوثيق المهارات لجهات التوظيف.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-wand-magic-sparkles"></i><div><div style="font-weight:bold;">تعلم متكيف</div><div style="font-size:0.8rem; color:#94a3b8;">تخصيص المحتوى لكل طالب.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-copyright"></i><div><div style="font-weight:bold;">حقوق رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">حماية الملكية الفكرية للمناهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-square-poll-vertical"></i><div><div style="font-weight:bold;">اختبارات ومكافآت</div><div style="font-size:0.8rem; color:#94a3b8;">حوّل مذاكرتك إلى عملات رقمية.</div></div></div>
         </div>
     </div>
 
     <div id="student" class="section">
-        <div class="upload-box" onclick="alert('يرجى اختيار ملف المنهج')">
-            <i class="fa-solid fa-cloud-arrow-up" style="font-size:3rem; color:#22d3ee; margin-bottom:15px;"></i>
-            <p>ارفع كتابك أو ملخصك (PDF)</p>
+        <div class="gamified-header">
+            <div class="streak-fire" title="أيام المذاكرة المتتالية"><i class="fa-solid fa-fire"></i> 7 أيام</div>
+            <div class="points-badge" style="margin-bottom:0;"><i class="fa-solid fa-star"></i> <span id="studentPoints">450</span></div>
+            <div style="color:var(--duo); font-weight:bold; font-size:0.75rem; cursor:pointer;" onclick="openModal('league')"><i class="fa-solid fa-trophy"></i> الدوري الماسي</div>
         </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-            <div class="tool-card"><i class="fa-solid fa-headphones"></i> بودكاست</div>
-            <div class="tool-card"><i class="fa-solid fa-diagram-project"></i> خرائط</div>
-            <div class="tool-card"><i class="fa-solid fa-layer-group"></i> بطاقات</div>
-            <div class="tool-card"><i class="fa-solid fa-spell-check"></i> اختبار</div>
+
+        <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
+        <div class="upload-box" onclick="document.getElementById('fInput').click()">
+            <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
+            <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
+        </div>
+
+        <div class="mission-card">
+            <h4 style="color: var(--primary); font-size: 0.9rem; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="fa-solid fa-bolt"></i> مستوى إنجاز المهام: <span id="progress-text" style="color: var(--duo);">0%</span>
+            </h4>
+            <div style="position: relative; display: flex; justify-content: space-between; align-items: center; max-width: 400px; margin: 0 auto 10px;">
+                <div style="position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: var(--line); transform: translateY(-50%); z-index: 1;"></div>
+                <div id="progress-line" style="position: absolute; top: 50%; left: 0; width: 0%; height: 3px; background: var(--duo); transform: translateY(-50%); z-index: 2; transition: 0.8s ease;"></div>
+                <div class="task-circle" id="circle-pod" title="بودكاست"><i class="fa-solid fa-headphones"></i></div>
+                <div class="task-circle" id="circle-map" title="خرائط ذهنية"><i class="fa-solid fa-diagram-project"></i></div>
+                <div class="task-circle" id="circle-flash" title="بطاقات تعليمية"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="task-circle" id="circle-quiz" title="اختبار ذكي"><i class="fa-solid fa-spell-check"></i></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.6rem; color: #94a3b8; max-width: 420px; margin: 0 auto;">
+                <span>بودكاست</span><span>خرائط</span><span>بطاقات</span><span>اختبار</span>
+            </div>
+        </div>
+
+        <div class="tools-grid" style="margin-top: 20px;">
+            <div class="tool-card" onclick="startPodcast()"><i class="fa-solid fa-headphones"></i>بودكاست</div>
+            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
+            <div class="tool-card" onclick="runAI('flash')"><i class="fa-solid fa-layer-group"></i>بطاقات تعليمية</div>
+            <div class="tool-card" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>بدء اختبار ذكي</div>
+        </div>
+
+        <div id="aiLoading"><div class="loader"></div><div style="font-size:0.8rem; color:var(--primary); margin-top:5px;" id="loadingText">جاري المعالجة...</div></div>
+        
+        <div id="flashRes" class="result-panel">
+            <div class="flashcard-container" onclick="this.children[0].classList.toggle('flipped')">
+                <div class="flashcard">
+                    <div class="flashcard-front" id="flashQ">اضغط للبدء</div>
+                    <div class="flashcard-back" id="flashA">الإجابة تظهر هنا</div>
+                </div>
+            </div>
+            <button class="blue-btn" onclick="generateNextCard()" style="padding:10px; font-size:0.75rem;">البطاقة التالية</button>
+        </div>
+
+        <div id="mapRes" class="result-panel">
+            <div style="background:var(--primary); color:#000; padding:8px 20px; border-radius:50px; display:inline-block; font-weight:bold; margin-bottom:15px;" id="mapTitle">العنوان</div>
+            <div style="text-align:center;">
+                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">مفاهيم الوحدة الأولى</div>
+                <div style="background:white; color:#000; padding:10px; border-radius:10px; margin:5px; font-size:0.8rem; display:inline-block; border-bottom:3px solid var(--primary);">العلاقات والروابط</div>
+            </div>
+        </div>
+        <div id="quizRes" class="result-panel">
+            <h4 style="color:var(--primary); margin-bottom:15px;">اختبار سريع: <span id="quizTitle"></span></h4>
+            <p style="font-size:0.9rem; margin-bottom:15px;" id="qVoiceText">س١: ما هي التقنية المستخدمة لتأمين المنهج في EduSync؟</p>
+            <div class="quiz-option" onclick="awardPoints(600, this)">أ) تقنية البلوكشين (Blockchain). <span style="color:var(--success); font-size:0.7rem;">(+600 نقطة)</span></div>
+            <div class="quiz-option" onclick="this.style.backgroundColor='#f43f5e'">ب) قواعد بيانات تقليدية فقط.</div>
         </div>
     </div>
 
     <div id="doctor" class="section">
-        <h3 style="margin-bottom:20px; color:#22d3ee;">لوحة تحكم الأستاذ</h3>
-        <div class="tool-card" style="text-align:right;">
-            <h4><i class="fa-solid fa-chart-line"></i> تقرير الاستيعاب</h4>
-            <p style="font-size:0.8rem; margin-top:10px;">تحليل ذكي للفجوات التعليمية لدى الطلاب.</p>
+        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
+        <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
+            <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
+            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
+            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي للدفعة</div>
+            <p style="font-size:0.65rem; color:#94a3b8;">سيتم توليد SHA-256 Hash ووضعه على البلوكشين</p>
+        </div>
+        <div class="info-card">
+            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تقرير الاستيعاب العام</h4>
+            <div class="progress-container"><div style="display: flex; justify-content: space-between; font-size: 0.75rem;"><span>تحليل شابتر 1</span><span style="color: var(--danger);">ضعيف (35%)</span></div><div class="progress-bar"><div class="progress-fill" style="width: 35%; background: var(--danger);"></div></div></div>
+            <button class="blue-btn" style="margin-top: 15px; font-size: 0.8rem;" onclick="alert('تم إرسال تنبيه مراجعة لجميع الطلاب!')">إرسال إشعار مراجعة</button>
         </div>
     </div>
 
     <div id="settings" class="section">
-        <h3 style="margin-bottom:20px;">الإعدادات العامة</h3>
-        <div class="sidebar-item"><i class="fa-solid fa-shield-halved"></i> الحماية والخصوصية</div>
-        <div class="sidebar-item"><i class="fa-solid fa-palette"></i> تخصيص المظهر</div>
+        <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
+        <div class="info-card" style="padding:0;">
+            <div class="sidebar-item" onclick="openModal('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('guide')"><span>إرشادات المستخدم</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+        </div>
+
+        <div class="info-card" style="margin-top: 20px; border: 1px dashed #f59e0b; background: rgba(245, 158, 11, 0.05); text-align: center; padding: 20px;">
+            <i class="fa-solid fa-handshake" style="font-size: 2rem; color: #f59e0b; margin-bottom: 10px;"></i>
+            <h4 style="color: #f59e0b; font-size: 0.9rem;">نرحب بالشراكات والرعايات</h4>
+            <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px; line-height: 1.5;">انضم إلى منظومة EduSync لدعم مستقبل التعليم الذكي وتحفيز الابتكار لدى الطلاب.</p>
+            <button class="blue-btn" style="margin-top: 15px; padding: 10px; font-size: 0.75rem; border-color: #f59e0b; color: #f59e0b; background: transparent; width: auto;" onclick="openModal('contact')">تواصل كشريك</button>
+        </div>
+
+        <h3 style="margin-top:30px; margin-bottom:15px; color:var(--primary);"><i class="fa-solid fa-map-location-dot"></i> Road Map Future</h3>
+        <div class="roadmap-container">
+            <div class="roadmap-item">
+                <span class="roadmap-tag">المرحلة 1</span>
+                <h4><i class="fa-solid fa-user-astronaut"></i> التوأم الرقمي (Digital Twin)</h4>
+                <p>نسخة افتراضية لمهارات الطالب تتنبأ بجاهزيته لسوق العمل بناءً على أدائه التعليمي.</p>
+            </div>
+            </div>
     </div>
 </div>
 
-<div class="chat-float" onclick="startVoice()"><i class="fa-solid fa-microphone"></i></div>
+<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
 
 <script src="script.js"></script>
 </body>
