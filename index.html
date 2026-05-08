@@ -3,402 +3,730 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | الهاكاثون النسخة المتكاملة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>EduSync AI | Ultimate Hackathon Edition 2026</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
+        /* --- 1. المتغيرات والأساسيات (Root & Base) --- */
         :root { 
             --primary: #22d3ee; 
+            --primary-dark: #0891b2;
+            --secondary: #818cf8;
             --bg: #020617; 
-            --card: rgba(15, 23, 42, 0.3); 
-            --line: rgba(30, 41, 59, 0.4); 
+            --card: rgba(15, 23, 42, 0.4); 
+            --card-hover: rgba(30, 41, 59, 0.6);
+            --line: rgba(30, 41, 59, 0.5); 
             --danger: #f43f5e; 
             --success: #10b981; 
             --gold: #f59e0b; 
             --duo: #58cc02; 
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
-        
-        body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
-        
-        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Cairo', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
+
+        body { 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* --- 2. خلفية الأنيميشن (Background Engine) --- */
+        #bg-canvas { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1; 
+            pointer-events: none;
+        }
+
+        .glow-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.05) 0%, transparent 80%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- 3. الهيدر والتنقل (Header & Navigation) --- */
         header { 
-            background: rgba(2, 6, 23, 0.6); padding: 15px 20px; display: flex; 
-            justify-content: space-between; align-items: center; 
-            border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000;
-            backdrop-filter: blur(15px);
+            background: rgba(2, 6, 23, 0.8); 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--line); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
         }
-        .logo-box { display: flex; align-items: center; gap: 10px; }
-        .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
-        .menu-icon { color: var(--primary); font-size: 1.5rem; cursor: pointer; }
 
-        /* --- تصميم المتجر والتحليل --- */
-        .store-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .item-card { background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6)); border: 1px solid var(--line); border-radius: 15px; padding: 15px; text-align: center; position: relative; overflow: hidden; }
-        .item-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-        .price-tag { display: inline-block; background: rgba(245, 158, 11, 0.1); color: var(--gold); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; margin-top: 10px; font-weight: bold; }
-        .beta-badge { position: absolute; top: 0; right: 0; background: var(--primary); color: #000; font-size: 0.6rem; padding: 2px 12px; transform: rotate(45deg) translate(15px, -10px); font-weight: bold; }
+        .logo-box { display: flex; align-items: center; gap: 12px; }
+        .logo-img { 
+            width: 42px; 
+            height: 42px; 
+            border: 2px solid var(--primary); 
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+        }
         
-        .analysis-container { background: var(--card); border-radius: 20px; padding: 20px; margin-top: 20px; border: 1px solid var(--line); }
-        .stat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .stat-bar-bg { flex-grow: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
-        .stat-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 1.5s ease-in-out; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-item { color: var(--text-dim); cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+        .nav-item:hover, .nav-item.active { color: var(--primary); }
 
-        /* الجماليات والحركات */
-        .gamified-header { display: flex; justify-content: space-around; align-items: center; background: rgba(88, 204, 2, 0.1); border: 1px solid var(--duo); padding: 12px; border-radius: 18px; margin-bottom: 20px; backdrop-filter: blur(10px); }
-        .streak-fire { color: #ff4500; font-weight: bold; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-
-        .mission-card { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; margin-top: 15px; text-align: center; }
-        .task-circle { width: 40px; height: 40px; background: var(--bg); border: 2px solid var(--line); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.5s; color: #475569; font-size: 0.9rem; position: relative; z-index: 3; }
-        .task-circle.completed { background: var(--duo); border-color: #fff; color: white; box-shadow: 0 0 15px rgba(88, 204, 2, 0.5); }
-        
-        .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: rgba(15, 23, 42, 0.95); border-left: 2px solid var(--primary); z-index: 2000; padding: 20px; backdrop-filter: blur(20px); transition: 0.4s; overflow-y: auto; }
+        /* --- 4. القائمة الجانبية (The Vault - Sidebar) --- */
+        .sidebar { 
+            position: fixed; 
+            right: -320px; 
+            top: 0; 
+            width: 320px; 
+            height: 100%; 
+            background: rgba(15, 23, 42, 0.98); 
+            border-left: 1px solid var(--primary); 
+            z-index: 2001; 
+            padding: 30px 20px; 
+            backdrop-filter: blur(25px); 
+            transition: var(--transition);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+        }
         .sidebar.active { right: 0; }
-        .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
 
-        .wallet-mini { background: linear-gradient(135deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.4)); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; text-align: center; }
-        .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 10px; }
-        .claim-btn { width: 100%; background: rgba(51, 65, 85, 0.4); color: #94a3b8; border: 1px solid #475569; padding: 10px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .claim-btn.ready { background: var(--gold); color: black; border: none; cursor: pointer; box-shadow: 0 0 15px var(--gold); }
+        .wallet-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .wallet-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--gold));
+            animation: rotate 4s linear infinite;
+            opacity: 0.1;
+        }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
 
-        .tx-item { background: rgba(34, 211, 238, 0.05); padding: 10px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; border: 1px solid var(--line); animation: slideIn 0.4s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .balance-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .balance-amount { font-size: 2rem; font-weight: 800; color: var(--gold); margin: 5px 0; }
+        
+        /* --- 5. المكونات التفاعلية (Interactive Components) --- */
+        .container { 
+            padding: 30px 5%; 
+            max-width: 1200px; 
+            margin: auto; 
+            display: grid; 
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
 
-        /* ستايل البطاقات التعليمية التفاعلية */
-        .flashcard-container { perspective: 1000px; width: 100%; height: 180px; margin-top: 15px; cursor: pointer; }
-        .flashcard { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
-        .flashcard.flipped { transform: rotateY(180deg); }
-        .flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center; border: 1px solid var(--primary); font-weight: bold; }
-        .flashcard-front { background: var(--card); color: white; }
-        .flashcard-back { background: var(--primary); color: #000; transform: rotateY(180deg); }
-
-        .container { padding: 20px; max-width: 500px; margin: auto; }
-        .section { display: none; }
+        .section { display: none; animation: fadeIn 0.6s ease; }
         .section.active { display: block; }
-        
-        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--primary); padding: 12px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; margin-top: 10px;}
-        .blue-btn:hover { background: var(--primary); color: #000; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 30px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); }
-        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
-        .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
-        
-        .result-panel { display: none; margin-top: 20px; padding: 20px; background: rgba(11, 18, 36, 0.8); border-radius: 20px; border: 1px solid var(--primary); backdrop-filter: blur(10px); }
-        
-        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; }
-        .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
-        @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
+        .glass-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+        .glass-card:hover { border-color: var(--primary); background: var(--card-hover); }
 
-        .roadmap-container { margin-top: 25px; border-right: 2px dashed var(--line); padding-right: 15px; }
-        .roadmap-item { background: var(--card); border: 1px solid var(--line); padding: 12px; border-radius: 12px; margin-bottom: 10px; position: relative; font-size: 0.75rem; }
-        .roadmap-item::after { content: ''; position: absolute; right: -22px; top: 15px; width: 10px; height: 10px; background: var(--primary); border-radius: 50%; }
+        /* البطاقات التعليمية (Flashcards) */
+        .flashcard-wrapper {
+            perspective: 1000px;
+            width: 100%;
+            height: 250px;
+            margin: 20px 0;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard-inner.flipped { transform: rotateY(180deg); }
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: 2px solid var(--primary);
+        }
+        .front { background: #1e293b; color: white; }
+        .back { background: var(--primary); color: #020617; transform: rotateY(180deg); }
 
-        #aiLoading { display:none; text-align:center; margin: 20px; }
-        .loader { width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* نظام المتجر (The Marketplace) */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        
+        .market-item {
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--line);
+            text-align: center;
+            position: relative;
+        }
+        .price-badge {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--gold);
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 15px 0;
+        }
+
+        /* --- 6. الأزرار (Buttons) --- */
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: #020617;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(34, 211, 238, 0.4); }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* --- 7. الرسوم البيانية (Mini Charts) --- */
+        .chart-container { margin-top: 20px; }
+        .chart-bar-wrap { height: 10px; background: var(--line); border-radius: 10px; margin: 10px 0; overflow: hidden; }
+        .chart-fill { height: 100%; background: var(--primary); width: 0%; transition: width 2s ease; }
+
+        /* --- 8. التنبيهات (Toasts) --- */
+        #toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
+        .toast {
+            background: rgba(15, 23, 42, 0.9);
+            border-left: 4px solid var(--primary);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            animation: slideInLeft 0.5s forwards;
+        }
+        @keyframes slideInLeft { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* المساعد الصوتي */
+        .voice-hub {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 65px; height: 65px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 20px var(--primary);
+        }
+        .listening { animation: pulse-audio 1.5s infinite; background: var(--danger); }
+        @keyframes pulse-audio { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
+
+        /* خارطة الطريق */
+        .roadmap-v2 { position: relative; padding-right: 30px; }
+        .roadmap-v2::before { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2px; background: var(--line); }
+        .step { margin-bottom: 30px; position: relative; }
+        .step::after { 
+            content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; right: -38px; top: 0; width: 18px; height: 18px;
+            background: var(--bg); border: 2px solid var(--primary); border-radius: 50%;
+            font-size: 0.5rem; display: flex; align-items: center; justify-content: center;
+        }
     </style>
 </head>
 <body>
 
 <canvas id="bg-canvas"></canvas>
+<div class="glow-overlay"></div>
+<div id="toast-container"></div>
 
 <header>
     <div class="logo-box">
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img" onerror="this.src='https://via.placeholder.com/40'">
         <div>
-            <div style="font-size: 1rem; font-weight: 700;">EduSync AI</div>
-            <div style="font-size: 0.65rem; color: #94a3b8;">المزامنة التعليمية الذكية</div>
+            <h1 style="font-size: 1.1rem; font-weight: 800;">EduSync AI</h1>
+            <p style="font-size: 0.6rem; color: var(--text-dim);">The Future of Cognitive Education</p>
         </div>
     </div>
-    <div class="menu-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
+    
+    <nav class="nav-links">
+        <div class="nav-item active" onclick="showPage('home', this)">الرئيسية</div>
+        <div class="nav-item" onclick="showPage('learn', this)">البوابة الذكية</div>
+        <div class="nav-item" onclick="showPage('market', this)">المتجر</div>
+        <div class="nav-item" onclick="showPage('analytics', this)">التحليلات</div>
+    </nav>
+
+    <div class="menu-icon" onclick="toggleSidebar()" style="font-size: 1.5rem; color: var(--primary); cursor: pointer;">
+        <i class="fa-solid fa-wallet"></i>
+    </div>
 </header>
 
 <div class="sidebar" id="sidebar">
-    <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
-    <div class="wallet-mini">
-        <i class="fa-solid fa-wallet"></i>
-        <div style="font-size:0.7rem; color:#94a3b8;">رصيد محفظة $SYNC</div>
-        <div class="balance-val" id="sidebarBalance">0.00</div>
-        <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
-            <i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)
-        </button>
+    <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2 style="font-size: 1.2rem; color: var(--primary);">المحفظة الرقمية</h2>
+        <i class="fa-solid fa-xmark" onclick="toggleSidebar()" style="cursor: pointer;"></i>
     </div>
-    <div id="txList" style="margin-top:15px; max-height: 200px; overflow-y: auto;"></div>
-    <hr style="border:none; border-top: 1px solid var(--line); margin: 20px 0;">
-    <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
-    <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
-    <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
+
+    <div class="wallet-card">
+        <div class="balance-label">الرصيد المتاح ($SYNC)</div>
+        <div class="balance-amount" id="balance">0.00</div>
+        <div style="font-size: 0.7rem; color: var(--success);"><i class="fa-solid fa-link"></i> متصل بالبلوكشين</div>
+    </div>
+
+    <div class="glass-card" style="padding: 15px; margin-bottom: 20px;">
+        <h4 style="font-size: 0.8rem; margin-bottom: 10px; color: var(--gold);">المهام والنقاط</h4>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span id="pointsDisplay">450 Pts</span>
+            <button class="btn-outline" style="padding: 5px 10px; font-size: 0.6rem;" id="claimBtn" onclick="mintCoins()">تحويل للعملة</button>
+        </div>
+    </div>
+
+    <div id="transactionHistory">
+        <h4 style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 15px;">آخر العمليات</h4>
+        <div id="txList">
+            <p style="text-align: center; font-size: 0.7rem; color: #475569;">لا يوجد سجل عمليات حالياً</p>
+        </div>
+    </div>
 </div>
 
 <div class="container">
+    
     <div id="home" class="section active">
-        <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
-        <div style="background:var(--card); padding:20px; border-radius:15px; border:1px solid var(--line);">
-            <p style="font-size:0.9rem; line-height:1.6; color:#cbd5e1;">منصة تعليمية مدعومة بالذكاء الاصطناعي لتمكين الطلاب وتوثيق المناهج عبر البلوكشين. ابدأ برفع ملفاتك وحوّل دراستك لمكافآت.</p>
+        <div class="glass-card" style="text-align: center; background: linear-gradient(rgba(34, 211, 238, 0.05), rgba(0,0,0,0));">
+            <h2 style="font-size: 2rem; margin-bottom: 15px;">مرحباً بك في عصر التعليم الذكي 🧠</h2>
+            <p style="color: var(--text-dim); margin-bottom: 25px;">نحن نستخدم الذكاء الاصطناعي NLP و تقنيات البلوكشين لخلق تجربة تعليمية لا تُنسى.</p>
+            <button class="btn-primary" style="width: auto; margin: auto;" onclick="showPage('learn')">ابدأ رحلة التعلم الآن</button>
         </div>
-        <div class="roadmap-container">
-            <h4 style="font-size:0.8rem; color:var(--gold); margin-bottom:10px;">خارطة الطريق (Roadmap)</h4>
-            <div class="roadmap-item">المرحلة 1: إطلاق التوأم الرقمي للمهارات</div>
-            <div class="roadmap-item">المرحلة 2: تفعيل سوق العمل المباشر</div>
+
+        <div style="margin-top: 40px;">
+            <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-map-location-dot"></i> خارطة الطريق 2026</h3>
+            <div class="roadmap-v2">
+                <div class="step">
+                    <h4>نظام التوأم الرقمي (Digital Twin)</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">إنشاء نسخة افتراضية لمهاراتك تتطور مع كل اختبار تأخذه.</p>
+                </div>
+                <div class="step">
+                    <h4>التوثيق الأكاديمي عبر NFT</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">تحويل شهاداتك إلى أصول رقمية غير قابلة للتزوير.</p>
+                </div>
+                <div class="step">
+                    <h4>سوق المهارات المباشر</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">ربط الطلاب المتفوقين بفرص العمل بناءً على رصيد $SYNC.</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="student" class="section">
-        <div class="gamified-header">
-            <div class="streak-fire"><i class="fa-solid fa-fire"></i> 7 أيام</div>
-            <div style="background: rgba(16, 185, 129, 0.1); padding: 5px 15px; border-radius: 50px; color: var(--success); font-size: 0.8rem;">
-                <i class="fa-solid fa-star"></i> <span id="studentPoints">450</span>
-            </div>
-        </div>
-
-        <div class="upload-box" onclick="document.getElementById('fInput').click()">
-            <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
-            <i class="fa-solid fa-file-pdf" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
-            <div id="upStatus" style="font-weight:bold;">تحميل المنهج</div>
-        </div>
-
-        <div class="mission-card">
-            <h4 style="color: var(--primary); font-size: 0.8rem; margin-bottom: 15px;">مستوى الإنجاز: <span id="progress-text">0%</span></h4>
-            <div style="display: flex; justify-content: space-between; position: relative;">
-                <div style="position: absolute; top: 50%; width: 100%; height: 2px; background: var(--line); z-index: 1;"></div>
-                <div class="task-circle" id="circle-pod"><i class="fa-solid fa-headphones"></i></div>
-                <div class="task-circle" id="circle-map"><i class="fa-solid fa-diagram-project"></i></div>
-                <div class="task-circle" id="circle-flash"><i class="fa-solid fa-layer-group"></i></div>
-                <div class="task-circle" id="circle-quiz"><i class="fa-solid fa-spell-check"></i></div>
-            </div>
-        </div>
-
-        <div class="tools-grid" style="margin-top: 20px;">
-            <div class="tool-card" onclick="runAI('pod')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
-            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط</div>
-            <div class="tool-card" onclick="runAI('flash')"><i class="fa-solid fa-layer-group"></i>بطاقات</div>
-            <div class="tool-card" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>اختبار</div>
-        </div>
-
-        <div id="studentStore" style="margin-top: 30px;">
-            <h4 style="color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-cart-shopping"></i> متجر التميز $SYNC</h4>
-            <div class="store-grid">
-                <div class="item-card">
-                    <div class="beta-badge">BETA</div>
-                    <i class="fa-solid fa-file-pdf" style="font-size: 1.5rem; color: #ef4444;"></i>
-                    <div style="font-size: 0.7rem; margin-top: 10px;">ملخص شابتر 1</div>
-                    <div class="price-tag">50 $SYNC</div>
-                    <button class="blue-btn" style="padding: 5px; font-size: 0.7rem;" onclick="buyItem('Summary', 50)">شراء</button>
+    <div id="learn" class="section">
+        <div class="grid-3">
+            <div class="glass-card" style="grid-column: span 1;">
+                <h3 style="font-size: 1rem; margin-bottom: 20px;"><i class="fa-solid fa-cloud-arrow-up"></i> رفع المنهج</h3>
+                <div style="border: 2px dashed var(--line); padding: 40px 20px; border-radius: 20px; text-align: center; cursor: pointer;" onclick="document.getElementById('fileInput').click()">
+                    <input type="file" id="fileInput" style="display: none;" onchange="uploadHandle(this)">
+                    <i class="fa-solid fa-file-pdf" style="font-size: 2.5rem; color: var(--primary);"></i>
+                    <p id="fileName" style="margin-top: 10px; font-size: 0.8rem;">اضغط لرفع ملف PDF أو DOCX</p>
                 </div>
-                <div class="item-card">
-                    <i class="fa-solid fa-award" style="font-size: 1.5rem; color: var(--gold);"></i>
-                    <div style="font-size: 0.7rem; margin-top: 10px;">شهادة NFT موثقة</div>
-                    <div class="price-tag">200 $SYNC</div>
-                    <button class="blue-btn" style="padding: 5px; font-size: 0.7rem;" onclick="buyItem('NFT', 200)">امتلاك</button>
+            </div>
+
+            <div class="glass-card" style="grid-column: span 1;">
+                <h3 style="font-size: 1rem; margin-bottom: 20px;"><i class="fa-solid fa-robot"></i> الأدوات الذكية</h3>
+                <div style="display: grid; gap: 10px;">
+                    <button class="btn-outline" onclick="generateTool('flash')">بطاقات مراجعة</button>
+                    <button class="btn-outline" onclick="generateTool('quiz')">اختبار ذكي</button>
+                    <button class="btn-outline" onclick="generateTool('map')">خريطة مفاهيم</button>
+                    <button class="btn-outline" onclick="generateTool('pod')">بودكاست تعليمي</button>
                 </div>
             </div>
         </div>
 
-        <div class="analysis-container">
-            <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 0.8rem;"><i class="fa-solid fa-chart-line"></i> تحليل الثغرات المعرفية (AI)</h4>
-            <div class="stat-row">
-                <span style="font-size: 0.65rem; width: 60px;">الاستيعاب</span>
-                <div class="stat-bar-bg"><div id="bar-understanding" class="stat-bar-fill"></div></div>
-                <span style="font-size: 0.65rem; color: var(--primary);">85%</span>
+        <div id="aiDisplay" style="margin-top: 30px; display: none;">
+            <div id="loader" style="text-align: center; padding: 50px; display: none;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+                <p style="margin-top: 15px;">جاري تحليل البيانات عبر محرك NLP...</p>
             </div>
-            <p style="font-size: 0.65rem; color: #94a3b8; text-align: center; margin-top: 10px;" id="adviceText">💡 نصيحة: أكمل اختبار اليوم لتحديث بياناتك.</p>
+
+            <div id="flashcardSection" class="glass-card" style="display: none;">
+                <div class="flashcard-wrapper">
+                    <div class="flashcard-inner" id="cardInner" onclick="this.classList.toggle('flipped')">
+                        <div class="face front" id="qText">السؤال سيظهر هنا؟</div>
+                        <div class="face back" id="aText">الإجابة ستظهر هنا</div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="nextFlashcard()">البطاقة التالية</button>
+            </div>
+
+            <div id="quizSection" class="glass-card" style="display: none;">
+                <h3 id="quizTitle" style="margin-bottom: 20px;">اختبار سريع</h3>
+                <div id="quizOptions" style="display: grid; gap: 15px;">
+                    </div>
+            </div>
         </div>
+    </div>
 
-        <div id="aiLoading"><div class="loader"></div><p style="font-size:0.8rem;">جاري توليد المحتوى...</p></div>
+    <div id="market" class="section">
+        <h2 style="margin-bottom: 25px;">متجر المكافآت <span style="color: var(--gold);">$SYNC</span></h2>
+        <div class="grid-3">
+            <div class="market-item">
+                <i class="fa-solid fa-bolt" style="font-size: 2.5rem; color: var(--primary);"></i>
+                <h3 style="margin-top: 15px;">ملخص شامل AI</h3>
+                <p style="font-size: 0.75rem; color: var(--text-dim);">ملخص ذكي لكل الشباتر المرفوعة.</p>
+                <div class="price-badge">50 $SYNC</div>
+                <button class="btn-primary" onclick="buyItem('AI Summary', 50)">شراء الآن</button>
+            </div>
+            <div class="market-item">
+                <i class="fa-solid fa-certificate" style="font-size: 2.5rem; color: var(--gold);"></i>
+                <h3 style="margin-top: 15px;">شهادة تميز NFT</h3>
+                <p style="font-size: 0.75rem; color: var(--text-dim);">توثيق إنجازك في البلوكشين.</p>
+                <div class="price-badge">150 $SYNC</div>
+                <button class="btn-primary" onclick="buyItem('NFT Certificate', 150)">امتلاك</button>
+            </div>
+            <div class="market-item">
+                <i class="fa-solid fa-rocket" style="font-size: 2.5rem; color: var(--secondary);"></i>
+                <h3 style="margin-top: 15px;">فتح وضع التحدي</h3>
+                <p style="font-size: 0.75rem; color: var(--text-dim);">مضاعفة النقاط المكتسبة.</p>
+                <div class="price-badge">300 $SYNC</div>
+                <button class="btn-primary" onclick="buyItem('Multiplier Mode', 300)">تفعيل</button>
+            </div>
+        </div>
+    </div>
 
-        <div id="flashRes" class="result-panel">
-            <div class="flashcard-container" onclick="this.children[0].classList.toggle('flipped')">
-                <div class="flashcard">
-                    <div class="flashcard-front" id="flashQ">جاهز؟</div>
-                    <div class="flashcard-back" id="flashA">اضغط للتالي</div>
+    <div id="analytics" class="section">
+        <div class="grid-3" style="grid-template-columns: 1fr 1fr;">
+            <div class="glass-card">
+                <h3>مستوى الاستيعاب</h3>
+                <div class="chart-container">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                        <span>فصل تقنية المعلومات</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="chart-bar-wrap"><div class="chart-fill" id="bar1"></div></div>
+                    
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-top: 15px;">
+                        <span>فصل البلوكشين</span>
+                        <span>40%</span>
+                    </div>
+                    <div class="chart-bar-wrap"><div class="chart-fill" id="bar2" style="background: var(--danger);"></div></div>
                 </div>
             </div>
-            <button class="blue-btn" onclick="nextCard()">البطاقة التالية</button>
-        </div>
 
-        <div id="quizRes" class="result-panel">
-            <p id="qText">س: ما هي ميزة البلوكشين في التعليم؟</p>
-            <button class="blue-btn" id="quizBtn" onclick="awardPoints(600, this)">التوثيق وعدم التلاعب</button>
-        </div>
-    </div>
-
-    <div id="doctor" class="section">
-        <h3 style="margin-bottom:20px;">لوحة تحكم الدكتور</h3>
-        <div class="upload-box" onclick="alert('جاري التوثيق على البلوكشين...')">
-            <i class="fa-solid fa-shield-halved" style="font-size:2rem; color:var(--primary);"></i>
-            <p style="margin-top:10px; font-size:0.8rem;">رفع المرجع الرسمي وتوثيقه بالبلوكشين</p>
-        </div>
-        <div class="analysis-container">
-            <h4 style="font-size:0.8rem;">إحصائيات الدفعة</h4>
-            <div class="stat-row">
-                <span style="font-size:0.6rem;">نسبة النجاح المتوقعة</span>
-                <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:75%; background:var(--success);"></div></div>
+            <div class="glass-card">
+                <h3>الفجوات المعرفية</h3>
+                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 10px;">
+                    💡 يبدو أنك تواجه صعوبة في فهم "العقود الذكية". ننصحك بمراجعة البطاقة التعليمية رقم 4.
+                </p>
+                <button class="btn-outline" style="margin-top: 20px; width: 100%;">تحميل تقرير مفصل (PDF)</button>
             </div>
         </div>
     </div>
+
 </div>
 
-<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
+<div class="voice-hub" id="voiceBtn" onclick="toggleVoice()">
+    <i class="fa-solid fa-microphone"></i>
+</div>
 
 <script>
-    let points = 450;
-    let balance = 0.00;
-    let isFile = false;
-    const synth = window.speechSynthesis;
-    let completedTasks = { pod: false, map: false, flash: false, quiz: false };
+    /* --- 1. الحالة العامة (State Management) --- */
+    let state = {
+        points: 450,
+        balance: 0.0,
+        isFileUploaded: false,
+        currentCard: 0,
+        isListening: false,
+        inventory: []
+    };
 
-    const cardsData = [
-        { q: "ما هو الـ Smart Contract؟", a: "عقد برمجيم ينفذ نفسه تلقائياً." },
-        { q: "ما أهمية الـ AI في التعليم؟", a: "تخصيص المحتوى لكل طالب حسب مستواه." },
-        { q: "كيف تعمل عملة SYNC؟", a: "كمكافأة رقمية للطلاب المتفوقين." }
+    const flashcardsData = [
+        { q: "ما هو المفهوم الأساسي للبلوكشين؟", a: "دفتر حسابات رقمي موزع ولامركزي." },
+        { q: "كيف يساعد الذكاء الاصطناعي في EduSync؟", a: "عن طريق تخصيص المسار التعليمي لكل طالب." },
+        { q: "ما فائدة عملة $SYNC؟", a: "تحفيز الطلاب وتوثيق مهاراتهم رقمياً." },
+        { q: "ما هو عقد الذكاء (Smart Contract)؟", a: "بروتوكول محوسب ينفذ بنود العقد تلقائياً." }
     ];
-    let cardIdx = 0;
 
-    function speak(text) {
-        if (synth.speaking) synth.cancel();
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'ar-SA';
-        synth.speak(utter);
+    /* --- 2. محرك الرسوميات (Canvas Engine) --- */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function initParticles() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        particles = [];
+        for (let i = 0; i < 80; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2 + 0.5,
+                speedX: (Math.random() - 0.5) * 0.5,
+                speedY: (Math.random() - 0.5) * 0.5,
+                color: 'rgba(34, 211, 238, ' + (Math.random() * 0.3) + ')'
+            });
+        }
     }
 
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.speedX;
+            p.y += p.speedY;
+            if (p.x > canvas.width) p.x = 0;
+            if (p.x < 0) p.x = canvas.width;
+            if (p.y > canvas.height) p.y = 0;
+            if (p.y < 0) p.y = canvas.height;
+            
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        requestAnimationFrame(animateParticles);
+    }
 
-    function showSection(id) {
+    /* --- 3. المنطق الأساسي (Core Logic) --- */
+    function showPage(pageId, element) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.getElementById('sidebar').classList.remove('active');
-        if(id === 'student') {
-            setTimeout(() => { document.getElementById('bar-understanding').style.width = "85%"; }, 500);
+        document.getElementById(pageId).classList.add('active');
+        
+        if (element) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        if (pageId === 'analytics') {
+            setTimeout(() => {
+                document.getElementById('bar1').style.width = '85%';
+                document.getElementById('bar2').style.width = '40%';
+            }, 300);
         }
     }
 
-    function handleFile(input) {
-        if(input.files[0]) {
-            isFile = true;
-            document.getElementById('upStatus').innerHTML = "✅ تم الربط: " + input.files[0].name;
-            speak("تم رفع المنهج، ابدأ الآن في استخدام الأدوات");
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    function showToast(msg, type = 'primary') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.style.borderLeftColor = `var(--${type})`;
+        toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+    }
+
+    /* --- 4. وظائف التعلم (Learning Functions) --- */
+    function uploadHandle(input) {
+        if (input.files.length > 0) {
+            state.isFileUploaded = true;
+            document.getElementById('fileName').innerHTML = `✅ تم رفع: ${input.files[0].name}`;
+            showToast('تم تحميل الملف ومعالجته بالذكاء الاصطناعي', 'success');
         }
     }
 
-    function runAI(type) {
-        if(!isFile) return alert("ارفع ملف أولاً!");
-        document.getElementById('aiLoading').style.display = 'block';
-        document.querySelectorAll('.result-panel').forEach(r => r.style.display = 'none');
+    function generateTool(type) {
+        if (!state.isFileUploaded) {
+            showToast('يرجى رفع ملف المنهج أولاً!', 'danger');
+            return;
+        }
+
+        document.getElementById('aiDisplay').style.display = 'block';
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('flashcardSection').style.display = 'none';
+        document.getElementById('quizSection').style.display = 'none';
 
         setTimeout(() => {
-            document.getElementById('aiLoading').style.display = 'none';
-            if(type === 'flash') {
-                document.getElementById('flashRes').style.display = 'block';
-                nextCard();
-            } else if(type === 'quiz') {
-                document.getElementById('quizRes').style.display = 'block';
+            document.getElementById('loader').style.display = 'none';
+            if (type === 'flash') {
+                document.getElementById('flashcardSection').style.display = 'block';
+                updateCard();
+            } else if (type === 'quiz') {
+                renderQuiz();
             } else {
-                alert("جاري إنشاء " + type);
-            }
-            
-            if(completedTasks.hasOwnProperty(type)) {
-                completedTasks[type] = true;
-                document.getElementById('circle-'+type).classList.add('completed');
-                updateProgress();
+                showToast('هذه الأداة ستكون متاحة في المرحلة القادمة', 'gold');
             }
         }, 1500);
     }
 
-    function nextCard() {
-        const card = document.querySelector('.flashcard');
-        card.classList.remove('flipped');
-        setTimeout(() => {
-            cardIdx = (cardIdx + 1) % cardsData.length;
-            document.getElementById('flashQ').innerText = cardsData[cardIdx].q;
-            document.getElementById('flashA').innerText = cardsData[cardIdx].a;
-        }, 300);
+    function updateCard() {
+        const data = flashcardsData[state.currentCard];
+        document.getElementById('cardInner').classList.remove('flipped');
+        document.getElementById('qText').innerText = data.q;
+        document.getElementById('aText').innerText = data.a;
     }
 
-    function updateProgress() {
-        const count = Object.values(completedTasks).filter(v => v).length;
-        document.getElementById('progress-text').innerText = (count/4)*100 + "%";
-        if(count === 4) speak("ممتاز! لقد أنجزت جميع مهامك اليومية");
+    function nextFlashcard() {
+        state.currentCard = (state.currentCard + 1) % flashcardsData.length;
+        updateCard();
     }
 
-    function awardPoints(amt, btn) {
-        if(btn.disabled) return;
-        points += amt;
-        document.getElementById('studentPoints').innerText = points;
-        btn.style.background = "var(--success)";
-        btn.innerText = "تمت إضافة +600";
-        btn.disabled = true;
-        updateClaimButton();
-        if(points >= 1000) speak("يمكنك الآن تحويل نقاطك إلى عملات");
+    function renderQuiz() {
+        const quizBox = document.getElementById('quizSection');
+        const optionsBox = document.getElementById('quizOptions');
+        quizBox.style.display = 'block';
+        optionsBox.innerHTML = `
+            <div class="market-item" style="cursor:pointer;" onclick="solveQuiz(true, this)">أ) هو نظام مركزي تديره جهة واحدة.</div>
+            <div class="market-item" style="cursor:pointer;" onclick="solveQuiz(false, this)">ب) هو سجل رقمي مشفر ولامركزي.</div>
+            <div class="market-item" style="cursor:pointer;" onclick="solveQuiz(true, this)">ج) تقنية مخصصة فقط للعملات.</div>
+        `;
     }
 
-    function updateClaimButton() {
-        if(points >= 1000) document.getElementById('claimBtn').classList.add('ready');
+    function solveQuiz(isWrong, el) {
+        if (isWrong) {
+            el.style.borderColor = 'var(--danger)';
+            showToast('إجابة خاطئة، حاول مرة أخرى', 'danger');
+        } else {
+            el.style.borderColor = 'var(--success)';
+            state.points += 100;
+            updateUI();
+            showToast('إجابة صحيحة! +100 نقطة', 'success');
+            setTimeout(() => {
+                document.getElementById('quizSection').style.display = 'none';
+            }, 1000);
+        }
+    }
+
+    /* --- 5. النظام المالي (Economy System) --- */
+    function updateUI() {
+        document.getElementById('balance').innerText = state.balance.toFixed(2);
+        document.getElementById('pointsDisplay').innerText = state.points + " Pts";
+        const claimBtn = document.getElementById('claimBtn');
+        if (state.points >= 1000) {
+            claimBtn.classList.add('ready');
+            claimBtn.style.background = 'var(--gold)';
+            claimBtn.style.color = 'black';
+        } else {
+            claimBtn.classList.remove('ready');
+        }
+    }
+
+    function mintCoins() {
+        if (state.points < 1000) {
+            showToast('تحتاج إلى 1000 نقطة على الأقل للتحويل', 'danger');
+            return;
+        }
+        state.points -= 1000;
+        state.balance += 10.0;
+        updateUI();
+        addTx('Minted $SYNC', '+10.00');
+        showToast('تم تحويل النقاط إلى 10 عملات $SYNC', 'success');
     }
 
     function buyItem(name, price) {
-        if (balance >= price) {
-            balance = (parseFloat(balance) - price).toFixed(2);
-            document.getElementById('sidebarBalance').innerText = balance;
-            addTx('شراء: ' + name, '-' + price);
-            alert('تم شراء ' + name);
-            speak('مبروك، تمت عملية الشراء بنجاح');
-        } else {
-            alert("الرصيد غير كافٍ!");
+        if (state.balance < price) {
+            showToast('رصيدك غير كافٍ في المحفظة', 'danger');
+            return;
         }
+        state.balance -= price;
+        state.inventory.push(name);
+        updateUI();
+        addTx('Purchased ' + name, '-' + price);
+        showToast(`تم شراء ${name} بنجاح!`, 'success');
     }
 
-    function mintFromSidebar() {
-        if (points < 1000) return;
-        balance = (parseFloat(balance) + 10).toFixed(2);
-        points -= 1000;
-        document.getElementById('sidebarBalance').innerText = balance;
-        document.getElementById('studentPoints').innerText = points;
-        addTx('تحويل نقاط', '+10');
-        document.getElementById('claimBtn').classList.remove('ready');
-        speak("تم تحويل النقاط إلى عملات رقمية بنجاح");
-    }
-
-    function addTx(title, amt) {
-        const txList = document.getElementById('txList');
+    function addTx(title, amount) {
+        const list = document.getElementById('txList');
+        if (list.querySelector('p')) list.innerHTML = '';
         const div = document.createElement('div');
         div.className = 'tx-item';
-        div.innerHTML = `<span>${title}</span><span style="color:${amt.includes('+') ? 'var(--success)' : 'var(--danger)'}">${amt} SYNC</span>`;
-        txList.prepend(div);
+        div.style.display = 'flex';
+        div.style.justifyContent = 'space-between';
+        div.style.padding = '10px';
+        div.style.fontSize = '0.7rem';
+        div.style.borderBottom = '1px solid var(--line)';
+        div.innerHTML = `<span>${title}</span><span style="color:${amount.includes('+') ? 'var(--success)' : 'var(--danger)'}">${amount}</span>`;
+        list.prepend(div);
     }
 
-    // صوتي
-    function startVoiceRecognition() {
-        const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if(!Speech) return alert("الصوت غير مدعوم");
-        const rec = new Speech();
-        rec.lang = 'ar-SA';
-        rec.onstart = () => document.getElementById('voiceAssistant').classList.add('voice-active');
-        rec.onresult = (e) => {
-            const cmd = e.results[0][0].transcript;
-            if(cmd.includes("طالب")) showSection('student');
-            if(cmd.includes("رئيسية")) showSection('home');
-            if(cmd.includes("اختبار")) runAI('quiz');
-        };
-        rec.onend = () => document.getElementById('voiceAssistant').classList.remove('voice-active');
-        rec.start();
-    }
-
-    // Canvas Background
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    function draw() {
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.05)";
-        for(let i=0; i<40; i++) {
-            ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 1.5, 0, Math.PI*2); ctx.fill();
+    /* --- 6. الذكاء الصوتي (Voice Engine) --- */
+    function toggleVoice() {
+        const btn = document.getElementById('voiceBtn');
+        state.isListening = !state.isListening;
+        
+        if (state.isListening) {
+            btn.classList.add('listening');
+            showToast('أنا أسمعك الآن، اطلب شيئاً...', 'primary');
+            // هنا يتم ربط مكتبة Web Speech API
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                const rec = new SpeechRecognition();
+                rec.lang = 'ar-SA';
+                rec.onresult = (e) => {
+                    const command = e.results[0][0].transcript;
+                    processVoice(command);
+                };
+                rec.start();
+            }
+        } else {
+            btn.classList.remove('listening');
         }
-        requestAnimationFrame(draw);
     }
-    draw();
+
+    function processVoice(cmd) {
+        if (cmd.includes('متجر')) showPage('market');
+        else if (cmd.includes('تحليل')) showPage('analytics');
+        else if (cmd.includes('رئيسية')) showPage('home');
+        else showToast('لم أفهم طلبك: ' + cmd, 'gold');
+    }
+
+    // تشغيل المحرك
+    window.addEventListener('resize', initParticles);
+    initParticles();
+    animateParticles();
+    updateUI();
+
 </script>
 </body>
 </html>
