@@ -21,11 +21,7 @@
         
         body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
         
-        #bg-canvas { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: -1; pointer-events: none; 
-            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-        }
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
         header { 
             background: rgba(2, 6, 23, 0.6); padding: 15px 20px; display: flex; 
@@ -37,7 +33,7 @@
         .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
         .menu-icon { color: var(--primary); font-size: 1.5rem; cursor: pointer; }
 
-        /* --- تصميم المتجر والتحليل الجديد --- */
+        /* --- تصميم المتجر والتحليل --- */
         .store-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .item-card { background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6)); border: 1px solid var(--line); border-radius: 15px; padding: 15px; text-align: center; position: relative; overflow: hidden; }
         .item-card:hover { border-color: var(--gold); transform: translateY(-5px); }
@@ -49,9 +45,11 @@
         .stat-bar-bg { flex-grow: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
         .stat-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 1.5s ease-in-out; }
 
-        /* بقية التصنيفات السابقة */
+        /* الجماليات والحركات */
         .gamified-header { display: flex; justify-content: space-around; align-items: center; background: rgba(88, 204, 2, 0.1); border: 1px solid var(--duo); padding: 12px; border-radius: 18px; margin-bottom: 20px; backdrop-filter: blur(10px); }
-        .streak-fire { color: #ff4500; font-weight: bold; }
+        .streak-fire { color: #ff4500; font-weight: bold; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
         .mission-card { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; margin-top: 15px; text-align: center; }
         .task-circle { width: 40px; height: 40px; background: var(--bg); border: 2px solid var(--line); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.5s; color: #475569; font-size: 0.9rem; position: relative; z-index: 3; }
         .task-circle.completed { background: var(--duo); border-color: #fff; color: white; box-shadow: 0 0 15px rgba(88, 204, 2, 0.5); }
@@ -63,24 +61,44 @@
         .wallet-mini { background: linear-gradient(135deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.4)); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; text-align: center; }
         .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 10px; }
         .claim-btn { width: 100%; background: rgba(51, 65, 85, 0.4); color: #94a3b8; border: 1px solid #475569; padding: 10px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .claim-btn.ready { background: var(--gold); color: black; border: none; cursor: pointer; }
+        .claim-btn.ready { background: var(--gold); color: black; border: none; cursor: pointer; box-shadow: 0 0 15px var(--gold); }
 
-        .tx-item { background: rgba(34, 211, 238, 0.05); padding: 10px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; border: 1px solid var(--line); }
+        .tx-item { background: rgba(34, 211, 238, 0.05); padding: 10px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; border: 1px solid var(--line); animation: slideIn 0.4s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* ستايل البطاقات التعليمية التفاعلية */
+        .flashcard-container { perspective: 1000px; width: 100%; height: 180px; margin-top: 15px; cursor: pointer; }
+        .flashcard { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center; border: 1px solid var(--primary); font-weight: bold; }
+        .flashcard-front { background: var(--card); color: white; }
+        .flashcard-back { background: var(--primary); color: #000; transform: rotateY(180deg); }
+
         .container { padding: 20px; max-width: 500px; margin: auto; }
         .section { display: none; }
         .section.active { display: block; }
-        .blue-btn { background: rgba(34, 211, 238, 0.05); border: 1px solid var(--line); padding: 12px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; margin-top: 10px;}
+        
+        .blue-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--primary); padding: 12px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; margin-top: 10px;}
+        .blue-btn:hover { background: var(--primary); color: #000; }
+
         .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 30px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
         .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
         
-        .result-panel { display: none; margin-top: 20px; padding: 20px; background: rgba(11, 18, 36, 0.4); border-radius: 20px; border: 1px solid var(--primary); }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
-        .modal-content { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
+        .result-panel { display: none; margin-top: 20px; padding: 20px; background: rgba(11, 18, 36, 0.8); border-radius: 20px; border: 1px solid var(--primary); backdrop-filter: blur(10px); }
+        
         .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; }
         .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
         @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
+
+        .roadmap-container { margin-top: 25px; border-right: 2px dashed var(--line); padding-right: 15px; }
+        .roadmap-item { background: var(--card); border: 1px solid var(--line); padding: 12px; border-radius: 12px; margin-bottom: 10px; position: relative; font-size: 0.75rem; }
+        .roadmap-item::after { content: ''; position: absolute; right: -22px; top: 15px; width: 10px; height: 10px; background: var(--primary); border-radius: 50%; }
+
+        #aiLoading { display:none; text-align:center; margin: 20px; }
+        .loader { width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -108,7 +126,8 @@
             <i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)
         </button>
     </div>
-    <div id="txList" style="margin-top:15px;"></div>
+    <div id="txList" style="margin-top:15px; max-height: 200px; overflow-y: auto;"></div>
+    <hr style="border:none; border-top: 1px solid var(--line); margin: 20px 0;">
     <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
     <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
     <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
@@ -118,7 +137,12 @@
     <div id="home" class="section active">
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
         <div style="background:var(--card); padding:20px; border-radius:15px; border:1px solid var(--line);">
-            <p style="font-size:0.9rem; line-height:1.6; color:#cbd5e1;">منصة تعليمية مدعومة بالذكاء الاصطناعي لتمكين الطلاب وتوثيق المناهج عبر البلوكشين.</p>
+            <p style="font-size:0.9rem; line-height:1.6; color:#cbd5e1;">منصة تعليمية مدعومة بالذكاء الاصطناعي لتمكين الطلاب وتوثيق المناهج عبر البلوكشين. ابدأ برفع ملفاتك وحوّل دراستك لمكافآت.</p>
+        </div>
+        <div class="roadmap-container">
+            <h4 style="font-size:0.8rem; color:var(--gold); margin-bottom:10px;">خارطة الطريق (Roadmap)</h4>
+            <div class="roadmap-item">المرحلة 1: إطلاق التوأم الرقمي للمهارات</div>
+            <div class="roadmap-item">المرحلة 2: تفعيل سوق العمل المباشر</div>
         </div>
     </div>
 
@@ -154,7 +178,7 @@
             <div class="tool-card" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>اختبار</div>
         </div>
 
-        <div id="studentExtra" style="margin-top: 30px;">
+        <div id="studentStore" style="margin-top: 30px;">
             <h4 style="color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-cart-shopping"></i> متجر التميز $SYNC</h4>
             <div class="store-grid">
                 <div class="item-card">
@@ -171,35 +195,48 @@
                     <button class="blue-btn" style="padding: 5px; font-size: 0.7rem;" onclick="buyItem('NFT', 200)">امتلاك</button>
                 </div>
             </div>
-
-            <div class="analysis-container">
-                <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 0.8rem;"><i class="fa-solid fa-chart-line"></i> تحليل الثغرات المعرفية (AI)</h4>
-                <div class="stat-row">
-                    <span style="font-size: 0.65rem; width: 60px;">الاستيعاب</span>
-                    <div class="stat-bar-bg"><div id="bar-understanding" class="stat-bar-fill"></div></div>
-                    <span style="font-size: 0.65rem; color: var(--primary);">85%</span>
-                </div>
-                <div class="stat-row">
-                    <span style="font-size: 0.65rem; width: 60px;">السرعة</span>
-                    <div class="stat-bar-bg"><div id="bar-speed" class="stat-bar-fill"></div></div>
-                    <span style="font-size: 0.65rem; color: var(--primary);">60%</span>
-                </div>
-                <p style="font-size: 0.65rem; color: #94a3b8; text-align: center; margin-top: 10px;">💡 نصيحة: ركز على شابتر المصطلحات لتحسين سرعتك.</p>
-            </div>
         </div>
 
-        <div id="aiLoading" style="display:none; text-align:center; margin-top:20px;"><div class="loader"></div><p>جاري توليد المحتوى...</p></div>
+        <div class="analysis-container">
+            <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 0.8rem;"><i class="fa-solid fa-chart-line"></i> تحليل الثغرات المعرفية (AI)</h4>
+            <div class="stat-row">
+                <span style="font-size: 0.65rem; width: 60px;">الاستيعاب</span>
+                <div class="stat-bar-bg"><div id="bar-understanding" class="stat-bar-fill"></div></div>
+                <span style="font-size: 0.65rem; color: var(--primary);">85%</span>
+            </div>
+            <p style="font-size: 0.65rem; color: #94a3b8; text-align: center; margin-top: 10px;" id="adviceText">💡 نصيحة: أكمل اختبار اليوم لتحديث بياناتك.</p>
+        </div>
+
+        <div id="aiLoading"><div class="loader"></div><p style="font-size:0.8rem;">جاري توليد المحتوى...</p></div>
+
+        <div id="flashRes" class="result-panel">
+            <div class="flashcard-container" onclick="this.children[0].classList.toggle('flipped')">
+                <div class="flashcard">
+                    <div class="flashcard-front" id="flashQ">جاهز؟</div>
+                    <div class="flashcard-back" id="flashA">اضغط للتالي</div>
+                </div>
+            </div>
+            <button class="blue-btn" onclick="nextCard()">البطاقة التالية</button>
+        </div>
+
         <div id="quizRes" class="result-panel">
-            <p>س: ما هي ميزة البلوكشين في التعليم؟</p>
-            <button class="blue-btn" onclick="awardPoints(600, this)">التوثيق وعدم التلاعب</button>
+            <p id="qText">س: ما هي ميزة البلوكشين في التعليم؟</p>
+            <button class="blue-btn" id="quizBtn" onclick="awardPoints(600, this)">التوثيق وعدم التلاعب</button>
         </div>
     </div>
 
     <div id="doctor" class="section">
-        <h3 style="margin-bottom:20px;">لوحة تحكم المحاضر</h3>
-        <div class="upload-box">
+        <h3 style="margin-bottom:20px;">لوحة تحكم الدكتور</h3>
+        <div class="upload-box" onclick="alert('جاري التوثيق على البلوكشين...')">
             <i class="fa-solid fa-shield-halved" style="font-size:2rem; color:var(--primary);"></i>
             <p style="margin-top:10px; font-size:0.8rem;">رفع المرجع الرسمي وتوثيقه بالبلوكشين</p>
+        </div>
+        <div class="analysis-container">
+            <h4 style="font-size:0.8rem;">إحصائيات الدفعة</h4>
+            <div class="stat-row">
+                <span style="font-size:0.6rem;">نسبة النجاح المتوقعة</span>
+                <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:75%; background:var(--success);"></div></div>
+            </div>
         </div>
     </div>
 </div>
@@ -213,7 +250,13 @@
     const synth = window.speechSynthesis;
     let completedTasks = { pod: false, map: false, flash: false, quiz: false };
 
-    // دالة التحدث
+    const cardsData = [
+        { q: "ما هو الـ Smart Contract؟", a: "عقد برمجيم ينفذ نفسه تلقائياً." },
+        { q: "ما أهمية الـ AI في التعليم؟", a: "تخصيص المحتوى لكل طالب حسب مستواه." },
+        { q: "كيف تعمل عملة SYNC؟", a: "كمكافأة رقمية للطلاب المتفوقين." }
+    ];
+    let cardIdx = 0;
+
     function speak(text) {
         if (synth.speaking) synth.cancel();
         const utter = new SpeechSynthesisUtterance(text);
@@ -221,35 +264,41 @@
         synth.speak(utter);
     }
 
-    // تبديل الأقسام مع تشغيل أنيميشن التحليل
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+
     function showSection(id) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('sidebar').classList.remove('active');
-        
         if(id === 'student') {
-            setTimeout(() => {
-                document.getElementById('bar-understanding').style.width = "85%";
-                document.getElementById('bar-speed').style.width = "60%";
-            }, 500);
+            setTimeout(() => { document.getElementById('bar-understanding').style.width = "85%"; }, 500);
         }
     }
-
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
 
     function handleFile(input) {
         if(input.files[0]) {
             isFile = true;
-            document.getElementById('upStatus').innerHTML = "✅ تم تحميل " + input.files[0].name;
+            document.getElementById('upStatus').innerHTML = "✅ تم الربط: " + input.files[0].name;
+            speak("تم رفع المنهج، ابدأ الآن في استخدام الأدوات");
         }
     }
 
     function runAI(type) {
         if(!isFile) return alert("ارفع ملف أولاً!");
         document.getElementById('aiLoading').style.display = 'block';
+        document.querySelectorAll('.result-panel').forEach(r => r.style.display = 'none');
+
         setTimeout(() => {
             document.getElementById('aiLoading').style.display = 'none';
-            if(type === 'quiz') document.getElementById('quizRes').style.display = 'block';
+            if(type === 'flash') {
+                document.getElementById('flashRes').style.display = 'block';
+                nextCard();
+            } else if(type === 'quiz') {
+                document.getElementById('quizRes').style.display = 'block';
+            } else {
+                alert("جاري إنشاء " + type);
+            }
+            
             if(completedTasks.hasOwnProperty(type)) {
                 completedTasks[type] = true;
                 document.getElementById('circle-'+type).classList.add('completed');
@@ -258,37 +307,46 @@
         }, 1500);
     }
 
+    function nextCard() {
+        const card = document.querySelector('.flashcard');
+        card.classList.remove('flipped');
+        setTimeout(() => {
+            cardIdx = (cardIdx + 1) % cardsData.length;
+            document.getElementById('flashQ').innerText = cardsData[cardIdx].q;
+            document.getElementById('flashA').innerText = cardsData[cardIdx].a;
+        }, 300);
+    }
+
     function updateProgress() {
         const count = Object.values(completedTasks).filter(v => v).length;
         document.getElementById('progress-text').innerText = (count/4)*100 + "%";
-        if(count === 4) speak("ممتاز! لقد أنجزت جميع مهامك");
+        if(count === 4) speak("ممتاز! لقد أنجزت جميع مهامك اليومية");
     }
 
     function awardPoints(amt, btn) {
+        if(btn.disabled) return;
         points += amt;
         document.getElementById('studentPoints').innerText = points;
         btn.style.background = "var(--success)";
+        btn.innerText = "تمت إضافة +600";
+        btn.disabled = true;
+        updateClaimButton();
+        if(points >= 1000) speak("يمكنك الآن تحويل نقاطك إلى عملات");
+    }
+
+    function updateClaimButton() {
         if(points >= 1000) document.getElementById('claimBtn').classList.add('ready');
     }
 
-    // نظام الشراء والخصم من المحفظة
     function buyItem(name, price) {
         if (balance >= price) {
             balance = (parseFloat(balance) - price).toFixed(2);
             document.getElementById('sidebarBalance').innerText = balance;
-            
-            const txList = document.getElementById('txList');
-            const tx = document.createElement('div');
-            tx.className = 'tx-item';
-            tx.style.borderRight = "3px solid var(--danger)";
-            tx.innerHTML = `<span>خصم: ${name}</span><span style="color:var(--danger)">-${price} SYNC</span>`;
-            txList.prepend(tx);
-
-            alert(`تم شراء ${name} بنجاح!`);
-            speak(`مبروك، لقد حصلت على ${name}`);
+            addTx('شراء: ' + name, '-' + price);
+            alert('تم شراء ' + name);
+            speak('مبروك، تمت عملية الشراء بنجاح');
         } else {
-            alert("رصيد محفظتك غير كافٍ! حول نقاطك أولاً.");
-            speak("الرصيد غير كافٍ");
+            alert("الرصيد غير كافٍ!");
         }
     }
 
@@ -298,34 +356,23 @@
         points -= 1000;
         document.getElementById('sidebarBalance').innerText = balance;
         document.getElementById('studentPoints').innerText = points;
-        
-        const txList = document.getElementById('txList');
-        const tx = document.createElement('div');
-        tx.className = 'tx-item';
-        tx.innerHTML = `<span>تحويل نقاط</span><span style="color:var(--success)">+10 SYNC</span>`;
-        txList.prepend(tx);
-        
+        addTx('تحويل نقاط', '+10');
         document.getElementById('claimBtn').classList.remove('ready');
-        speak("تم تحويل النقاط إلى عملات رقمية");
+        speak("تم تحويل النقاط إلى عملات رقمية بنجاح");
     }
 
-    // خلفية جزيئات بسيطة
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    function draw() {
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.1)";
-        for(let i=0; i<30; i++) {
-            ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 2, 0, Math.PI*2); ctx.fill();
-        }
-        requestAnimationFrame(draw);
+    function addTx(title, amt) {
+        const txList = document.getElementById('txList');
+        const div = document.createElement('div');
+        div.className = 'tx-item';
+        div.innerHTML = `<span>${title}</span><span style="color:${amt.includes('+') ? 'var(--success)' : 'var(--danger)'}">${amt} SYNC</span>`;
+        txList.prepend(div);
     }
-    draw();
 
+    // صوتي
     function startVoiceRecognition() {
         const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if(!Speech) return alert("لا يدعم الصوت");
+        if(!Speech) return alert("الصوت غير مدعوم");
         const rec = new Speech();
         rec.lang = 'ar-SA';
         rec.onstart = () => document.getElementById('voiceAssistant').classList.add('voice-active');
@@ -333,10 +380,25 @@
             const cmd = e.results[0][0].transcript;
             if(cmd.includes("طالب")) showSection('student');
             if(cmd.includes("رئيسية")) showSection('home');
+            if(cmd.includes("اختبار")) runAI('quiz');
         };
         rec.onend = () => document.getElementById('voiceAssistant').classList.remove('voice-active');
         rec.start();
     }
+
+    // Canvas Background
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    function draw() {
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(34, 211, 238, 0.05)";
+        for(let i=0; i<40; i++) {
+            ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 1.5, 0, Math.PI*2); ctx.fill();
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
 </script>
 </body>
 </html>
