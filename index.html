@@ -1,48 +1,156 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSync AI | المزامنة التعليمية الذكية</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduSync AI</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+<canvas id="bg-canvas"></canvas>
 
-    <nav id="sidebar" class="sidebar">
-        <div class="wallet-card">
-            <i class="fas fa-wallet"></i>
-            <span>رصيد $SYNC</span>
-            <div class="balance">0.00</div>
-            <button class="claim-btn">Claim (1000 pts)</button>
+<header>
+    <div class="logo-box">
+        <img src="assets/logo.png" class="logo-img">
+        <div>
+            <div class="logo-title">EduSync AI</div>
+            <div class="logo-sub">المزامنة التعليمية الذكية</div>
         </div>
-        <ul class="nav-links">
-            <li onclick="showSection('student-portal')">بوابة الطالب</li>
-            <li onclick="showSection('store')">متجر التميز</li>
-        </ul>
-    </nav>
+    </div>
 
-    <main class="main-content">
-        <header>
-            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-            <div class="logo">EduSync AI</div>
-        </header>
+    <div class="menu-icon" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+</header>
 
-        <section id="dashboard" class="section active">
-            <div class="points-box">
-                <p>نقاطك الحالية</p>
-                <h1 id="user-points">450</h1>
+<div class="sidebar" id="sidebar">
+
+    <div class="wallet-mini">
+        <i class="fa-solid fa-wallet"></i>
+
+        <div class="wallet-text">
+            رصيد محفظة $SYNC
+        </div>
+
+        <div class="balance-val" id="sidebarBalance">
+            0.00
+        </div>
+
+        <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
+            Claim
+        </button>
+    </div>
+
+    <div class="sidebar-item" onclick="showSection('home')">
+        <i class="fa-solid fa-house"></i>
+        الرئيسية
+    </div>
+
+    <div class="sidebar-item" onclick="showSection('student')">
+        <i class="fa-solid fa-graduation-cap"></i>
+        بوابة الطالب
+    </div>
+
+</div>
+
+<div class="container">
+
+    <div id="home" class="section active">
+
+        <div class="hero-card">
+            <h1>EduSync AI</h1>
+
+            <p>
+                منصة تعليمية ذكية تعتمد على الذكاء الاصطناعي
+                وتحليل الأداء الأكاديمي.
+            </p>
+        </div>
+
+    </div>
+
+    <div id="student" class="section">
+
+        <div class="gamified-header">
+
+            <div class="streak-fire">
+                🔥 7 أيام
             </div>
-            <button class="action-btn">🛒 دخول متجر التميز</button>
-        </section>
 
-        <div class="fab-mic">
-            <i class="fas fa-microphone"></i>
+            <div class="points-badge">
+                ⭐ <span id="studentPoints">450</span>
+            </div>
+
         </div>
-    </main>
 
-    <script src="script.js"></script>
+        <input type="file" id="fInput" hidden onchange="handleFile(this)">
+
+        <div class="upload-box" onclick="document.getElementById('fInput').click()">
+            <i class="fa-solid fa-file-pdf"></i>
+
+            <div id="upStatus">
+                تحميل مصادر المنهج
+            </div>
+        </div>
+
+        <div class="tools-grid">
+
+            <div class="tool-card" onclick="startPodcast()">
+                <i class="fa-solid fa-headphones"></i>
+                بودكاست
+            </div>
+
+            <div class="tool-card" onclick="runAI('map')">
+                <i class="fa-solid fa-diagram-project"></i>
+                خرائط ذهنية
+            </div>
+
+            <div class="tool-card" onclick="runAI('flash')">
+                <i class="fa-solid fa-layer-group"></i>
+                بطاقات تعليمية
+            </div>
+
+            <div class="tool-card" onclick="runAI('quiz')">
+                <i class="fa-solid fa-spell-check"></i>
+                اختبار ذكي
+            </div>
+
+        </div>
+
+        <div id="aiLoading">
+            <div class="loader"></div>
+        </div>
+
+        <div id="mapRes" class="result-panel">
+            تم إنشاء الخريطة الذهنية بنجاح
+        </div>
+
+        <div id="quizRes" class="result-panel">
+            تم إنشاء الاختبار الذكي
+        </div>
+
+        <div id="flashRes" class="result-panel">
+            تم إنشاء البطاقات التعليمية
+        </div>
+
+    </div>
+
+</div>
+
+<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()">
+    <i class="fa-solid fa-microphone"></i>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/wallet.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/voice.js"></script>
+
 </body>
 </html>
