@@ -1,62 +1,71 @@
-// وظائف التنقل
-function toggleSidebar() { 
-    document.getElementById('sidebar').classList.toggle('active'); 
-}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSync AI | المزامنة الذكية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-function showSection(id) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    toggleSidebar(); // يغلق القائمة بعد الاختيار
-}
+<canvas id="bg-canvas"></canvas>
 
-// إعادة إحياء الشبكة المتحركة
-const canvas = document.getElementById('bg-canvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
+<header>
+    <div style="display:flex; align-items:center; gap:10px;">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" width="40" style="border-radius:5px;">
+        <span style="font-weight:bold;">EduSync AI</span>
+    </div>
+    <i class="fa-solid fa-bars" style="color:#22d3ee; cursor:pointer; font-size:1.5rem;" onclick="toggleSidebar()"></i>
+</header>
 
-function init() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    particles = [];
-    for(let i=0; i<80; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5
-        });
-    }
-}
+<div class="sidebar" id="sidebar">
+    <div style="text-align:left; font-size:2rem; cursor:pointer; color:#22d3ee;" onclick="toggleSidebar()">&times;</div>
+    <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
+    <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
+    <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
+    <div class="sidebar-item" onclick="showSection('settings')"><i class="fa-solid fa-gear"></i> الإعدادات</div>
+</div>
 
-function animate() {
-    ctx.clearRect(0,0,canvas.width, canvas.height);
-    ctx.fillStyle = "rgba(34, 211, 238, 0.8)";
-    ctx.strokeStyle = "rgba(34, 211, 238, 0.2)"; // لون الخيوط
+<div class="container">
+    <div id="home" class="section active">
+        <div style="text-align:center; padding:40px 20px;">
+            <h2 style="color:#22d3ee; margin-bottom:15px;">مرحباً بك في آفاق التعليم الذكي 🚀</h2>
+            <p style="color:#94a3b8;">ابدأ رحلتك التعليمية المدعومة بالذكاء الاصطناعي والبلوكشين.</p>
+        </div>
+    </div>
 
-    particles.forEach((p, i) => {
-        p.x += p.vx; p.y += p.vy;
-        if(p.x<0 || p.x>canvas.width) p.vx*=-1;
-        if(p.y<0 || p.y>canvas.height) p.vy*=-1;
+    <div id="student" class="section">
+        <div class="upload-box" onclick="alert('يرجى اختيار ملف المنهج')">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size:3rem; color:#22d3ee; margin-bottom:15px;"></i>
+            <p>ارفع كتابك أو ملخصك (PDF)</p>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+            <div class="tool-card"><i class="fa-solid fa-headphones"></i> بودكاست</div>
+            <div class="tool-card"><i class="fa-solid fa-diagram-project"></i> خرائط</div>
+            <div class="tool-card"><i class="fa-solid fa-layer-group"></i> بطاقات</div>
+            <div class="tool-card"><i class="fa-solid fa-spell-check"></i> اختبار</div>
+        </div>
+    </div>
 
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2, 0, Math.PI*2);
-        ctx.fill();
+    <div id="doctor" class="section">
+        <h3 style="margin-bottom:20px; color:#22d3ee;">لوحة تحكم الأستاذ</h3>
+        <div class="tool-card" style="text-align:right;">
+            <h4><i class="fa-solid fa-chart-line"></i> تقرير الاستيعاب</h4>
+            <p style="font-size:0.8rem; margin-top:10px;">تحليل ذكي للفجوات التعليمية لدى الطلاب.</p>
+        </div>
+    </div>
 
-        // رسم الخيوط بين النقاط لعمل الشبكة
-        for(let j=i+1; j<particles.length; j++) {
-            let p2 = particles[j];
-            let dist = Math.hypot(p.x-p2.x, p.y-p2.y);
-            if(dist < 120) {
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(p2.x, p2.y);
-                ctx.stroke();
-            }
-        }
-    });
-    requestAnimationFrame(animate);
-}
+    <div id="settings" class="section">
+        <h3 style="margin-bottom:20px;">الإعدادات العامة</h3>
+        <div class="sidebar-item"><i class="fa-solid fa-shield-halved"></i> الحماية والخصوصية</div>
+        <div class="sidebar-item"><i class="fa-solid fa-palette"></i> تخصيص المظهر</div>
+    </div>
+</div>
 
-window.onresize = init;
-init();
-animate();
+<div class="chat-float" onclick="startVoice()"><i class="fa-solid fa-microphone"></i></div>
+
+<script src="script.js"></script>
+</body>
+</html>
