@@ -6,7 +6,6 @@
     <title>EduSync AI | الهاكاثون</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -42,9 +41,9 @@
         </button>
     </div>
     <div class="tx-history">
-        <div class="tx-title"><i class="fa-solid fa-receipt"></i> سجل التحويلات</div>
+        <div class="tx-title"><i class="fa-solid fa-receipt"></i> سجل التحويلات (History)</div>
         <div id="txList">
-            <div id="emptyTx" style="font-size:0.65rem; color:#475569; text-align:center; padding:15px;">لا توجد عمليات سابقة</div>
+            <div id="emptyTx" style="font-size:0.65rem; color:#475569; text-align:center; padding:15px; background: rgba(255,255,255,0.02); border-radius: 10px;">لا توجد عمليات سابقة</div>
         </div>
     </div>
     <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
@@ -58,14 +57,61 @@
         <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
         <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
+            <div class="feature-item"><i class="fa-solid fa-brain"></i><div><div style="font-weight:bold;">تحليل NLP</div><div style="font-size:0.8rem; color:#94a3b8;">معالجة لغات طبيعية متقدمة للمناهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-shield-halved"></i><div><div style="font-weight:bold;">توثيق Blockchain</div><div style="font-size:0.8rem; color:#94a3b8;">حفظ المكافآت والبصمة التقنية للمنهج.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-chart-line"></i><div><div style="font-weight:bold;">تحليلات الفجوة</div><div style="font-size:0.8rem; color:#94a3b8;">لرصد تعثر الطلاب مبكراً.</div></div></div>
+            <div class="feature-item"><i class="fa-solid fa-id-card"></i><div><div style="font-weight:bold;">هوية رقمية</div><div style="font-size:0.8rem; color:#94a3b8;">لتوثيق المهارات لجهات التوظيف.</div></div></div>
+        </div>
+    </div>
+
+    <div id="student" class="section">
+        <div class="gamified-header">
+            <div class="streak-fire"><i class="fa-solid fa-fire"></i> 7 أيام</div>
+            <div class="points-badge" style="margin-bottom:0;"><i class="fa-solid fa-star"></i> <span id="studentPoints">450</span></div>
+            <div style="color:var(--duo); font-weight:bold; font-size:0.75rem; cursor:pointer;" onclick="openModal('league')"><i class="fa-solid fa-trophy"></i> الدوري الماسي</div>
+        </div>
+        <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
+        <div class="upload-box" onclick="document.getElementById('fInput').click()">
+            <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
+            <div id="upStatus" style="font-weight:bold;">تحميل مصادر المنهج</div>
+        </div>
+        <div class="mission-card">
+            <h4 style="color: var(--primary); font-size: 0.9rem; margin-bottom: 25px;"><i class="fa-solid fa-bolt"></i> مستوى الإنجاز: <span id="progress-text">0%</span></h4>
+            <div style="position: relative; display: flex; justify-content: space-between; align-items: center; max-width: 400px; margin: 0 auto 10px;">
+                <div style="position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: var(--line); transform: translateY(-50%); z-index: 1;"></div>
+                <div id="progress-line" style="position: absolute; top: 50%; left: 0; width: 0%; height: 3px; background: var(--duo); transform: translateY(-50%); z-index: 2;"></div>
+                <div class="task-circle" id="circle-pod"><i class="fa-solid fa-headphones"></i></div>
+                <div class="task-circle" id="circle-map"><i class="fa-solid fa-diagram-project"></i></div>
+                <div class="task-circle" id="circle-flash"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="task-circle" id="circle-quiz"><i class="fa-solid fa-spell-check"></i></div>
             </div>
+        </div>
+        <div class="tools-grid">
+            <div class="tool-card" onclick="startPodcast()"><i class="fa-solid fa-headphones"></i>بودكاست</div>
+            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط</div>
+            <div class="tool-card" onclick="runAI('flash')"><i class="fa-solid fa-layer-group"></i>بطاقات</div>
+            <div class="tool-card" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>اختبار</div>
+        </div>
+        <div id="aiLoading"><div class="loader"></div></div>
+        <div id="flashRes" class="result-panel">
+            <div class="flashcard-container" onclick="this.children[0].classList.toggle('flipped')">
+                <div class="flashcard">
+                    <div class="flashcard-front" id="flashQ"></div>
+                    <div class="flashcard-back" id="flashA"></div>
+                </div>
+            </div>
+            <button class="blue-btn" onclick="generateNextCard()">التالية</button>
+        </div>
+        <div id="mapRes" class="result-panel"><div id="mapTitle"></div></div>
+        <div id="quizRes" class="result-panel">
+            <h4 id="quizTitle"></h4>
+            <div class="quiz-option" onclick="awardPoints(600, this)">البلوكشين (+600)</div>
+        </div>
     </div>
     
     </div>
 
 <div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
-
 <script src="script.js"></script>
-
 </body>
 </html>
