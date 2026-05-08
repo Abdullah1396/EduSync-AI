@@ -1,172 +1,342 @@
-<style>
-    /* تصميم متجر المكافآت الجديد */
-    .store-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-top: 20px;
-    }
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSync AI | الهاكاثون النسخة المتكاملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { 
+            --primary: #22d3ee; 
+            --bg: #020617; 
+            --card: rgba(15, 23, 42, 0.3); 
+            --line: rgba(30, 41, 59, 0.4); 
+            --danger: #f43f5e; 
+            --success: #10b981; 
+            --gold: #f59e0b; 
+            --duo: #58cc02; 
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: 0.3s; }
+        
+        body { background-color: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative; }
+        
+        #bg-canvas { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: -1; pointer-events: none; 
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+        }
 
-    .item-card {
-        background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6));
-        border: 1px solid var(--line);
-        border-radius: 15px;
-        padding: 15px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
+        header { 
+            background: rgba(2, 6, 23, 0.6); padding: 15px 20px; display: flex; 
+            justify-content: space-between; align-items: center; 
+            border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(15px);
+        }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-img { width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 5px; }
+        .menu-icon { color: var(--primary); font-size: 1.5rem; cursor: pointer; }
 
-    .item-card:hover {
-        border-color: var(--gold);
-        transform: translateY(-5px);
-    }
+        /* --- تصميم المتجر والتحليل الجديد --- */
+        .store-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .item-card { background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6)); border: 1px solid var(--line); border-radius: 15px; padding: 15px; text-align: center; position: relative; overflow: hidden; }
+        .item-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+        .price-tag { display: inline-block; background: rgba(245, 158, 11, 0.1); color: var(--gold); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; margin-top: 10px; font-weight: bold; }
+        .beta-badge { position: absolute; top: 0; right: 0; background: var(--primary); color: #000; font-size: 0.6rem; padding: 2px 12px; transform: rotate(45deg) translate(15px, -10px); font-weight: bold; }
+        
+        .analysis-container { background: var(--card); border-radius: 20px; padding: 20px; margin-top: 20px; border: 1px solid var(--line); }
+        .stat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .stat-bar-bg { flex-grow: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+        .stat-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 1.5s ease-in-out; }
 
-    .price-tag {
-        display: inline-block;
-        background: rgba(245, 158, 11, 0.1);
-        color: var(--gold);
-        padding: 4px 10px;
-        border-radius: 8px;
-        font-size: 0.75rem;
-        margin-top: 10px;
-        font-weight: bold;
-    }
+        /* بقية التصنيفات السابقة */
+        .gamified-header { display: flex; justify-content: space-around; align-items: center; background: rgba(88, 204, 2, 0.1); border: 1px solid var(--duo); padding: 12px; border-radius: 18px; margin-bottom: 20px; backdrop-filter: blur(10px); }
+        .streak-fire { color: #ff4500; font-weight: bold; }
+        .mission-card { background: var(--card); border: 1px solid var(--line); border-radius: 15px; padding: 20px; margin-top: 15px; text-align: center; }
+        .task-circle { width: 40px; height: 40px; background: var(--bg); border: 2px solid var(--line); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.5s; color: #475569; font-size: 0.9rem; position: relative; z-index: 3; }
+        .task-circle.completed { background: var(--duo); border-color: #fff; color: white; box-shadow: 0 0 15px rgba(88, 204, 2, 0.5); }
+        
+        .sidebar { position: fixed; right: -280px; top: 0; width: 280px; height: 100%; background: rgba(15, 23, 42, 0.95); border-left: 2px solid var(--primary); z-index: 2000; padding: 20px; backdrop-filter: blur(20px); transition: 0.4s; overflow-y: auto; }
+        .sidebar.active { right: 0; }
+        .sidebar-item { padding: 15px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 15px; color: #cbd5e1; cursor: pointer; }
 
-    .beta-badge {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background: var(--primary);
-        color: #000;
-        font-size: 0.6rem;
-        padding: 2px 12px;
-        transform: rotate(45deg) translate(15px, -10px);
-        font-weight: bold;
-    }
+        .wallet-mini { background: linear-gradient(135deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.4)); border: 1px solid var(--gold); border-radius: 15px; padding: 15px; text-align: center; }
+        .balance-val { font-size: 1.2rem; font-weight: bold; color: var(--gold); margin-bottom: 10px; }
+        .claim-btn { width: 100%; background: rgba(51, 65, 85, 0.4); color: #94a3b8; border: 1px solid #475569; padding: 10px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .claim-btn.ready { background: var(--gold); color: black; border: none; cursor: pointer; }
 
-    /* نظام تحليل البيانات (الشارت الذكي) */
-    .analysis-container {
-        background: var(--card);
-        border-radius: 20px;
-        padding: 20px;
-        margin-top: 20px;
-    }
+        .tx-item { background: rgba(34, 211, 238, 0.05); padding: 10px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; border: 1px solid var(--line); }
+        .container { padding: 20px; max-width: 500px; margin: auto; }
+        .section { display: none; }
+        .section.active { display: block; }
+        .blue-btn { background: rgba(34, 211, 238, 0.05); border: 1px solid var(--line); padding: 12px; border-radius: 12px; width: 100%; text-align: center; color: white; cursor: pointer; font-weight: bold; margin-top: 10px;}
+        .upload-box { border: 2px dashed var(--primary); border-radius: 20px; padding: 30px; text-align: center; margin-bottom: 20px; cursor: pointer; background: rgba(34, 211, 238, 0.05); }
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .tool-card { background: var(--card); border: 1px solid var(--line); padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; }
+        .tool-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; display: block; }
+        
+        .result-panel { display: none; margin-top: 20px; padding: 20px; background: rgba(11, 18, 36, 0.4); border-radius: 20px; border: 1px solid var(--primary); }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 5000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(15px); }
+        .modal-content { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; }
+        .chat-float { position: fixed; bottom: 25px; left: 25px; width: 55px; height: 55px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; cursor: pointer; z-index: 4000; }
+        .voice-active { animation: pulse-voice 1.5s infinite; background: var(--danger) !important; color: white !important; }
+        @keyframes pulse-voice { 0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); } }
+    </style>
+</head>
+<body>
 
-    .stat-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 15px;
-    }
+<canvas id="bg-canvas"></canvas>
 
-    .stat-bar-bg {
-        flex-grow: 1;
-        height: 8px;
-        background: var(--line);
-        border-radius: 4px;
-        overflow: hidden;
-    }
-
-    .stat-bar-fill {
-        height: 100%;
-        background: var(--primary);
-        width: 0%; /* سيتحرك برمجياً */
-        transition: width 1.5s ease-in-out;
-    }
-</style>
-
-<div id="studentExtra" style="margin-top: 30px;">
-    <h4 style="color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-cart-shopping"></i> متجر التميز $SYNC</h4>
-    <div class="store-grid">
-        <div class="item-card">
-            <div class="beta-badge">BETA</div>
-            <i class="fa-solid fa-file-pdf" style="font-size: 1.5rem; color: #ef4444;"></i>
-            <div style="font-size: 0.8rem; margin-top: 10px;">ملخص شابتر 1</div>
-            <div class="price-tag">50 $SYNC</div>
-            <button class="blue-btn" style="padding: 5px; font-size: 0.7rem;" onclick="buyItem('Summary', 50)">شراء</button>
+<header>
+    <div class="logo-box">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+        <div>
+            <div style="font-size: 1rem; font-weight: 700;">EduSync AI</div>
+            <div style="font-size: 0.65rem; color: #94a3b8;">المزامنة التعليمية الذكية</div>
         </div>
-        <div class="item-card">
-            <i class="fa-solid fa-award" style="font-size: 1.5rem; color: var(--gold);"></i>
-            <div style="font-size: 0.8rem; margin-top: 10px;">شهادة NFT موثقة</div>
-            <div class="price-tag">200 $SYNC</div>
-            <button class="blue-btn" style="padding: 5px; font-size: 0.7rem;" onclick="buyItem('NFT', 200)">امتلاك</button>
+    </div>
+    <div class="menu-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
+</header>
+
+<div class="sidebar" id="sidebar">
+    <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
+    <div class="wallet-mini">
+        <i class="fa-solid fa-wallet"></i>
+        <div style="font-size:0.7rem; color:#94a3b8;">رصيد محفظة $SYNC</div>
+        <div class="balance-val" id="sidebarBalance">0.00</div>
+        <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
+            <i class="fa-solid fa-lock" id="claimIcon"></i> Claim (1000 pts)
+        </button>
+    </div>
+    <div id="txList" style="margin-top:15px;"></div>
+    <div class="sidebar-item" onclick="showSection('home')"><i class="fa-solid fa-house"></i> الرئيسية</div>
+    <div class="sidebar-item" onclick="showSection('student')"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
+    <div class="sidebar-item" onclick="showSection('doctor')"><i class="fa-solid fa-user-tie"></i> بوابة الدكتور</div>
+</div>
+
+<div class="container">
+    <div id="home" class="section active">
+        <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
+        <div style="background:var(--card); padding:20px; border-radius:15px; border:1px solid var(--line);">
+            <p style="font-size:0.9rem; line-height:1.6; color:#cbd5e1;">منصة تعليمية مدعومة بالذكاء الاصطناعي لتمكين الطلاب وتوثيق المناهج عبر البلوكشين.</p>
         </div>
     </div>
 
-    <div class="analysis-container">
-        <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 0.9rem;"><i class="fa-solid fa-chart-line"></i> تحليل الثغرات المعرفية (AI Analysis)</h4>
-        <div class="stat-row">
-            <span style="font-size: 0.7rem; width: 80px;">الاستيعاب</span>
-            <div class="stat-bar-bg"><div id="bar-understanding" class="stat-bar-fill"></div></div>
-            <span style="font-size: 0.7rem; color: var(--primary);">85%</span>
+    <div id="student" class="section">
+        <div class="gamified-header">
+            <div class="streak-fire"><i class="fa-solid fa-fire"></i> 7 أيام</div>
+            <div style="background: rgba(16, 185, 129, 0.1); padding: 5px 15px; border-radius: 50px; color: var(--success); font-size: 0.8rem;">
+                <i class="fa-solid fa-star"></i> <span id="studentPoints">450</span>
+            </div>
         </div>
-        <div class="stat-row">
-            <span style="font-size: 0.7rem; width: 80px;">السرعة</span>
-            <div class="stat-bar-bg"><div id="bar-speed" class="stat-bar-fill"></div></div>
-            <span style="font-size: 0.7rem; color: var(--primary);">60%</span>
+
+        <div class="upload-box" onclick="document.getElementById('fInput').click()">
+            <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
+            <i class="fa-solid fa-file-pdf" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
+            <div id="upStatus" style="font-weight:bold;">تحميل المنهج</div>
         </div>
-        <p style="font-size: 0.65rem; color: #94a3b8; text-align: center;">💡 نصيحة الذكاء الاصطناعي: ركز على شابتر المصطلحات لتحسين سرعتك في الاختبار.</p>
+
+        <div class="mission-card">
+            <h4 style="color: var(--primary); font-size: 0.8rem; margin-bottom: 15px;">مستوى الإنجاز: <span id="progress-text">0%</span></h4>
+            <div style="display: flex; justify-content: space-between; position: relative;">
+                <div style="position: absolute; top: 50%; width: 100%; height: 2px; background: var(--line); z-index: 1;"></div>
+                <div class="task-circle" id="circle-pod"><i class="fa-solid fa-headphones"></i></div>
+                <div class="task-circle" id="circle-map"><i class="fa-solid fa-diagram-project"></i></div>
+                <div class="task-circle" id="circle-flash"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="task-circle" id="circle-quiz"><i class="fa-solid fa-spell-check"></i></div>
+            </div>
+        </div>
+
+        <div class="tools-grid" style="margin-top: 20px;">
+            <div class="tool-card" onclick="runAI('pod')"><i class="fa-solid fa-headphones"></i>بودكاست</div>
+            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط</div>
+            <div class="tool-card" onclick="runAI('flash')"><i class="fa-solid fa-layer-group"></i>بطاقات</div>
+            <div class="tool-card" onclick="runAI('quiz')"><i class="fa-solid fa-spell-check"></i>اختبار</div>
+        </div>
+
+        <div id="studentExtra" style="margin-top: 30px;">
+            <h4 style="color: var(--primary); margin-bottom: 15px;"><i class="fa-solid fa-cart-shopping"></i> متجر التميز $SYNC</h4>
+            <div class="store-grid">
+                <div class="item-card">
+                    <div class="beta-badge">BETA</div>
+                    <i class="fa-solid fa-file-pdf" style="font-size: 1.5rem; color: #ef4444;"></i>
+                    <div style="font-size: 0.7rem; margin-top: 10px;">ملخص شابتر 1</div>
+                    <div class="price-tag">50 $SYNC</div>
+                    <button class="blue-btn" style="padding: 5px; font-size: 0.7rem;" onclick="buyItem('Summary', 50)">شراء</button>
+                </div>
+                <div class="item-card">
+                    <i class="fa-solid fa-award" style="font-size: 1.5rem; color: var(--gold);"></i>
+                    <div style="font-size: 0.7rem; margin-top: 10px;">شهادة NFT موثقة</div>
+                    <div class="price-tag">200 $SYNC</div>
+                    <button class="blue-btn" style="padding: 5px; font-size: 0.7rem;" onclick="buyItem('NFT', 200)">امتلاك</button>
+                </div>
+            </div>
+
+            <div class="analysis-container">
+                <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 0.8rem;"><i class="fa-solid fa-chart-line"></i> تحليل الثغرات المعرفية (AI)</h4>
+                <div class="stat-row">
+                    <span style="font-size: 0.65rem; width: 60px;">الاستيعاب</span>
+                    <div class="stat-bar-bg"><div id="bar-understanding" class="stat-bar-fill"></div></div>
+                    <span style="font-size: 0.65rem; color: var(--primary);">85%</span>
+                </div>
+                <div class="stat-row">
+                    <span style="font-size: 0.65rem; width: 60px;">السرعة</span>
+                    <div class="stat-bar-bg"><div id="bar-speed" class="stat-bar-fill"></div></div>
+                    <span style="font-size: 0.65rem; color: var(--primary);">60%</span>
+                </div>
+                <p style="font-size: 0.65rem; color: #94a3b8; text-align: center; margin-top: 10px;">💡 نصيحة: ركز على شابتر المصطلحات لتحسين سرعتك.</p>
+            </div>
+        </div>
+
+        <div id="aiLoading" style="display:none; text-align:center; margin-top:20px;"><div class="loader"></div><p>جاري توليد المحتوى...</p></div>
+        <div id="quizRes" class="result-panel">
+            <p>س: ما هي ميزة البلوكشين في التعليم؟</p>
+            <button class="blue-btn" onclick="awardPoints(600, this)">التوثيق وعدم التلاعب</button>
+        </div>
+    </div>
+
+    <div id="doctor" class="section">
+        <h3 style="margin-bottom:20px;">لوحة تحكم المحاضر</h3>
+        <div class="upload-box">
+            <i class="fa-solid fa-shield-halved" style="font-size:2rem; color:var(--primary);"></i>
+            <p style="margin-top:10px; font-size:0.8rem;">رفع المرجع الرسمي وتوثيقه بالبلوكشين</p>
+        </div>
     </div>
 </div>
 
-/* ========================================
-   الدفعة الثانية: منطق المتجر والتحليل الذكي
-   ========================================
-*/
+<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
 
-// دالة شراء العناصر من المتجر
-function buyItem(itemName, price) {
-    if (balance >= price) {
-        // خصم المبلغ من المحفظة الرقمية
-        balance = (parseFloat(balance) - price).toFixed(2);
-        document.getElementById('sidebarBalance').innerText = balance;
-        
-        // تسجيل عملية الشراء في سجل البلوكشين
-        const txList = document.getElementById('txList');
-        const txId = '0x' + Math.random().toString(16).slice(2, 8).toUpperCase();
-        const newItem = document.createElement('div');
-        newItem.className = 'tx-item';
-        newItem.style.borderRight = "3px solid var(--danger)";
-        newItem.innerHTML = `<span><i class="fa-solid fa-cart-shopping"></i> ${txId}</span><span style="color:var(--danger)">-${price} SYNC</span>`;
-        txList.prepend(newItem);
+<script>
+    let points = 450;
+    let balance = 0.00;
+    let isFile = false;
+    const synth = window.speechSynthesis;
+    let completedTasks = { pod: false, map: false, flash: false, quiz: false };
 
-        // تفاعل صوتي وبصري
-        speak(`تهانينا! لقد حصلت على ${itemName === 'NFT' ? 'شهادة رقمية موثقة' : 'الملخص التعليمي'}`);
-        alert(`تمت عملية الشراء بنجاح! تم خصم ${price} عملة من محفظتك.`);
+    // دالة التحدث
+    function speak(text) {
+        if (synth.speaking) synth.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ar-SA';
+        synth.speak(utter);
+    }
+
+    // تبديل الأقسام مع تشغيل أنيميشن التحليل
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('sidebar').classList.remove('active');
         
-        // إخفاء "قادم قريباً" بعد الشراء كأنها تفتحت
-        if(itemName === 'Summary') {
-            document.querySelector('.beta-badge').innerText = "OWNED";
-            document.querySelector('.beta-badge').style.background = "var(--success)";
+        if(id === 'student') {
+            setTimeout(() => {
+                document.getElementById('bar-understanding').style.width = "85%";
+                document.getElementById('bar-speed').style.width = "60%";
+            }, 500);
         }
-    } else {
-        speak("عذراً، رصيدك من عملات سينك غير كافٍ لإتمام هذه العملية.");
-        alert("رصيد محفظتك غير كافٍ! قم بتحويل نقاطك أولاً.");
     }
-}
 
-// دالة تشغيل أنيميشن أشرطة التحليل عند عرض القسم
-function animateAnalysis() {
-    // التأكد من أن الأشرطة تبدأ من الصفر ثم ترتفع
-    setTimeout(() => {
-        document.getElementById('bar-understanding').style.width = "85%";
-        document.getElementById('bar-speed').style.width = "60%";
-    }, 500);
-}
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
 
-// تعديل دالة التنقل (showSection) لتشغيل الأنيميشن تلقائياً
-const originalShowSection = showSection;
-showSection = function(id) {
-    originalShowSection(id); // تنفيذ الوظيفة القديمة
-    if(id === 'student') {
-        animateAnalysis(); // تشغيل التحليل إذا دخلنا صفحة الطالب
+    function handleFile(input) {
+        if(input.files[0]) {
+            isFile = true;
+            document.getElementById('upStatus').innerHTML = "✅ تم تحميل " + input.files[0].name;
+        }
     }
-}
 
-// إضافة وظيفة "الاستجابة السريعة" للنصيحة الذكية
-document.querySelector('.analysis-container p').addEventListener('click', function() {
-    speak(this.innerText);
-});
+    function runAI(type) {
+        if(!isFile) return alert("ارفع ملف أولاً!");
+        document.getElementById('aiLoading').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('aiLoading').style.display = 'none';
+            if(type === 'quiz') document.getElementById('quizRes').style.display = 'block';
+            if(completedTasks.hasOwnProperty(type)) {
+                completedTasks[type] = true;
+                document.getElementById('circle-'+type).classList.add('completed');
+                updateProgress();
+            }
+        }, 1500);
+    }
 
+    function updateProgress() {
+        const count = Object.values(completedTasks).filter(v => v).length;
+        document.getElementById('progress-text').innerText = (count/4)*100 + "%";
+        if(count === 4) speak("ممتاز! لقد أنجزت جميع مهامك");
+    }
 
+    function awardPoints(amt, btn) {
+        points += amt;
+        document.getElementById('studentPoints').innerText = points;
+        btn.style.background = "var(--success)";
+        if(points >= 1000) document.getElementById('claimBtn').classList.add('ready');
+    }
+
+    // نظام الشراء والخصم من المحفظة
+    function buyItem(name, price) {
+        if (balance >= price) {
+            balance = (parseFloat(balance) - price).toFixed(2);
+            document.getElementById('sidebarBalance').innerText = balance;
+            
+            const txList = document.getElementById('txList');
+            const tx = document.createElement('div');
+            tx.className = 'tx-item';
+            tx.style.borderRight = "3px solid var(--danger)";
+            tx.innerHTML = `<span>خصم: ${name}</span><span style="color:var(--danger)">-${price} SYNC</span>`;
+            txList.prepend(tx);
+
+            alert(`تم شراء ${name} بنجاح!`);
+            speak(`مبروك، لقد حصلت على ${name}`);
+        } else {
+            alert("رصيد محفظتك غير كافٍ! حول نقاطك أولاً.");
+            speak("الرصيد غير كافٍ");
+        }
+    }
+
+    function mintFromSidebar() {
+        if (points < 1000) return;
+        balance = (parseFloat(balance) + 10).toFixed(2);
+        points -= 1000;
+        document.getElementById('sidebarBalance').innerText = balance;
+        document.getElementById('studentPoints').innerText = points;
+        
+        const txList = document.getElementById('txList');
+        const tx = document.createElement('div');
+        tx.className = 'tx-item';
+        tx.innerHTML = `<span>تحويل نقاط</span><span style="color:var(--success)">+10 SYNC</span>`;
+        txList.prepend(tx);
+        
+        document.getElementById('claimBtn').classList.remove('ready');
+        speak("تم تحويل النقاط إلى عملات رقمية");
+    }
+
+    // خلفية جزيئات بسيطة
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    function draw() {
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(34, 211, 238, 0.1)";
+        for(let i=0; i<30; i++) {
+            ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 2, 0, Math.PI*2); ctx.fill();
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+
+    function startVoiceRecognition() {
+        const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if(!Speech) return alert("لا يدعم الصوت");
+        const rec = new Speech();
+        rec.lang = 'ar-SA';
+        rec.onstart = () => document.getElementById('voiceAssistant').classList.add('voice-active');
+        rec.onresult = (e) => {
+            const cmd = e.results[0][0].transcript;
+            if(cmd.includes("طالب")) showSection('student');
+            if(cmd.includes("رئيسية")) showSection('home');
+        };
+        rec.onend = () => document.getElementById('voiceAssistant').classList.remove('voice-active');
+        rec.start();
+    }
+</script>
+</body>
+</html>
