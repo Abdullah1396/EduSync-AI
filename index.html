@@ -1129,10 +1129,16 @@ function startPodcast() {
         points += 150;
         document.getElementById('studentPoints').innerText = points;
 
+        saveToMemory(
+            "podcast",
+            "بودكاست تعليمي",
+            "تم توليد بودكاست تعليمي من ملف: " + nameF
+        );
+
         updateClaimButton();
 
         speak("تم توليد البودكاست التعليمي");
-        alert("🎧 تم توليد بودكاست تعليمي من المصدر المرفوع");
+        alert("🎧 تم توليد بودكاست تعليمي وحفظه في Smart Review Vault");
     }, 1200);
 }
 
@@ -1377,6 +1383,24 @@ function handleDocUpload(input) {
     }
 }
 
+function saveToMemory(type, title, description) {
+    let memory = JSON.parse(localStorage.getItem('edusyncMemory')) || [];
+
+    const item = {
+        type: type,
+        title: title,
+        description: description,
+        date: new Date().toLocaleDateString('ar-SA'),
+        time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+    };
+
+    memory.unshift(item);
+
+    if (memory.length > 8) memory = memory.slice(0, 8);
+
+    localStorage.setItem('edusyncMemory', JSON.stringify(memory));
+}
+
 function runAI(type) {
     if(!isFile) return alert("ارفع ملف أولاً!");
 
@@ -1398,10 +1422,22 @@ function runAI(type) {
             document.getElementById('mapRes').style.display = 'block';
             markTaskDone('map');
             points += 120;
+
+            saveToMemory(
+                "map",
+                "خريطة ذهنية",
+                "تم إنشاء خريطة ذهنية من ملف: " + nameF
+            );
         }
 
         if(type === 'quiz') {
             document.getElementById('quizRes').style.display = 'block';
+
+            saveToMemory(
+                "quiz",
+                "اختبار ذكي",
+                "تم إنشاء اختبار ذكي لمراجعة ملف: " + nameF
+            );
         }
 
         if(type === 'flash') {
@@ -1410,6 +1446,12 @@ function runAI(type) {
             document.getElementById('flashA').innerText = flashcardsData[0].a;
             markTaskDone('flash');
             points += 120;
+
+            saveToMemory(
+                "flash",
+                "بطاقات تعليمية",
+                "تم إنشاء بطاقات تعليمية من ملف: " + nameF
+            );
         }
 
         document.getElementById('studentPoints').innerText = points;
@@ -1539,6 +1581,36 @@ function simulateChain() {
     }, 1000);
 }
 function openMemoryVault() {
+    const memory = JSON.parse(localStorage.getItem('edusyncMemory')) || [];
+
+    let memoryHTML = "";
+
+    if (memory.length === 0) {
+        memoryHTML = `
+            <div style="text-align:center; color:#94a3b8; font-size:0.8rem; padding:20px;">
+                لا توجد مراجعات محفوظة حتى الآن.<br>
+                ارفع ملفًا ثم أنشئ خريطة أو بطاقات أو اختبار.
+            </div>
+        `;
+    } else {
+        memory.forEach(item => {
+            let icon = "fa-clock-rotate-left";
+
+            if(item.type === "map") icon = "fa-diagram-project";
+            if(item.type === "flash") icon = "fa-layer-group";
+            if(item.type === "quiz") icon = "fa-spell-check";
+            if(item.type === "podcast") icon = "fa-headphones";
+
+            memoryHTML += `
+                <div class="memory-item">
+                    <h4><i class="fa-solid ${icon}"></i> ${item.title}</h4>
+                    <p>${item.description}</p>
+                    <span class="memory-tag">${item.date} - ${item.time}</span>
+                </div>
+            `;
+        });
+    }
+
     const html = `
         <div style="text-align:center; margin-bottom:18px;">
             <div style="
@@ -1561,26 +1633,12 @@ function openMemoryVault() {
 
             <h2 style="margin-bottom:6px;">Smart Review Vault</h2>
             <p style="font-size:0.78rem; color:#94a3b8; line-height:1.7;">
-                هنا يحتفظ EduSync AI بمراجعاتك السابقة وملخصاتك ونتائجك حتى تعود لها متى ما احتجت.
+                أرشيف ذكي يحفظ مراجعاتك وملخصاتك وأدوات التعلم التي أنشأتها.
             </p>
         </div>
 
-        <div class="memory-item">
-            <h4><i class="fa-solid fa-diagram-project"></i> خريطة ذهنية محفوظة</h4>
-            <p>ملخص بصري لأهم مفاهيم الوحدة الأولى والعلاقات بينها.</p>
-            <span class="memory-tag">آخر مراجعة: اليوم</span>
-        </div>
-
-        <div class="memory-item">
-            <h4><i class="fa-solid fa-layer-group"></i> بطاقات تعليمية</h4>
-            <p>4 بطاقات مراجعة ذكية مبنية على الملف الذي رفعه الطالب.</p>
-            <span class="memory-tag">مناسب للمراجعة السريعة</span>
-        </div>
-
-        <div class="memory-item">
-            <h4><i class="fa-solid fa-spell-check"></i> نتيجة اختبار سابق</h4>
-            <p>نقطة ضعف متكررة: فهم علاقة البلوكشين بتوثيق الهوية التعليمية.</p>
-            <span class="memory-tag">AI Recommendation</span>
+        <div class="memory-list">
+            ${memoryHTML}
         </div>
 
         <div style="
@@ -1594,7 +1652,7 @@ function openMemoryVault() {
             line-height:1.7;
         ">
             <strong>توصية الذكاء الاصطناعي:</strong><br>
-            راجع البطاقات التعليمية أولاً، ثم أعد الاختبار القصير لرفع مستوى الإتقان.
+            راجع آخر أداة تعلم محفوظة، ثم أعد الاختبار القصير لرفع مستوى الإتقان.
         </div>
 
         <button onclick="runSmartReview()" style="
@@ -1611,6 +1669,20 @@ function openMemoryVault() {
             بدء مراجعة ذكية
         </button>
 
+        <button onclick="clearMemoryVault()" style="
+            width:100%;
+            padding:12px;
+            border:1px solid rgba(244,63,94,0.35);
+            border-radius:14px;
+            background:rgba(244,63,94,0.08);
+            color:#f43f5e;
+            font-weight:bold;
+            cursor:pointer;
+            margin-top:10px;
+        ">
+            مسح سجل المراجعات
+        </button>
+
         <div id="reviewStatus" style="
             display:none;
             text-align:center;
@@ -1624,6 +1696,23 @@ function openMemoryVault() {
 
     document.getElementById('modalBody').innerHTML = html;
     document.getElementById('infoModal').style.display = 'flex';
+}
+
+function clearMemoryVault() {
+    localStorage.removeItem('edusyncMemory');
+    openMemoryVault();
+}
+
+function runSmartReview() {
+    const status = document.getElementById('reviewStatus');
+    if (!status) return;
+
+    status.style.display = 'none';
+
+    setTimeout(() => {
+        status.style.display = 'block';
+        speak("تم إنشاء جلسة مراجعة ذكية مخصصة لك");
+    }, 900);
 }
 
 function runSmartReview() {
