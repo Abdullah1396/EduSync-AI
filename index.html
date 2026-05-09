@@ -770,13 +770,37 @@ header {
     color: var(--success);
     font-size: 0.6rem;
 } 
+    .accessibility-float{
+    position:fixed;
+    left:20px;
+    bottom:95px;
+    width:58px;
+    height:58px;
+    border:none;
+    border-radius:50%;
+    background:linear-gradient(135deg,#10b981,#22d3ee);
+    color:#fff;
+    font-size:28px;
+    box-shadow:0 0 25px rgba(34,211,238,.45);
+    z-index:9999;
+}
+
+.access-mode{
+    zoom:1.08;
+}
+
+.access-mode *{
+    letter-spacing:.3px;
+}
 </style>
 </head>
 
 <body>
 
 <canvas id="bg-canvas"></canvas>
-
+<button class="accessibility-float" onclick="toggleAccessibility()">
+♿
+</button>
 <div class="modal" id="infoModal" onclick="this.style.display='none'">
     <div class="modal-content" onclick="event.stopPropagation()">
         <div id="modalBody"></div>
@@ -1805,6 +1829,24 @@ function runSmartReview() {
     }, 900);
 }
 updateClaimButton();
+    function toggleAccessibility() {
+
+    document.body.classList.toggle("access-mode");
+
+    if(document.body.classList.contains("access-mode")){
+
+        speak("تم تفعيل وضع الوصول الشامل");
+
+        alert("✅ تم تفعيل وضع الوصول الشامل لذوي الإعاقة البصرية");
+
+    } else {
+
+        speak("تم إيقاف وضع الوصول الشامل");
+
+        alert("تم إيقاف وضع الوصول الشامل");
+
+    }
+}
 </script>
 
 </body>
