@@ -829,17 +829,18 @@ header {
         </div>
 
         <div class="badge-grid">
-            <div class="achievement-badge">
-                <i class="fa-solid fa-fire"></i>
-                <div>7-Day Streak</div>
-                <small>Soulbound Badge</small>
-            </div>
-            <div class="achievement-badge">
-                <i class="fa-solid fa-certificate"></i>
-                <div>Verified Learner</div>
-                <small>Blockchain Proof</small>
-            </div>
-        </div>
+    <div class="achievement-badge" onclick="openBadgeModal('streak')" style="cursor:pointer;">
+        <i class="fa-solid fa-fire"></i>
+        <div>7-Day Streak</div>
+        <small>Soulbound Badge</small>
+    </div>
+
+    <div class="achievement-badge" onclick="openBadgeModal('verified')" style="cursor:pointer;">
+        <i class="fa-solid fa-certificate"></i>
+        <div>Verified Learner</div>
+        <small>Blockchain Proof</small>
+    </div>
+</div>
 
         <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
         <div class="upload-box" onclick="document.getElementById('fInput').click()">
@@ -1368,6 +1369,115 @@ function openModal(id) {
 
     document.getElementById('modalBody').innerHTML = contents[id];
     document.getElementById('infoModal').style.display = 'flex';
+}
+
+function openBadgeModal(type) {
+    let title = type === 'verified' ? 'Verified Learner' : '7-Day Study Streak';
+    let icon = type === 'verified' ? 'fa-certificate' : 'fa-fire';
+    let desc = type === 'verified'
+        ? 'هذا الإنجاز يثبت أن الطالب أكمل نشاطًا تعليميًا موثقًا داخل EduSync AI.'
+        : 'هذا الإنجاز يثبت استمرار الطالب في التعلم لمدة 7 أيام متتالية.';
+
+    const html = `
+        <div style="text-align:center;">
+            <div style="
+                width:86px;
+                height:86px;
+                margin:auto;
+                border-radius:50%;
+                background:rgba(245,158,11,0.12);
+                border:1px solid rgba(245,158,11,0.45);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:#f59e0b;
+                font-size:2rem;
+                margin-bottom:18px;
+                box-shadow:0 0 30px rgba(245,158,11,0.28);
+            ">
+                <i class="fa-solid ${icon}"></i>
+            </div>
+
+            <h2 style="margin-bottom:8px;">${title}</h2>
+
+            <div style="color:#10b981; font-size:0.8rem; margin-bottom:15px;">
+                ● Blockchain Verified
+            </div>
+
+            <p style="font-size:0.8rem; color:#cbd5e1; line-height:1.7; margin-bottom:18px;">
+                ${desc}
+            </p>
+        </div>
+
+        <div style="
+            background:rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:16px;
+            padding:14px;
+            margin-bottom:15px;
+            font-size:0.78rem;
+        ">
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                <span style="color:#94a3b8;">Type</span>
+                <strong>Soulbound Badge</strong>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                <span style="color:#94a3b8;">Wallet</span>
+                <strong>0x8F3A...91C</strong>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                <span style="color:#94a3b8;">Issued</span>
+                <strong>09 MAY 2026</strong>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;">
+                <span style="color:#94a3b8;">SHA-256</span>
+                <strong>A81X9B22</strong>
+            </div>
+        </div>
+
+        <button onclick="simulateChain()" style="
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:14px;
+            background:linear-gradient(135deg,#22d3ee,#0ea5e9);
+            color:#001018;
+            font-weight:bold;
+            cursor:pointer;
+            margin-bottom:10px;
+        ">
+            عرض التحقق على البلوكشين
+        </button>
+
+        <div id="chainStatus" style="
+            display:none;
+            text-align:center;
+            color:#10b981;
+            font-size:0.8rem;
+            margin-top:10px;
+        ">
+            ✅ تم التحقق من البصمة التعليمية بنجاح
+        </div>
+    `;
+
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('infoModal').style.display = 'flex';
+}
+
+function simulateChain() {
+    const status = document.getElementById('chainStatus');
+
+    if (!status) return;
+
+    status.style.display = 'none';
+
+    setTimeout(() => {
+        status.style.display = 'block';
+        speak("تم التحقق من الهوية التعليمية عبر البلوكشين");
+    }, 1000);
 }
 
 updateClaimButton();
