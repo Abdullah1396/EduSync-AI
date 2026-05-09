@@ -1451,23 +1451,28 @@ function toggleAccessibility() {
 
 function toggleLanguage() {
     currentLang = currentLang === "ar" ? "en" : "ar";
+
     const langBtn = document.querySelector('.lang-float');
 
     if (currentLang === "en") {
-        document.documentElement.lang = "en";
-        document.documentElement.dir = "ltr";
         if (langBtn) langBtn.innerText = "AR";
-
-        translateToEnglish();
-        speakEnglish("Language switched to English. EduSync AI supports multilingual learning.");
+        speakEnglish("English demo mode activated");
+        alert("English demo mode activated");
     } else {
-        document.documentElement.lang = "ar";
-        document.documentElement.dir = "rtl";
         if (langBtn) langBtn.innerText = "EN";
-
-        translateToArabic();
-        speak("تم تحويل اللغة إلى العربية");
+        speak("تم تفعيل الوضع العربي");
+        alert("تم تفعيل الوضع العربي");
     }
+}
+
+function speakEnglish(text) {
+    if (synth.speaking) synth.cancel();
+
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 0.9;
+
+    synth.speak(utter);
 }
 
 function speakEnglish(text) {
@@ -2162,17 +2167,7 @@ function speakEnglish(text) {
     utter.rate = 0.9;
     synth.speak(utter);
 }
-    function setText(selector, text) {
-    const el = document.querySelector(selector);
-    if (el) el.innerText = text;
-}
-
-function translateToEnglish() {
-    setText('header .logo-box div div:first-child', 'EduSync AI');
-    setText('header .logo-box div div:nth-child(2)', 'Smart Educational Synchronization');
-
-    setText('#home h3', '🚀 Welcome to EduSync');
-    setText('#home .info-card h4', '✨ Why EduSync AI?');
+    
 
     const features = document.querySelectorAll('#home .feature-item');
     const englishFeatures = [
