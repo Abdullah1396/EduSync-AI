@@ -789,19 +789,20 @@ header {
 }
 
 .lang-float {
+    .lang-float {
     position: fixed;
-    bottom: 152px;
-    left: 25px;
-    width: 52px;
-    height: 52px;
+    top: 118px;
+    left: 155px;
+    width: 54px;
+    height: 38px;
     background: rgba(245,158,11,0.95);
-    border-radius: 50%;
+    border-radius: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #111827;
     cursor: pointer;
-    z-index: 4000;
+    z-index: 4500;
     font-size: 0.9rem;
     font-weight: 900;
     box-shadow: 0 4px 18px rgba(245,158,11,0.35);
@@ -1434,21 +1435,47 @@ function startVoiceRecognition() {
     recognition.start();
 }
 
-function processVoiceCommand(cmd) {
-    if (cmd.includes("طالب")) {
-        showSection('student');
-        speak("بوابة الطالب");
-    } else if (cmd.includes("دكتور") || cmd.includes("محاضر")) {
-        showSection('doctor');
-        speak("بوابة الدكتور");
-    } else if (cmd.includes("إعدادات")) {
-        showSection('settings');
-        speak("الإعدادات");
-    } else if (cmd.includes("اختبار")) {
-        runAI('quiz');
+let currentLang = "ar";
+
+function toggleAccessibility() {
+    document.body.classList.toggle('access-mode');
+
+    if (document.body.classList.contains('access-mode')) {
+        speak("تم تفعيل وضع الوصول الشامل. يمكنك استخدام الأوامر الصوتية والتنقل بسهولة.");
+        alert("✅ تم تفعيل وضع الوصول الشامل");
     } else {
-        speak("كرر الطلب من فضلك");
+        speak("تم إيقاف وضع الوصول الشامل");
+        alert("تم إيقاف وضع الوصول الشامل");
     }
+}
+
+function toggleLanguage() {
+    currentLang = currentLang === "ar" ? "en" : "ar";
+    const langBtn = document.querySelector('.lang-float');
+
+    if (currentLang === "en") {
+        document.documentElement.lang = "en";
+        document.documentElement.dir = "ltr";
+        if (langBtn) langBtn.innerText = "AR";
+
+        translateToEnglish();
+        speakEnglish("Language switched to English. EduSync AI supports multilingual learning.");
+    } else {
+        document.documentElement.lang = "ar";
+        document.documentElement.dir = "rtl";
+        if (langBtn) langBtn.innerText = "EN";
+
+        translateToArabic();
+        speak("تم تحويل اللغة إلى العربية");
+    }
+}
+
+function speakEnglish(text) {
+    if (synth.speaking) synth.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 0.9;
+    synth.speak(utter);
 }
 
 function updateClaimButton() {
@@ -2134,6 +2161,82 @@ function speakEnglish(text) {
     utter.lang = 'en-US';
     utter.rate = 0.9;
     synth.speak(utter);
+}
+    function setText(selector, text) {
+    const el = document.querySelector(selector);
+    if (el) el.innerText = text;
+}
+
+function translateToEnglish() {
+    setText('header .logo-box div div:first-child', 'EduSync AI');
+    setText('header .logo-box div div:nth-child(2)', 'Smart Educational Synchronization');
+
+    setText('#home h3', '🚀 Welcome to EduSync');
+    setText('#home .info-card h4', '✨ Why EduSync AI?');
+
+    const features = document.querySelectorAll('#home .feature-item');
+    const englishFeatures = [
+        ['NLP Analysis', 'Advanced natural language processing for learning content.'],
+        ['Blockchain Verification', 'Securing academic rewards and digital learning fingerprints.'],
+        ['Learning Gap Analytics', 'Early detection of student learning difficulties.'],
+        ['Digital Identity', 'Documenting skills for future employment opportunities.'],
+        ['Adaptive Learning', 'Personalized content for every learner.'],
+        ['Soulbound Certificates', 'Non-transferable verified academic achievements.'],
+        ['Quizzes & Rewards', 'Turn learning into points and digital academic reputation.']
+    ];
+
+    features.forEach((item, index) => {
+        const title = item.querySelector('div div:first-child');
+        const desc = item.querySelector('div div:nth-child(2)');
+        if (englishFeatures[index]) {
+            if (title) title.innerText = englishFeatures[index][0];
+            if (desc) desc.innerText = englishFeatures[index][1];
+        }
+    });
+
+    setText('#student .ai-coach-card h4', 'EduSync Smart Coach');
+    setText('#aiCoachText', 'Upload your learning material, and I will convert it into podcasts, flashcards, mind maps, and smart quizzes.');
+
+    setText('#upStatus', 'Upload Learning Material');
+    setText('#progress-text', document.getElementById('progress-text')?.innerText || '0%');
+
+    setText('#doctor h3', 'Instructor Dashboard');
+    setText('#settings h3', 'Settings & Support');
+}
+
+function translateToArabic() {
+    setText('header .logo-box div div:first-child', 'EduSync AI');
+    setText('header .logo-box div div:nth-child(2)', 'المزامنة التعليمية الذكية');
+
+    setText('#home h3', 'مرحباً بك في EduSync 🚀');
+    setText('#home .info-card h4', 'لماذا EduSync AI؟ ✨');
+
+    const features = document.querySelectorAll('#home .feature-item');
+    const arabicFeatures = [
+        ['تحليل NLP', 'معالجة لغات طبيعية متقدمة للمناهج.'],
+        ['توثيق Blockchain', 'حفظ المكافآت والبصمة التقنية للمنهج.'],
+        ['تحليلات الفجوة', 'لرصد تعثر الطلاب مبكراً.'],
+        ['هوية رقمية', 'لتوثيق المهارات لجهات التوظيف.'],
+        ['تعلم متكيف', 'تخصيص المحتوى لكل طالب.'],
+        ['شهادات Soulbound', 'إنجازات تعليمية غير قابلة للتلاعب أو النقل.'],
+        ['اختبارات ومكافآت', 'حوّل التعلم إلى نقاط وسمعة تعليمية رقمية.']
+    ];
+
+    features.forEach((item, index) => {
+        const title = item.querySelector('div div:first-child');
+        const desc = item.querySelector('div div:nth-child(2)');
+        if (arabicFeatures[index]) {
+            if (title) title.innerText = arabicFeatures[index][0];
+            if (desc) desc.innerText = arabicFeatures[index][1];
+        }
+    });
+
+    setText('#student .ai-coach-card h4', 'مرشد EduSync الذكي');
+    setText('#aiCoachText', 'ارفع منهجك، وسأقوم بتحويله إلى بودكاست، بطاقات تعليمية، خريطة ذهنية، واختبار ذكي مع مكافآت تعليمية موثقة.');
+
+    setText('#upStatus', 'تحميل مصادر المنهج');
+    setText('#doctor h3', 'لوحة تحكم المحاضر');
+    setText('#settings h3', 'الإعدادات والدعم');
 }
 updateClaimButton();
 </script>
