@@ -714,6 +714,62 @@ header {
     70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
     100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
 }
+   .memory-vault-btn {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(34, 211, 238, 0.35);
+    background: rgba(34, 211, 238, 0.08);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 18px rgba(34, 211, 238, 0.12);
+    z-index: 5;
+}
+
+.memory-vault-btn:hover {
+    transform: scale(1.08);
+    background: rgba(34, 211, 238, 0.16);
+}
+
+.mission-card {
+    position: relative;
+}
+
+.memory-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.memory-item h4 {
+    color: var(--primary);
+    font-size: 0.82rem;
+    margin-bottom: 5px;
+}
+
+.memory-item p {
+    color: #94a3b8;
+    font-size: 0.72rem;
+    line-height: 1.6;
+}
+
+.memory-tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: rgba(16,185,129,0.12);
+    color: var(--success);
+    font-size: 0.6rem;
+} 
 </style>
 </head>
 
@@ -849,6 +905,9 @@ header {
         </div>
 
         <div class="mission-card">
+            <div class="memory-vault-btn" onclick="openMemoryVault()" title="مراجعاتي السابقة">
+    <i class="fa-solid fa-clock-rotate-left"></i>
+</div>
             <h4 style="color: var(--primary); font-size: 0.9rem; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px;">
                 <i class="fa-solid fa-bolt"></i> مستوى إنجاز المهام: <span id="progress-text" style="color: var(--duo);">0%</span>
             </h4>
@@ -1479,7 +1538,105 @@ function simulateChain() {
         speak("تم التحقق من الهوية التعليمية عبر البلوكشين");
     }, 1000);
 }
+function openMemoryVault() {
+    const html = `
+        <div style="text-align:center; margin-bottom:18px;">
+            <div style="
+                width:80px;
+                height:80px;
+                margin:auto;
+                border-radius:22px;
+                background:rgba(34,211,238,0.1);
+                border:1px solid rgba(34,211,238,0.35);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:#22d3ee;
+                font-size:2rem;
+                margin-bottom:14px;
+                box-shadow:0 0 28px rgba(34,211,238,0.18);
+            ">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
 
+            <h2 style="margin-bottom:6px;">Smart Review Vault</h2>
+            <p style="font-size:0.78rem; color:#94a3b8; line-height:1.7;">
+                هنا يحتفظ EduSync AI بمراجعاتك السابقة وملخصاتك ونتائجك حتى تعود لها متى ما احتجت.
+            </p>
+        </div>
+
+        <div class="memory-item">
+            <h4><i class="fa-solid fa-diagram-project"></i> خريطة ذهنية محفوظة</h4>
+            <p>ملخص بصري لأهم مفاهيم الوحدة الأولى والعلاقات بينها.</p>
+            <span class="memory-tag">آخر مراجعة: اليوم</span>
+        </div>
+
+        <div class="memory-item">
+            <h4><i class="fa-solid fa-layer-group"></i> بطاقات تعليمية</h4>
+            <p>4 بطاقات مراجعة ذكية مبنية على الملف الذي رفعه الطالب.</p>
+            <span class="memory-tag">مناسب للمراجعة السريعة</span>
+        </div>
+
+        <div class="memory-item">
+            <h4><i class="fa-solid fa-spell-check"></i> نتيجة اختبار سابق</h4>
+            <p>نقطة ضعف متكررة: فهم علاقة البلوكشين بتوثيق الهوية التعليمية.</p>
+            <span class="memory-tag">AI Recommendation</span>
+        </div>
+
+        <div style="
+            background:rgba(245,158,11,0.08);
+            border:1px dashed rgba(245,158,11,0.35);
+            border-radius:14px;
+            padding:12px;
+            margin-top:14px;
+            color:#fbbf24;
+            font-size:0.75rem;
+            line-height:1.7;
+        ">
+            <strong>توصية الذكاء الاصطناعي:</strong><br>
+            راجع البطاقات التعليمية أولاً، ثم أعد الاختبار القصير لرفع مستوى الإتقان.
+        </div>
+
+        <button onclick="runSmartReview()" style="
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:14px;
+            background:linear-gradient(135deg,#22d3ee,#0ea5e9);
+            color:#001018;
+            font-weight:bold;
+            cursor:pointer;
+            margin-top:15px;
+        ">
+            بدء مراجعة ذكية
+        </button>
+
+        <div id="reviewStatus" style="
+            display:none;
+            text-align:center;
+            color:#10b981;
+            font-size:0.8rem;
+            margin-top:12px;
+        ">
+            ✅ تم إنشاء جلسة مراجعة مخصصة لك
+        </div>
+    `;
+
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('infoModal').style.display = 'flex';
+}
+
+function runSmartReview() {
+    const status = document.getElementById('reviewStatus');
+    if (!status) return;
+
+    status.style.display = 'none';
+
+    setTimeout(() => {
+        status.style.display = 'block';
+        speak("تم إنشاء جلسة مراجعة ذكية مخصصة لك");
+    }, 900);
+}
 updateClaimButton();
 </script>
 
