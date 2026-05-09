@@ -963,51 +963,160 @@ header {
     </div>
 
     <div id="doctor" class="section">
-        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
+<div id="doctor" class="section">
+    <h3 style="margin-bottom:15px; font-size:1.1rem;">
+        <i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر
+    </h3>
 
-        <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
-            <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
-            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
-            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي للدفعة</div>
-            <p style="font-size:0.65rem; color:#94a3b8;">سيتم توليد SHA-256 Hash ووضعه على البلوكشين</p>
-        </div>
+    <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
+        <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
+        <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
+        <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي للدفعة</div>
+        <p style="font-size:0.65rem; color:#94a3b8;">سيتم توليد SHA-256 Hash ووضعه على البلوكشين</p>
+    </div>
 
-        <div class="info-card">
-            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تقرير الاستيعاب العام</h4>
+    <div class="info-card">
+        <h4 style="color:var(--primary); margin-bottom:15px;">
+            <i class="fa-solid fa-wave-square"></i> Classroom Pulse
+        </h4>
 
-            <div class="progress-container">
-                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
-                    <span>تحليل Chapter 1</span>
-                    <span style="color: var(--danger);">ضعيف (35%)</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 35%; background: var(--danger);"></div>
-                </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div style="background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:14px; padding:14px; text-align:center;">
+                <div style="color:var(--success); font-size:1.4rem; font-weight:800;">78%</div>
+                <small style="color:#94a3b8;">مستوى التفاعل</small>
             </div>
 
-            <div class="progress-container" style="margin-top:15px;">
-                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
-                    <span>تحليل Chapter 2</span>
-                    <span style="color: var(--success);">جيد (78%)</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 78%; background: var(--success);"></div>
-                </div>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:14px; padding:14px; text-align:center;">
+                <div style="color:var(--gold); font-size:1.4rem; font-weight:800;">12</div>
+                <small style="color:#94a3b8;">طلاب يحتاجون متابعة</small>
             </div>
 
-            <button class="claim-btn ready" style="margin-top: 15px; font-size: 0.8rem;" onclick="alert('تم إرسال تنبيه مراجعة لجميع الطلاب!')">
-                إرسال إشعار مراجعة
-            </button>
-        </div>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:14px; padding:14px; text-align:center;">
+                <div style="color:var(--primary); font-size:1.4rem; font-weight:800;">64%</div>
+                <small style="color:#94a3b8;">إكمال المهام</small>
+            </div>
 
-        <div class="info-card">
-            <h4 style="color:var(--primary); margin-bottom:12px;">🧠 توصية الذكاء الاصطناعي</h4>
-            <p style="font-size:0.78rem; color:#cbd5e1; line-height:1.7;">
-                يوجد انخفاض واضح في استيعاب Chapter 1. يوصى بتوليد اختبار قصير وإرسال مراجعة موجهة للطلاب الأقل أداءً.
-            </p>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:14px; padding:14px; text-align:center;">
+                <div style="color:var(--danger); font-size:1.4rem; font-weight:800;">35%</div>
+                <small style="color:#94a3b8;">ضعف Chapter 1</small>
+            </div>
         </div>
     </div>
 
+    <div class="info-card">
+        <h4 style="color: var(--primary); margin-bottom: 15px;">
+            <i class="fa-solid fa-chart-simple"></i> تقرير الاستيعاب العام
+        </h4>
+
+        <div class="progress-container">
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem;">
+                <span>تحليل Chapter 1</span>
+                <span style="color:var(--danger);">ضعيف (35%)</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width:35%; background:var(--danger);"></div>
+            </div>
+        </div>
+
+        <div class="progress-container" style="margin-top:15px;">
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem;">
+                <span>تحليل Chapter 2</span>
+                <span style="color:var(--success);">جيد (78%)</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width:78%; background:var(--success);"></div>
+            </div>
+        </div>
+
+        <div class="progress-container" style="margin-top:15px;">
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem;">
+                <span>تحليل Chapter 3</span>
+                <span style="color:var(--gold);">متوسط (55%)</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width:55%; background:var(--gold);"></div>
+            </div>
+        </div>
+
+        <button class="claim-btn ready" style="margin-top:15px;" onclick="generateRecoveryPlan()">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> توليد خطة علاجية بالذكاء الاصطناعي
+        </button>
+    </div>
+
+    <div class="info-card">
+        <h4 style="color:var(--danger); margin-bottom:15px;">
+            <i class="fa-solid fa-triangle-exclamation"></i> AI Risk Radar
+        </h4>
+
+        <div style="background:rgba(244,63,94,0.08); border:1px solid rgba(244,63,94,0.25); border-radius:14px; padding:12px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
+                <strong>أحمد محمد</strong>
+                <span style="color:var(--danger);">خطر 82%</span>
+            </div>
+            <p style="font-size:0.7rem; color:#94a3b8; margin-top:5px;">تكرار أخطاء في Chapter 1 وانخفاض في التفاعل.</p>
+        </div>
+
+        <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:14px; padding:12px; margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
+                <strong>سارة خالد</strong>
+                <span style="color:var(--gold);">متوسط 58%</span>
+            </div>
+            <p style="font-size:0.7rem; color:#94a3b8; margin-top:5px;">تحتاج مراجعة بطاقات تعليمية قبل الاختبار القادم.</p>
+        </div>
+
+        <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:14px; padding:12px;">
+            <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
+                <strong>خالد علي</strong>
+                <span style="color:var(--success);">مستقر 24%</span>
+            </div>
+            <p style="font-size:0.7rem; color:#94a3b8; margin-top:5px;">أداؤه مستقر ويستجيب جيدًا للبودكاست.</p>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <h4 style="color:var(--primary); margin-bottom:15px;">
+            <i class="fa-solid fa-table-cells"></i> Chapter Heatmap
+        </h4>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; text-align:center;">
+            <div style="background:rgba(244,63,94,0.18); border:1px solid rgba(244,63,94,0.35); border-radius:12px; padding:14px;">
+                <strong>CH 1</strong><br><small style="color:#fca5a5;">ضعيف</small>
+            </div>
+            <div style="background:rgba(245,158,11,0.16); border:1px solid rgba(245,158,11,0.35); border-radius:12px; padding:14px;">
+                <strong>CH 3</strong><br><small style="color:#fbbf24;">متوسط</small>
+            </div>
+            <div style="background:rgba(16,185,129,0.16); border:1px solid rgba(16,185,129,0.35); border-radius:12px; padding:14px;">
+                <strong>CH 2</strong><br><small style="color:#6ee7b7;">جيد</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <h4 style="color:var(--primary); margin-bottom:12px;">
+            <i class="fa-solid fa-brain"></i> توصية الذكاء الاصطناعي
+        </h4>
+        <p style="font-size:0.78rem; color:#cbd5e1; line-height:1.7;">
+            يوجد انخفاض واضح في استيعاب Chapter 1. يوصى بتوليد اختبار قصير، وبطاقات تعليمية، وبودكاست مراجعة للطلاب الأقل أداءً.
+        </p>
+
+        <button class="claim-btn ready" style="margin-top:15px;" onclick="generateAIExam()">
+            <i class="fa-solid fa-file-pen"></i> Generate AI Exam
+        </button>
+    </div>
+
+    <div class="info-card">
+        <h4 style="color:var(--gold); margin-bottom:12px;">
+            <i class="fa-solid fa-shield-halved"></i> Integrity Shield
+        </h4>
+        <p style="font-size:0.78rem; color:#cbd5e1; line-height:1.7;">
+            النظام يراقب أنماط الإجابات المتشابهة، وسرعة الحل غير الطبيعية، ويعطي تنبيهًا مبكرًا لاحتمالات السلوك غير الأكاديمي.
+        </p>
+
+        <div style="margin-top:12px; padding:10px; border-radius:12px; background:rgba(16,185,129,0.08); color:var(--success); font-size:0.75rem;">
+            ✅ لا توجد مؤشرات خطرة حاليًا
+        </div>
+    </div>
+</div>
     <div id="settings" class="section">
         <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
 
@@ -1725,6 +1834,121 @@ function runSmartReview() {
         status.style.display = 'block';
         speak("تم إنشاء جلسة مراجعة ذكية مخصصة لك");
     }, 900);
+}
+    function generateRecoveryPlan() {
+    const html = `
+        <h2 style="text-align:center; color:var(--primary); margin-bottom:15px;">
+            خطة علاجية ذكية
+        </h2>
+
+        <p style="font-size:0.8rem; color:#cbd5e1; line-height:1.8; text-align:center; margin-bottom:18px;">
+            بناءً على انخفاض Chapter 1، يقترح EduSync AI خطة تدخل قصيرة لرفع الاستيعاب خلال 48 ساعة.
+        </p>
+
+        <div class="memory-item">
+            <h4><i class="fa-solid fa-headphones"></i> مراجعة صوتية</h4>
+            <p>توليد بودكاست قصير يشرح المفاهيم الأساسية بطريقة مبسطة.</p>
+        </div>
+
+        <div class="memory-item">
+            <h4><i class="fa-solid fa-layer-group"></i> بطاقات ذكية</h4>
+            <p>إنشاء 10 بطاقات تعليمية للمفاهيم التي ظهر فيها ضعف متكرر.</p>
+        </div>
+
+        <div class="memory-item">
+            <h4><i class="fa-solid fa-spell-check"></i> اختبار علاجي</h4>
+            <p>اختبار قصير مخصص للطلاب المعرضين للتعثر.</p>
+        </div>
+
+        <button onclick="sendRecoveryPlan()" style="
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:14px;
+            background:linear-gradient(135deg,#22d3ee,#0ea5e9);
+            color:#001018;
+            font-weight:bold;
+            cursor:pointer;
+            margin-top:12px;
+        ">
+            إرسال الخطة للطلاب
+        </button>
+
+        <div id="recoveryStatus" style="display:none; text-align:center; color:#10b981; font-size:0.8rem; margin-top:12px;">
+            ✅ تم إرسال الخطة العلاجية بنجاح
+        </div>
+    `;
+
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('infoModal').style.display = 'flex';
+}
+
+function sendRecoveryPlan() {
+    const status = document.getElementById('recoveryStatus');
+    if (!status) return;
+
+    setTimeout(() => {
+        status.style.display = 'block';
+        speak("تم إرسال الخطة العلاجية للطلاب");
+    }, 800);
+}
+
+function generateAIExam() {
+    const html = `
+        <h2 style="text-align:center; color:var(--primary); margin-bottom:15px;">
+            AI Exam Generator
+        </h2>
+
+        <p style="font-size:0.8rem; color:#cbd5e1; line-height:1.8; text-align:center; margin-bottom:18px;">
+            تم إنشاء اختبار ذكي حسب نقاط الضعف المكتشفة في Chapter 1.
+        </p>
+
+        <div class="memory-item">
+            <h4>سؤال سهل</h4>
+            <p>ما المقصود بالبصمة الرقمية SHA-256؟</p>
+        </div>
+
+        <div class="memory-item">
+            <h4>سؤال متوسط</h4>
+            <p>كيف يساعد البلوكشين في توثيق الإنجازات التعليمية؟</p>
+        </div>
+
+        <div class="memory-item">
+            <h4>سؤال متقدم</h4>
+            <p>اشرح الفرق بين التوثيق الداخلي والتوثيق عبر شبكة بلوكشين عامة.</p>
+        </div>
+
+        <button onclick="approveExam()" style="
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:14px;
+            background:linear-gradient(135deg,#f59e0b,#fbbf24);
+            color:#111827;
+            font-weight:bold;
+            cursor:pointer;
+            margin-top:12px;
+        ">
+            اعتماد الاختبار وإرساله
+        </button>
+
+        <div id="examStatus" style="display:none; text-align:center; color:#10b981; font-size:0.8rem; margin-top:12px;">
+            ✅ تم اعتماد الاختبار وإرساله للطلاب
+        </div>
+    `;
+
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('infoModal').style.display = 'flex';
+}
+
+function approveExam() {
+    const status = document.getElementById('examStatus');
+    if (!status) return;
+
+    setTimeout(() => {
+        status.style.display = 'block';
+        speak("تم اعتماد الاختبار وإرساله للطلاب");
+    }, 800);
 }
 updateClaimButton();
 </script>
