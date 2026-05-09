@@ -770,6 +770,60 @@ header {
     color: var(--success);
     font-size: 0.6rem;
 } 
+    .access-float {
+    position: fixed;
+    bottom: 90px;
+    left: 25px;
+    width: 52px;
+    height: 52px;
+    background: rgba(16,185,129,0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #001018;
+    cursor: pointer;
+    z-index: 4000;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 18px rgba(16,185,129,0.35);
+}
+
+.lang-float {
+    position: fixed;
+    bottom: 152px;
+    left: 25px;
+    width: 52px;
+    height: 52px;
+    background: rgba(245,158,11,0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111827;
+    cursor: pointer;
+    z-index: 4000;
+    font-size: 0.9rem;
+    font-weight: 900;
+    box-shadow: 0 4px 18px rgba(245,158,11,0.35);
+}
+
+body.access-mode {
+    font-size: 115%;
+}
+
+body.access-mode .info-card,
+body.access-mode .tool-card,
+body.access-mode .mission-card,
+body.access-mode .achievement-badge {
+    border-color: rgba(34,211,238,0.55) !important;
+    box-shadow: 0 0 22px rgba(34,211,238,0.10);
+}
+
+body.access-mode p,
+body.access-mode small,
+body.access-mode div {
+    line-height: 1.9;
+}
 </style>
 </head>
 
@@ -1264,7 +1318,13 @@ header {
 
     
 <div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
+<div class="access-float" onclick="toggleAccessibility()" title="وضع الوصول الشامل">
+    <i class="fa-solid fa-universal-access"></i>
+</div>
 
+<div class="lang-float" onclick="toggleLanguage()" title="تغيير اللغة">
+    EN
+</div>
 <script>
 let points = 450;
 let balance = 0.00;
@@ -2035,6 +2095,45 @@ function approveExam() {
         status.style.display = 'block';
         speak("تم اعتماد الاختبار وإرساله للطلاب");
     }, 800);
+}
+    let currentLang = "ar";
+
+function toggleAccessibility() {
+    document.body.classList.toggle('access-mode');
+
+    if (document.body.classList.contains('access-mode')) {
+        speak("تم تفعيل وضع الوصول الشامل. يمكنك استخدام الأوامر الصوتية والتنقل بسهولة.");
+        alert("✅ تم تفعيل وضع الوصول الشامل");
+    } else {
+        speak("تم إيقاف وضع الوصول الشامل");
+        alert("تم إيقاف وضع الوصول الشامل");
+    }
+}
+
+function toggleLanguage() {
+    currentLang = currentLang === "ar" ? "en" : "ar";
+
+    if (currentLang === "en") {
+        document.documentElement.lang = "en";
+        document.documentElement.dir = "ltr";
+
+        alert("Language switched to English - Demo Mode");
+        speakEnglish("EduSync AI supports multilingual learning for non Arabic speakers.");
+    } else {
+        document.documentElement.lang = "ar";
+        document.documentElement.dir = "rtl";
+
+        alert("تم تحويل اللغة إلى العربية - وضع تجريبي");
+        speak("تم تحويل اللغة إلى العربية");
+    }
+}
+
+function speakEnglish(text) {
+    if (synth.speaking) synth.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 0.9;
+    synth.speak(utter);
 }
 updateClaimButton();
 </script>
