@@ -23,24 +23,7 @@
     </div>
 </div> 
 <header>
-style="color:var(--primary); font-size:1.5rem; cursor:pointer; margin-left:10px;">
-    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-</div>
     <div class="logo-box">
-        <div onclick="window.location.href='../index.html'"
-style="
-color:var(--primary);
-font-size:1.3rem;
-cursor:pointer;
-margin-right:auto;
-padding-left:10px;
-">
-    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-</div>
-
-<div class="menu-icon" onclick="toggleSidebar()">
-    <i class="fa-solid fa-bars"></i>
-</div>
         <img src="../1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
         <div>
             <div style="font-size:1rem; font-weight:800;">الإعدادات</div>
@@ -48,10 +31,15 @@ padding-left:10px;
         </div>
     </div>
 
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <div style="display:flex; align-items:center; gap:16px;">
+        <div onclick="window.location.href='../index.html'" style="color:var(--primary); font-size:1.4rem; cursor:pointer;">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </div>
+
+        <div class="menu-icon" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
+        </div>
     </div>
-    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-</div>
 </header>
 
 <div class="sidebar" id="sidebar">
