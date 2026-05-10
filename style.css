@@ -818,3 +818,44 @@ header {
         grid-template-columns: 1fr 1fr;
     }
 }
+
+@media (max-width: 600px) {
+    .container {
+        padding: 14px;
+        max-width: 100%;
+    }
+
+    .info-card,
+    .mission-card,
+    .ai-coach-card,
+    .upload-box {
+        padding: 18px;
+        border-radius: 18px;
+        margin-top: 16px;
+    }
+
+    .gamified-header {
+        margin-bottom: 16px;
+        padding: 10px;
+    }
+
+    .tools-grid,
+    .badge-grid {
+        gap: 10px;
+    }
+
+    .tool-card,
+    .achievement-badge {
+        padding: 14px 10px;
+    }
+
+    .task-circle {
+        width: 34px;
+        height: 34px;
+    }
+
+    .logo-img {
+        width: 42px;
+        height: 42px;
+    }
+}
