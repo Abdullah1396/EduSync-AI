@@ -127,6 +127,7 @@ function processVoiceCommand(cmd) {
 function updateClaimButton() {
     const btn = document.getElementById('claimBtn');
     const xpValue = document.getElementById('xpValue');
+    localStorage.setItem("xp", points);
     const repValue = document.getElementById('repValue');
 
     if (xpValue) xpValue.innerText = points + " XP";
