@@ -888,3 +888,6 @@ header {
         font-size: 0.85rem !important;
     }
 }
+<div onclick="window.location.href='../index.html'" style="color:var(--primary); font-size:1.6rem; cursor:pointer; margin-right:auto;">
+    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+</div>
