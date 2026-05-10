@@ -23,11 +23,24 @@
     </div>
 </div> 
 <header>
-    <div onclick="window.location.href='../index.html'" 
 style="color:var(--primary); font-size:1.5rem; cursor:pointer; margin-left:10px;">
     <i class="fa-solid fa-arrow-right-from-bracket"></i>
 </div>
     <div class="logo-box">
+        <div onclick="window.location.href='../index.html'"
+style="
+color:var(--primary);
+font-size:1.3rem;
+cursor:pointer;
+margin-right:auto;
+padding-left:10px;
+">
+    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+</div>
+
+<div class="menu-icon" onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</div>
         <img src="../1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
         <div>
             <div style="font-size:1rem; font-weight:800;">الإعدادات</div>
@@ -35,10 +48,8 @@ style="color:var(--primary); font-size:1.5rem; cursor:pointer; margin-left:10px;
         </div>
     </div>
 
-    <div onclick="window.location.href='../index.html'" style="color:var(--primary); font-size:1.5rem; cursor:pointer;">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
     </div>
-    <div onclick="window.location.href='../index.html'" style="color:var(--primary); font-size:1.6rem; cursor:pointer; margin-right:auto;">
     <i class="fa-solid fa-arrow-right-from-bracket"></i>
 </div>
 </header>
@@ -110,14 +121,29 @@ style="color:var(--primary); font-size:1.5rem; cursor:pointer; margin-left:10px;
             <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
         </div>
 
-        <div class="info-card sposor-card" style="margin-top: 20px; border: 1px dashed #f59e0b; background: rgba(245, 158, 11, 0.05); text-align: center; padding: 20px;">
-            <i class="fa-solid fa-handshake" style="font-size: 2rem; color: #f59e0b; margin-bottom: 10px;"></i>
-            <h4 style="color: #f59e0b; font-size: 0.9rem;">نرحب بالشراكات والرعايات</h4>
-            <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px; line-height: 1.5;">
-                انضم إلى منظومة EduSync لدعم مستقبل التعليم الذكي وتحفيز الابتكار لدى الطلاب.
-            </p>
-            <button class="claim-btn ready" style="margin-top: 15px; padding: 10px; font-size: 0.75rem;" onclick="openModal('contact')">تواصل كشريك</button>
-        </div>
+        <div class="info-card" style="
+    max-width: 330px;
+    margin: 18px auto;
+    padding: 16px;
+    border: 1px dashed #f59e0b;
+    border-radius: 18px;
+    background: rgba(245,158,11,0.05);
+    text-align: center;
+">
+    <i class="fa-solid fa-handshake" style="font-size:1.6rem; color:#f59e0b; margin-bottom:8px;"></i>
+
+    <h4 style="color:#f59e0b; font-size:0.95rem; margin-bottom:8px;">
+        الشراكات والرعايات
+    </h4>
+
+    <p style="font-size:0.72rem; color:#94a3b8; line-height:1.6; margin-bottom:12px;">
+        انضم إلى EduSync لدعم التعليم الذكي وتحفيز الابتكار لدى الطلاب.
+    </p>
+
+    <button class="claim-btn ready" style="width:100%; padding:11px; font-size:0.8rem;">
+        تواصل كشريك
+    </button>
+</div>
 
         <h3 style="margin-top:30px; margin-bottom:15px; color:var(--primary);"><i class="fa-solid fa-map-location-dot"></i> Road Map Future</h3>
 
