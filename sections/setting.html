@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>الإعدادات</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
 
+
+
+    <div id="settings" class="section">
+        <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
+
+        <div class="info-card" style="padding:0;">
+            <div class="sidebar-item" onclick="openModal('privacy')"><span>سياسة الخصوصية</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('guide')"><span>إرشادات المستخدم</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+            <div class="sidebar-item" onclick="openModal('contact')"><span>تواصل معنا</span><i class="fa-solid fa-chevron-left" style="margin-right:auto;"></i></div>
+        </div>
+
+        <div class="info-card" style="margin-top: 20px; border: 1px dashed #f59e0b; background: rgba(245, 158, 11, 0.05); text-align: center; padding: 20px;">
+            <i class="fa-solid fa-handshake" style="font-size: 2rem; color: #f59e0b; margin-bottom: 10px;"></i>
+            <h4 style="color: #f59e0b; font-size: 0.9rem;">نرحب بالشراكات والرعايات</h4>
+            <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px; line-height: 1.5;">
+                انضم إلى منظومة EduSync لدعم مستقبل التعليم الذكي وتحفيز الابتكار لدى الطلاب.
+            </p>
+            <button class="claim-btn ready" style="margin-top: 15px; padding: 10px; font-size: 0.75rem;" onclick="openModal('contact')">تواصل كشريك</button>
+        </div>
+
+        <h3 style="margin-top:30px; margin-bottom:15px; color:var(--primary);"><i class="fa-solid fa-map-location-dot"></i> Road Map Future</h3>
+
+        <div class="roadmap-container">
+            <div class="roadmap-item">
+                <span class="roadmap-tag">المرحلة 1</span>
+                <h4><i class="fa-solid fa-user-astronaut"></i> التوأم الرقمي</h4>
+                <p>نسخة افتراضية لمهارات الطالب تتنبأ بجاهزيته لسوق العمل بناءً على أدائه التعليمي.</p>
+            </div>
+
+            <div class="roadmap-item">
+                <span class="roadmap-tag">المرحلة 2</span>
+                <h4><i class="fa-solid fa-certificate"></i> شهادات Soulbound</h4>
+                <p>توثيق الإنجازات الأكاديمية غير القابلة للنقل أو التلاعب باستخدام Web3.</p>
+            </div>
+
+            <div class="roadmap-item">
+                <span class="roadmap-tag">المرحلة 3</span>
+                <h4><i class="fa-solid fa-comments"></i> غرف المذاكرة الذكية</h4>
+                <p>مساحات جماعية يديرها بوت ذكاء اصطناعي لتصحيح المفاهيم وطرح تحديات تفاعلية.</p>
+            </div>
+
+            <div class="roadmap-item">
+                <span class="roadmap-tag">المرحلة 4</span>
+                <h4><i class="fa-brands fa-linkedin"></i> الربط مع جهات التوظيف</h4>
+                <p>مشاركة الميداليات ونقاط السمعة التعليمية مع جهات التوظيف لتوثيق المهارات.</p>
+            </div>
+
+            <div class="roadmap-item" style="border-right-color: var(--danger);">
+                <span class="roadmap-tag">المرحلة 5</span>
+                <h4><i class="fa-solid fa-bolt-lightning"></i> تنبيه التعثر المبكر</h4>
+                <p>نظام تنبؤي للدكتور يحذر من احتمالية رسوب الطالب قبل وقوع الاختبار.</p>
+            </div>
+
+            <div class="roadmap-item">
+                <span class="roadmap-tag">المرحلة 6</span>
+                <h4><i class="fa-solid fa-eye"></i> المذاكرة المعززة AR</h4>
+                <p>تحويل الكتب الورقية لشروح تفاعلية ومرئية بمجرد توجيه كاميرا الهاتف للنص.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()"><i class="fa-solid fa-microphone"></i></div>
+
+<script src="../script.js"></script>
+</body>
+</html>
