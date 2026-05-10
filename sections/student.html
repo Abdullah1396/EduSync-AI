@@ -1,11 +1,4 @@
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الطالب</title>
-<link rel="stylesheet" href="../style.css">
-</head>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +6,21 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-
+<div class="modal" id="infoModal" onclick="this.style.display='none'">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div id="modalBody"></div>
+        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">
+            إغلاق
+        </button>
+    </div>
+</div>
         
 <header>
     <div class="logo-box">
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+       <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+            <div onclick="window.location.href='../index.html'" style="color:var(--primary); font-size:1.3rem; cursor:pointer;">
+    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+</div>
         <div>
             <div style="font-size: 1rem; font-weight: 800;">EduSync AI</div>
             <div style="font-size: 0.65rem; color: #94a3b8;">المزامنة التعليمية الذكية</div>
