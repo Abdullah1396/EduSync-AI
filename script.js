@@ -112,7 +112,7 @@ function processVoiceCommand(cmd) {
         showSection('student');
         speak("بوابة الطالب");
     } else if (cmd.includes("دكتور") || cmd.includes("محاضر")) {
-        showSection('doctor');
+        showSection('lecturer');
         speak("بوابة الدكتور");
     } else if (cmd.includes("إعدادات")) {
         showSection('settings');
