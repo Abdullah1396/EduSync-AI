@@ -154,12 +154,23 @@ function awardPoints(amount, el) {
     el.classList.add('used');
 
     points += amount;
-    document.getElementById('studentPoints').innerText = points;
+    xp = parseInt(xp) + amount;
+
+    localStorage.setItem("xp", xp);
+
+    const studentPoints = document.getElementById('studentPoints');
+    if (studentPoints) studentPoints.innerText = points;
+
+    const xpElements = document.querySelectorAll(".xpValue");
+    xpElements.forEach(el => {
+        el.innerText = xp;
+    });
 
     markTaskDone('quiz');
     updateClaimButton();
+    checkMint();
 
-    if(points >= 1000) speak("يمكنك الآن تحويل النقاط إلى عملة سينك");
+    if(xp >= 1000) speak("يمكنك الآن تحويل النقاط إلى عملة سينك");
 }
 
 function mintFromSidebar() {
