@@ -782,4 +782,39 @@ header {
 .access-mode *{
     letter-spacing:.3px;
 }
+.container {
+    max-width: 520px;
+    margin: auto;
+    padding: 20px;
+}
 
+@media (max-width: 600px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 16px;
+    }
+
+    header {
+        padding: 12px 16px;
+    }
+
+    .info-card,
+    .mission-card,
+    .ai-coach-card,
+    .upload-box {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .tools-grid,
+    .badge-grid,
+    .wallet-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+}
