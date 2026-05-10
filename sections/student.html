@@ -7,6 +7,74 @@
 </head>
 <body>
 
+        
+<header>
+    <div class="logo-box">
+        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+        <div>
+            <div style="font-size: 1rem; font-weight: 800;">EduSync AI</div>
+            <div style="font-size: 0.65rem; color: #94a3b8;">المزامنة التعليمية الذكية</div>
+        </div>
+    </div>
+    <div class="menu-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
+</header>
+
+<div class="sidebar" id="sidebar">
+    <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</div>
+
+    <div class="wallet-mini">
+        <div class="wallet-head">
+            <div>
+                <div class="wallet-label">ACADEMIC VAULT</div>
+                <div class="wallet-title">رصيد الهوية التعليمية</div>
+            </div>
+            <div class="wallet-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+        </div>
+
+        <div class="balance-val">
+            <span id="sidebarBalance">0.00</span> <span style="font-size:0.85rem;">$SYNC</span>
+        </div>
+
+        <div class="wallet-stats">
+            <div class="wallet-stat">
+                <small>Academic XP</small>
+                <strong id="xpValue">450 XP</strong>
+            </div>
+            <div class="wallet-stat">
+                <small>Reputation</small>
+                <strong id="repValue">Bronze</strong>
+            </div>
+        </div>
+
+        <button id="claimBtn" class="claim-btn" onclick="mintFromSidebar()">
+            <i class="fa-solid fa-lock" id="claimIcon"></i>
+            تحتاج 1000 نقطة
+        </button>
+    </div>
+
+    <div class="tx-history">
+        <div class="tx-title">
+            <i class="fa-solid fa-receipt"></i> سجل التحويلات
+        </div>
+        <div id="txList">
+            <div id="emptyTx" style="font-size:0.65rem; color:#475569; text-align:center; padding:15px; background: rgba(255,255,255,0.02); border-radius: 10px;">
+                <i class="fa-solid fa-timeline" style="display: block; font-size: 1.2rem; margin-bottom: 5px; opacity: 0.5;"></i>
+                لا توجد عمليات سابقة
+            </div>
+        </div>
+    </div>
+
+    <hr style="border:none; border-bottom:1px solid var(--line); margin:15px 0;">
+
+   <div class="sidebar-item" onclick="window.location.href='index.html'"><i class="fa-solid fa-house"></i> الرئيسية</div>
+<div class="sidebar-item" onclick="window.location.href='sections/student.html'"><i class="fa-solid fa-graduation-cap"></i> بوابة الطالب</div>
+<div class="sidebar-item" onclick="window.location.href='sections/lecturer.html'"><i class="fa-solid fa-user-tie"></i> بوابة المحاضر</div>
+<div class="sidebar-item" onclick="window.location.href='sections/settings.html'"><i class="fa-solid fa-gear"></i> الإعدادات</div>
+</div>
+
+
 <div id="student" class="section active">
         <div class="gamified-header">
             <div class="streak-fire"><i class="fa-solid fa-fire"></i> 7 أيام</div>
