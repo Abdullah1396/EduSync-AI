@@ -673,4 +673,74 @@ updateClaimButton();
 
     }
 }
+let xp = localStorage.getItem("xp") || 450;
+let sync = localStorage.getItem("sync") || 0;
 
+function addXP(amount) {
+
+    xp = parseInt(xp) + amount;
+
+    localStorage.setItem("xp", xp);
+
+    const xpElements = document.querySelectorAll(".xpValue");
+
+    xpElements.forEach(el => {
+        el.innerText = xp;
+    });
+
+    checkMint();
+}
+
+function checkMint() {
+
+    const mintBtn = document.getElementById("mintBtn");
+
+    if (!mintBtn) return;
+
+    if (xp >= 1000) {
+
+        mintBtn.disabled = false;
+
+        mintBtn.innerHTML = "⚡ سك 1 SYNC";
+
+        mintBtn.style.background = "#10b981";
+
+        mintBtn.style.color = "#fff";
+
+        mintBtn.style.cursor = "pointer";
+
+    } else {
+
+        mintBtn.disabled = true;
+
+        mintBtn.innerHTML = "🔒 تحتاج 1000 XP لعملية السك";
+    }
+}
+
+function mintSYNC() {
+
+    if (xp < 1000) return;
+
+    xp -= 1000;
+
+    sync++;
+
+    localStorage.setItem("xp", xp);
+
+    localStorage.setItem("sync", sync);
+
+    alert("تم سك 1 SYNC بنجاح");
+
+    location.reload();
+}
+
+window.onload = () => {
+
+    const xpElements = document.querySelectorAll(".xpValue");
+
+    xpElements.forEach(el => {
+        el.innerText = xp;
+    });
+
+    checkMint();
+};
