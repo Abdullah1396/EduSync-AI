@@ -1,5 +1,5 @@
 
-let points = 450;
+let points = parseInt(localStorage.getItem("xp") || "450");
 let balance = 0.00;
 let isFile = false;
 let nameF = "";
