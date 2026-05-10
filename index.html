@@ -188,51 +188,7 @@
     </div>
 </div>
    
-    <div id="doctor" class="section">
-        <h3 style="margin-bottom:15px; font-size:1.1rem;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم المحاضر</h3>
-
-        <div class="upload-box" onclick="document.getElementById('docFileInput').click()">
-            <input type="file" id="docFileInput" style="display:none;" onchange="handleDocUpload(this)">
-            <i class="fa-solid fa-file-circle-plus" style="font-size:2.5rem; color:var(--primary); margin-bottom:10px;"></i>
-            <div id="docUpStatus" style="font-weight:bold; font-size:0.9rem;">رفع المرجع الرسمي للدفعة</div>
-            <p style="font-size:0.65rem; color:#94a3b8;">سيتم توليد SHA-256 Hash ووضعه على البلوكشين</p>
-        </div>
-
-        <div class="info-card">
-            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تقرير الاستيعاب العام</h4>
-
-            <div class="progress-container">
-                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
-                    <span>تحليل Chapter 1</span>
-                    <span style="color: var(--danger);">ضعيف (35%)</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 35%; background: var(--danger);"></div>
-                </div>
-            </div>
-
-            <div class="progress-container" style="margin-top:15px;">
-                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
-                    <span>تحليل Chapter 2</span>
-                    <span style="color: var(--success);">جيد (78%)</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 78%; background: var(--success);"></div>
-                </div>
-            </div>
-
-            <button class="claim-btn ready" style="margin-top: 15px; font-size: 0.8rem;" onclick="alert('تم إرسال تنبيه مراجعة لجميع الطلاب!')">
-                إرسال إشعار مراجعة
-            </button>
-        </div>
-
-        <div class="info-card">
-            <h4 style="color:var(--primary); margin-bottom:12px;">🧠 توصية الذكاء الاصطناعي</h4>
-            <p style="font-size:0.78rem; color:#cbd5e1; line-height:1.7;">
-                يوجد انخفاض واضح في استيعاب Chapter 1. يوصى بتوليد اختبار قصير وإرسال مراجعة موجهة للطلاب الأقل أداءً.
-            </p>
-        </div>
-    </div>
+    
 
     <div id="settings" class="section">
         <h3 style="margin-bottom:20px;">الإعدادات والدعم</h3>
