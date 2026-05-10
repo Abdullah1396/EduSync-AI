@@ -14,15 +14,26 @@
 </head>
 <body>
 
+   <div class="modal" id="infoModal" onclick="this.style.display='none'">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div id="modalBody"></div>
+        <button onclick="document.getElementById('infoModal').style.display='none'" style="width:100%; margin-top:20px; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold;">
+            إغلاق
+        </button>
+    </div>
+</div> 
 <header>
     <div class="logo-box">
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+        <img src="../1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
         <div>
-            <div style="font-size: 1rem; font-weight: 800;">EduSync AI</div>
-            <div style="font-size: 0.65rem; color: #94a3b8;">المزامنة التعليمية الذكية</div>
+            <div style="font-size:1rem; font-weight:800;">الإعدادات</div>
+            <div style="font-size:0.65rem; color:#94a3b8;">الدعم والتحكم</div>
         </div>
     </div>
-    <div class="menu-icon" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
+
+    <div onclick="window.location.href='../index.html'" style="color:var(--primary); font-size:1.5rem; cursor:pointer;">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    </div>
 </header>
 
 <div class="sidebar" id="sidebar">
