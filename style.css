@@ -859,3 +859,32 @@ header {
         height: 42px;
     }
 }
+@media (max-width: 600px) {
+    .sponsor-card,
+    .partner-card,
+    .contact-card {
+        padding: 16px !important;
+        margin: 16px 0 !important;
+        border-radius: 18px !important;
+    }
+
+    .sponsor-card h3,
+    .partner-card h3,
+    .contact-card h3 {
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .sponsor-card p,
+    .partner-card p,
+    .contact-card p {
+        font-size: 0.75rem !important;
+        line-height: 1.6 !important;
+    }
+
+    .claim-btn,
+    .contact-btn {
+        padding: 12px !important;
+        font-size: 0.85rem !important;
+    }
+}
