@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blockchain Verification</title>
+
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+.verify-box{
+    background:rgba(15,23,42,0.9);
+    border:1px solid rgba(34,211,238,0.18);
+    border-radius:22px;
+    padding:22px;
+    margin-top:25px;
+}
+
+.verify-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:18px;
+    gap:20px;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    padding-bottom:12px;
+}
+
+.verify-label{
+    color:#94a3b8;
+    font-size:0.82rem;
+}
+
+.verify-value{
+    color:#fff;
+    font-weight:700;
+    text-align:left;
+    word-break:break-all;
+    max-width:60%;
+}
+
+.scan-box{
+    margin-top:30px;
+    text-align:center;
+}
+
+.scan-line{
+    width:100%;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,#22d3ee,#10b981,#22d3ee);
+    background-size:200% 100%;
+    animation:scan 2s linear infinite;
+}
+
+@keyframes scan{
+    0%{background-position:0% 0;}
+    100%{background-position:200% 0;}
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+    <div class="logo-box">
+        <img src="../1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+
+        <div>
+            <div style="font-size:1rem;font-weight:800;">Blockchain Verification</div>
+            <div style="font-size:0.65rem;color:#94a3b8;">
+                EduSync Academic Chain
+            </div>
+        </div>
+    </div>
+
+    <div onclick="window.history.back()" style="font-size:1.5rem;color:var(--primary);cursor:pointer;">
+        ←
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="verify-box">
+
+        <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:25px;
+        ">
+            <div>
+                <div style="font-size:1.1rem;font-weight:800;">
+                    Transaction Confirmed
+                </div>
+
+                <div style="color:#10b981;font-size:0.8rem;margin-top:4px;">
+                    ● Verified on EduSync Chain
+                </div>
+            </div>
+
+            <i class="fa-solid fa-shield-halved" style="
+            font-size:2rem;
+            color:#22d3ee;
+            "></i>
+        </div>
+
+        <div class="verify-row">
+            <div class="verify-label">Transaction Hash</div>
+            <div class="verify-value">
+                0x8F3A91C77A2BD4E91A
+            </div>
+        </div>
+
+        <div class="verify-row">
+            <div class="verify-label">SHA-256</div>
+            <div class="verify-value">
+                A81F9C22B7E04D91F3A0C88E51D901AC
+            </div>
+        </div>
+
+        <div class="verify-row">
+            <div class="verify-label">Wallet Address</div>
+            <div class="verify-value">
+                0xEDU91ACX88F3A
+            </div>
+        </div>
+
+        <div class="verify-row">
+            <div class="verify-label">Smart Contract</div>
+            <div class="verify-value">
+                EduSyncProof.sol
+            </div>
+        </div>
+
+        <div class="verify-row">
+            <div class="verify-label">Block</div>
+            <div class="verify-value">
+                #294018
+            </div>
+        </div>
+
+        <div class="verify-row">
+            <div class="verify-label">Timestamp</div>
+            <div class="verify-value" id="timeNow">
+                --
+            </div>
+        </div>
+
+        <div class="verify-row" style="border:none;margin-bottom:0;">
+            <div class="verify-label">Status</div>
+            <div class="verify-value" style="color:#10b981;">
+                Confirmed ✓
+            </div>
+        </div>
+
+        <div class="scan-box">
+            <div class="scan-line"></div>
+
+            <div style="
+            color:#94a3b8;
+            margin-top:12px;
+            font-size:0.78rem;
+            ">
+                Blockchain Integrity Scan Running...
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+document.getElementById("timeNow").innerText =
+new Date().toLocaleString("ar-SA");
+</script>
+
+</body>
+</html>
