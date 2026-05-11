@@ -12,7 +12,7 @@
         
 <header>
     <div class="logo-box">
-        <img src="1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
+  <img src="../1A9FCFDC-779E-4D60-9099-327FB21D028E.png" class="logo-img">
         <div>
             <div style="font-size: 1rem; font-weight: 800;">EduSync AI</div>
             <div style="font-size: 0.65rem; color: #94a3b8;">المزامنة التعليمية الذكية</div>
@@ -89,19 +89,21 @@
             <p style="font-size:0.65rem; color:#94a3b8;">سيتم توليد SHA-256 Hash ووضعه على البلوكشين</p>
         </div>
 
-        <div class="info-card">
-            <h4 style="color: var(--primary); margin-bottom: 15px; font-size:0.9rem;">📊 تقرير الاستيعاب العام</h4>
+ <div class="info-card">
+    <h3 style="color:var(--primary); margin-bottom:15px;">
+        🧠 توصية الذكاء الاصطناعي
+    </h3>
 
-            <div class="progress-container">
-                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
-                    <span>تحليل Chapter 1</span>
-                    <span style="color: var(--danger);">ضعيف (35%)</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 35%; background: var(--danger);"></div>
-                </div>
-            </div>
+    <p id="lecturerRecommendation" style="font-size:0.9rem; color:#cbd5e1; line-height:1.8;">
+        اضغط الزر لتوليد توصية تعليمية ذكية بناءً على تقرير الاستيعاب.
+    </p>
 
+    <button class="claim-btn ready"
+    style="margin-top:15px;"
+    onclick="generateLecturerRecommendation()">
+        توليد توصية ذكية
+    </button>
+</div>
             <div class="progress-container" style="margin-top:15px;">
                 <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
                     <span>تحليل Chapter 2</span>
