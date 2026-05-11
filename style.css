@@ -89,19 +89,25 @@ header {
     cursor: pointer;
 }
 
-.sidebar {
-    position: fixed;
-    right: -315px;
-    top: 0;
-    width: 315px;
-    height: 100%;
-    background: rgba(15, 23, 42, 0.97);
-    border-left: 1px solid rgba(34, 211, 238, 0.35);
-    z-index: 2000;
-    padding: 20px;
-    backdrop-filter: blur(24px);
-    overflow-y: auto;
+.sidebar{
+    width:78%;
+    max-width:320px;
+    height:100vh;
+    position:fixed;
+    top:0;
+    right:-100%;
+    background:#071028;
+    z-index:999;
+    transition:0.35s;
+    overflow-y:auto;
+    border-left:1px solid rgba(34,211,238,0.2);
+    padding:20px;
 }
+
+.sidebar.active{
+    right:0;
+}
+
 
 .sidebar.active {
     right: 0;
