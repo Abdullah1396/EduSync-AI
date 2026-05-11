@@ -65,35 +65,39 @@ cursor:pointer;
 </header>
 
 <div class="sidebar" id="sidebar">
-    <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer;" onclick="toggleSidebar()">&times;</
 
-<div class="sidebar-item"
-onclick="window.location.href='./sections/wallet.html'"
-    <span>المحفظة</span>
+    <div style="color:var(--primary); font-size:1.8rem; text-align:left; cursor:pointer; margin-bottom:20px;" onclick="toggleSidebar()">
+        ×
+    </div>
 
-    <i class="fa-solid fa-wallet"></i>
+    <div class="sidebar-item" onclick="window.location.href='index.html'">
+        <span>الرئيسية</span>
+        <i class="fa-solid fa-house"></i>
+    </div>
+
+    <div class="sidebar-item" onclick="window.location.href='sections/settings.html'">
+        <span>الإعدادات</span>
+        <i class="fa-solid fa-gear"></i>
+    </div>
+
+    <div class="sidebar-item"
+    style="
+    opacity:0.65;
+    border:1px dashed #22d3ee;
+    background:rgba(34,211,238,0.05);
+    filter:grayscale(20%);
+    "
+    onclick="window.location.href='sections/roadmap.html'">
+        <span>خارطة الطريق</span>
+        <i class="fa-solid fa-map-location-dot"></i>
+    </div>
+
+    <div class="sidebar-item" onclick="window.location.href='sections/wallet.html'">
+        <span>المحفظة</span>
+        <i class="fa-solid fa-wallet"></i>
+    </div>
 
 </div>
-    <hr style="border:none; border-bottom:1px solid var(--line); margin:15px 0;">
-
-   <div class="sidebar-item" onclick="window.location.href='index.html'"><i class="fa-solid fa-house"></i> الرئيسية</div>
-
-<div class="sidebar-item" onclick="window.location.href='sections/settings.html'"><i class="fa-solid fa-gear"></i> الإعدادات</div>
-</div>
-
-  <div class="sidebar-item"
-style="
-opacity:0.6;
-border:1px dashed #22d3ee;
-background:rgba(34,211,238,0.05);
-filter:grayscale(20%);
-"
-onclick="window.location.href='sections/roadmap.html'"
-    <span>خارطة الطريق</span>
-
-    <i class="fa-solid fa-map-location-dot"></i>
-
-</div> 
 
   
     </div>
