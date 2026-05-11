@@ -104,7 +104,7 @@ font-size:1.1rem;
             <p style="font-size:0.65rem; color:#94a3b8;">سيتم توليد SHA-256 Hash ووضعه على البلوكشين</p>
         </div>
 
- <div class="info-card">
+ <div id="aiRecommendation" style="display:none;"
     <h3 style="color:var(--primary); margin-bottom:15px;">
         🧠 توصية الذكاء الاصطناعي
     </h3>
@@ -115,7 +115,10 @@ font-size:1.1rem;
 
     <button class="claim-btn ready"
     style="margin-top:15px;"
-    onclick="generateLecturerRecommendation()">
+    onclick="
+generateLecturerRecommendation();
+document.getElementById('aiRecommendation').style.display='block';
+"
         توليد توصية ذكية
     </button>
 </div>
