@@ -26,33 +26,108 @@
         <i class="fa-solid fa-arrow-right"></i>
     </div>
 </header>
-
 <div class="container">
 
-    <div class="info-card">
-        <h3 style="margin-bottom:18px;">
+    <div class="info-card" style="text-align:center;">
+
+        <h3 style="margin-bottom:14px;">
             <i class="fa-solid fa-wallet"></i>
-            الرصيد
+            Academic Vault
         </h3>
 
-        <div style="font-size:2.2rem; color:#f59e0b; font-weight:800; margin-bottom:18px;">
+        <div style="font-size:2.3rem; color:#f59e0b; font-weight:900; margin:18px 0;">
             0.00 $SYNC
         </div>
 
-        <div style="color:#94a3b8; font-size:1rem; margin-bottom:20px;">
-            Academic XP :
-<span class="xpValue">450</span>
+        <div style="color:#94a3b8; font-size:0.95rem;">
+            Academic XP : <span class="xpValue">450</span>
         </div>
 
-        <div style="margin-top:10px;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px; color:#94a3b8; font-size:0.85rem;">
+        <div style="margin-top:18px;">
+            <div style="display:flex; justify-content:space-between; color:#94a3b8; font-size:0.8rem; margin-bottom:8px;">
                 <span>التقدم نحو السك</span>
                 <span>450 / 1000 XP</span>
             </div>
 
             <div style="width:100%; height:12px; background:#111827; border-radius:999px; overflow:hidden;">
-                <div style="width:45%; height:100%; background:linear-gradient(90deg,#22d3ee,#10b981); border-radius:999px;"></div>
+                <div style="width:45%; height:100%; background:linear-gradient(90deg,#22d3ee,#10b981);"></div>
             </div>
+
+            <button id="mintBtn" onclick="mintSYNC()" style="
+            width:100%;
+            margin-top:20px;
+            padding:15px;
+            border:none;
+            border-radius:18px;
+            background:#1e293b;
+            color:#94a3b8;
+            font-weight:800;
+            font-size:0.95rem;
+            cursor:not-allowed;
+            ">
+                🔒 تحتاج 1000 XP لعملية السك
+            </button>
+        </div>
+    </div>
+
+    <div class="info-card" style="margin-top:20px;">
+        <h3 style="margin-bottom:16px; color:#22d3ee;">
+            <i class="fa-solid fa-shield-halved"></i>
+            سجل التوثيق الرقمي
+        </h3>
+
+        <div style="
+        background:rgba(34,211,238,0.06);
+        border:1px solid rgba(34,211,238,0.25);
+        border-radius:16px;
+        padding:14px;
+        margin-bottom:12px;
+        ">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <strong>Work.pdf</strong>
+                <span style="color:#10b981;">Verified</span>
+            </div>
+
+            <div style="font-size:0.75rem; color:#94a3b8; line-height:1.7;">
+                SHA-256 Hash<br>
+                <span style="color:#22d3ee; word-break:break-all;">
+                A81F9C22B7E04D91F3A0C88E51D901AC
+                </span>
+            </div>
+        </div>
+
+        <div style="
+        background:rgba(16,185,129,0.06);
+        border:1px solid rgba(16,185,129,0.25);
+        border-radius:16px;
+        padding:14px;
+        ">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <strong>Chapter 1</strong>
+                <span style="color:#10b981;">Stored</span>
+            </div>
+
+            <div style="font-size:0.75rem; color:#94a3b8; line-height:1.7;">
+                Blockchain Proof<br>
+                <span style="color:#10b981;">
+                0x8F3A...91C
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-card" style="margin-top:20px;">
+        <h3 style="margin-bottom:15px;">
+            <i class="fa-solid fa-receipt"></i>
+            سجل التحويلات
+        </h3>
+
+        <div style="color:#64748b; font-size:0.9rem;">
+            لا توجد عمليات تحويل حالياً
+        </div>
+    </div>
+
+</div>
 
             <button id="mintBtn"
 onclick="mintSYNC()"
