@@ -685,68 +685,69 @@ updateClaimButton();
 
     }
 }
-let xp = localStorage.getItem("xp") || 450;
-let sync = localStorage.getItem("sync") || 0;
+function saveVault() {
+    localStorage.setItem("xp", points);
+    localStorage.setItem("sync", balance);
+}
 
 function addXP(amount) {
+    points += amount;
+    saveVault();
 
-    xp = parseInt(xp) + amount;
+    document.querySelectorAll(".xpValue").forEach(el => el.innerText = points);
 
-    localStorage.setItem("xp", xp);
+    const studentPoints = document.getElementById("studentPoints");
+    if (studentPoints) studentPoints.innerText = points;
 
-    const xpElements = document.querySelectorAll(".xpValue");
-
-    xpElements.forEach(el => {
-        el.innerText = xp;
-    });
-
+    updateClaimButton();
     checkMint();
 }
 
 function checkMint() {
-
     const mintBtn = document.getElementById("mintBtn");
-
     if (!mintBtn) return;
 
-    if (xp >= 1000) {
-
+    if (points >= 1000) {
         mintBtn.disabled = false;
-
         mintBtn.innerHTML = "⚡ سك 1 SYNC";
-
         mintBtn.style.background = "#10b981";
-
         mintBtn.style.color = "#fff";
-
         mintBtn.style.cursor = "pointer";
-
     } else {
-
         mintBtn.disabled = true;
-
         mintBtn.innerHTML = "🔒 تحتاج 1000 XP لعملية السك";
     }
 }
 
 function mintSYNC() {
+    if (points < 1000) return alert("تحتاج 1000 XP للسك");
 
-    if (xp < 1000) return;
+    points -= 1000;
+    balance = (parseFloat(localStorage.getItem("sync") || "0") + 1).toFixed(2);
 
-    xp -= 1000;
+    saveVault();
 
-    sync++;
+    localStorage.setItem("lastTx", JSON.stringify({
+        file: "Work.pdf",
+        hash: "A81F9C22B7E04D91F3A0C88E51D901AC",
+        tx: "0x8F3A...91C",
+        date: new Date().toLocaleString("ar-SA")
+    }));
 
-    localStorage.setItem("xp", xp);
-
-    localStorage.setItem("sync", sync);
-
-    alert("تم سك 1 SYNC بنجاح");
-
+    alert("تم سك 1 SYNC وتوثيق العملية");
     location.reload();
 }
 
 window.onload = () => {
+    document.querySelectorAll(".xpValue").forEach(el => el.innerText = points);
+
+    const studentPoints = document.getElementById("studentPoints");
+    if (studentPoints) studentPoints.innerText = points;
+
+    const balanceValue = document.getElementById("balanceValue");
+    if (balanceValue) balanceValue.innerText = "SYNC$ " + (localStorage.getItem("sync") || "0.00");
+
+    
 
     const xpElements = document.querySelectorAll(".xpValue");
 
