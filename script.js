@@ -756,3 +756,14 @@ window.onload = () => {
 
     checkMint();
 };
+
+function generateLecturerRecommendation() {
+    const box = document.getElementById("lecturerRecommendation");
+
+    if (!box) return;
+
+    box.innerText =
+        "يوصي EduSync AI بتوليد اختبار قصير لطلاب Chapter 1، مع إرسال مراجعة مركزة للطلاب الأقل أداءً خلال 24 ساعة.";
+
+    speak("تم توليد توصية ذكية للمحاضر");
+}
