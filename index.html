@@ -14,6 +14,12 @@
 
 <body>
 
+<div id="introScreen">
+  <video id="introVideo" autoplay muted playsinline>
+    <source src="copy_D5DFB229-71BC-4B28-AF8C-7AE1BD95402D.mov" type="video/mp4">
+  </video>
+</div>
+    
 <canvas id="bg-canvas"></canvas>
 <button class="accessibility-float" onclick="toggleAccessibility()">
 ♿
@@ -226,5 +232,43 @@ flex-shrink:0;
     <i class="fa-solid fa-microphone"></i>
 </div>
 <script src="script.js"></script>
+
+<style>
+#introScreen{
+    position: fixed;
+    inset: 0;
+    background: black;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease;
+}
+
+#introVideo{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>
+
+<script>
+window.addEventListener("load", function () {
+
+    setTimeout(function () {
+
+        const intro = document.getElementById("introScreen");
+
+        intro.style.opacity = "0";
+
+        setTimeout(function () {
+            intro.style.display = "none";
+        }, 800);
+
+    }, 5000);
+
+});
+</script>
+
 </body>
 </html>
