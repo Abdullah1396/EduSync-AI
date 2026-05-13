@@ -94,6 +94,60 @@
     </div>
 </div>
 
+<div class="info-card" style="margin-top:20px;">
+    <h3 style="color:var(--primary); margin-bottom:15px;">
+        <i class="fa-solid fa-users"></i>
+        دعم الإنجازات التعليمية
+    </h3>
+
+    <p style="font-size:0.75rem; color:#94a3b8; line-height:1.7; margin-bottom:15px;">
+        ادعم إنجازات زملائك واحصل على نقاط XP مقابل التفاعل الإيجابي.
+    </p>
+
+    <div id="boostFeed">
+
+        <div class="boost-card" data-id="boost1">
+            <div>
+                <strong>عبدالله</strong>
+                <p>أكمل اختبار Chapter 1 بنجاح.</p>
+                <small><span class="boost-count">3</span> دعم أكاديمي</small>
+            </div>
+
+            <button onclick="giveBoost(this, 'boost1')">
+                <i class="fa-solid fa-bolt"></i>
+                دعم +10 XP
+            </button>
+        </div>
+
+        <div class="boost-card" data-id="boost2">
+            <div>
+                <strong>سارة</strong>
+                <p>حافظت على سلسلة تعلم لمدة 7 أيام.</p>
+                <small><span class="boost-count">5</span> دعم أكاديمي</small>
+            </div>
+
+            <button onclick="giveBoost(this, 'boost2')">
+                <i class="fa-solid fa-bolt"></i>
+                دعم +10 XP
+            </button>
+        </div>
+
+        <div class="boost-card" data-id="boost3">
+            <div>
+                <strong>محمد</strong>
+                <p>أنشأ خريطة ذهنية لمراجعة الوحدة الأولى.</p>
+                <small><span class="boost-count">2</span> دعم أكاديمي</small>
+            </div>
+
+            <button onclick="giveBoost(this, 'boost3')">
+                <i class="fa-solid fa-bolt"></i>
+                دعم +10 XP
+            </button>
+        </div>
+
+    </div>
+</div>
+    
         <input type="file" id="fInput" style="display:none;" onchange="handleFile(this)">
         <div class="upload-box" onclick="document.getElementById('fInput').click()">
             <i class="fa-solid fa-file-pdf" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
