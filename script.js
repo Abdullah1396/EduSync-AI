@@ -768,3 +768,41 @@ function generateLecturerRecommendation() {
 
     speak("تم توليد توصية ذكية للمحاضر");
 }
+
+function giveBoost(btn, boostId) {
+    let usedBoosts = JSON.parse(localStorage.getItem("usedBoosts") || "[]");
+
+    if (usedBoosts.includes(boostId)) {
+        alert("لقد دعمت هذا الإنجاز مسبقًا");
+        return;
+    }
+
+    usedBoosts.push(boostId);
+    localStorage.setItem("usedBoosts", JSON.stringify(usedBoosts));
+
+    let currentXP = parseInt(localStorage.getItem("xp") || "0");
+    currentXP += 10;
+    localStorage.setItem("xp", currentXP);
+
+    const card = btn.closest(".boost-card");
+    const countEl = card.querySelector(".boost-count");
+    countEl.innerText = parseInt(countEl.innerText) + 1;
+
+    btn.classList.add("used");
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> تم الدعم';
+
+    const studentPoints = document.getElementById("studentPoints");
+    if (studentPoints) studentPoints.innerText = currentXP;
+
+    document.querySelectorAll(".xpValue").forEach(el => {
+        el.innerText = currentXP;
+    });
+
+    if (typeof updateClaimButton === "function") {
+        updateClaimButton();
+    }
+
+    if (typeof speak === "function") {
+        speak("تم دعم الإنجاز وإضافة عشر نقاط");
+    }
+}
