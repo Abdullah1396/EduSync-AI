@@ -788,6 +788,18 @@ function giveBoost(btn, boostId) {
     const countEl = card.querySelector(".boost-count");
     countEl.innerText = parseInt(countEl.innerText) + 1;
 
+const notice = document.getElementById("boostNotice");
+
+if (notice) {
+
+    notice.style.display = "flex";
+
+    setTimeout(() => {
+        notice.style.display = "none";
+    }, 4500);
+
+}
+    
     btn.classList.add("used");
     btn.innerHTML = '<i class="fa-solid fa-check"></i> تم الدعم';
 
