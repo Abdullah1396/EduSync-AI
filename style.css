@@ -897,3 +897,50 @@ header {
 <div onclick="window.location.href='../index.html'" style="color:var(--primary); font-size:1.6rem; cursor:pointer; margin-right:auto;">
     <i class="fa-solid fa-arrow-right-from-bracket"></i>
 </div>
+
+.boost-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    background:rgba(34,211,238,0.06);
+    border:1px solid rgba(34,211,238,0.18);
+    border-radius:16px;
+    padding:14px;
+    margin-bottom:12px;
+}
+
+.boost-card strong{
+    color:#fff;
+    font-size:0.9rem;
+}
+
+.boost-card p{
+    color:#94a3b8;
+    font-size:0.75rem;
+    margin:5px 0;
+    line-height:1.6;
+}
+
+.boost-card small{
+    color:#10b981;
+    font-size:0.68rem;
+}
+
+.boost-card button{
+    min-width:95px;
+    border:none;
+    border-radius:14px;
+    padding:10px;
+    background:linear-gradient(135deg,#22d3ee,#10b981);
+    color:#001018;
+    font-weight:800;
+    font-size:0.7rem;
+    cursor:pointer;
+}
+
+.boost-card button.used{
+    background:#1e293b;
+    color:#64748b;
+    cursor:not-allowed;
+}
