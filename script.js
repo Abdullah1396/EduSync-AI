@@ -106,30 +106,77 @@ function checkMint(){
     }
 }
 
-function handleFile(input){
-    if(!input || !input.files || !input.files[0]){
+async function handleFile(input) {
+    if (!input || !input.files || !input.files[0]) {
         alert("لم يتم اختيار ملف");
         return;
     }
 
     const file = input.files[0];
-
     isFile = true;
     nameF = file.name.replace(/\.[^/.]+$/, "");
 
     localStorage.setItem("studentFileName", file.name);
-    localStorage.setItem("uploadedCourseFile", file.name);
 
-    if(el("upStatus")) el("upStatus").innerHTML = "✅ تم تحميل: " + file.name;
-    if(el("mapTitle")) el("mapTitle").innerText = nameF;
-    if(el("quizTitle")) el("quizTitle").innerText = nameF;
+    const upStatus = document.getElementById("upStatus");
+    if (upStatus) upStatus.innerHTML = "⏳ جاري قراءة محتوى الملف...";
 
-    if(el("aiCoachText")){
-        el("aiCoachText").innerText = "تم تحميل المنهج بنجاح. يمكنك الآن توليد بودكاست، بطاقات، خرائط ذهنية واختبار ذكي.";
+    let extractedText = "";
+
+    try {
+        if (file.type === "application/pdf") {
+            extractedText = await extractPDFText(file);
+        } else {
+            extractedText = await file.text();
+        }
+
+        localStorage.setItem("courseContent", extractedText.slice(0, 12000));
+
+        if (upStatus) {
+            upStatus.innerHTML = "✅ تم تحميل وقراءة: " + file.name;
+        }
+
+        if (document.getElementById("mapTitle")) {
+            document.getElementById("mapTitle").innerText = nameF;
+        }
+
+        if (document.getElementById("quizTitle")) {
+            document.getElementById("quizTitle").innerText = nameF;
+        }
+
+        const coach = document.getElementById("aiCoachText");
+        if (coach) {
+            coach.innerText = "تم قراءة محتوى المنهج بنجاح. يمكنك الآن توليد بطاقات واختبارات من نفس الملف.";
+        }
+
+        addXP(50);
+        alert("✅ تم تحليل محتوى المنهج بنجاح");
+
+    } catch (err) {
+        console.error(err);
+        if (upStatus) upStatus.innerHTML = "⚠️ تم رفع الملف لكن تعذر قراءة المحتوى";
+        alert("تم رفع الملف، لكن قراءة PDF فشلت. جرّب ملف PDF نصي واضح.");
+    }
+}
+
+async function extractPDFText(file) {
+    const arrayBuffer = await file.arrayBuffer();
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+    let text = "";
+
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        const page = await pdf.getPage(pageNum);
+        const content = await page.getTextContent();
+        const pageText = content.items.map(item => item.str).join(" ");
+        text += pageText + "\n";
     }
 
-    addXP(50);
-    alert("✅ تم تحميل مصدر المنهج بنجاح");
+    return text;
 }
 
 function ensureFile(){
@@ -271,10 +318,14 @@ async function generateRealQuiz(){
     if(el("loadingText")) el("loadingText").innerText = "جاري توليد اختبار ذكي...";
 
     const result = await callGemini(`
-أنشئ 3 أسئلة اختيار من متعدد باللغة العربية عن ${nameF}.
+اعتمد فقط على محتوى المنهج التالي، ولا تخترع معلومات من خارج النص:
+
+${courseContent}
+
+أنشئ 5 بطاقات تعليمية قصيرة باللغة العربية من هذا المحتوى.
 أعد JSON فقط:
 [
- {"question":"السؤال","options":["أ","ب","ج"],"correct":0,"explanation":"تفسير قصير"}
+ {"question":"سؤال","answer":"إجابة"}
 ]
 `);
 
