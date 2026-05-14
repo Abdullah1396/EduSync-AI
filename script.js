@@ -846,31 +846,113 @@ async function callGemini(promptText) {
     return data.candidates?.[0]?.content?.parts?.[0]?.text || "لم يتم توليد نتيجة.";
 }
 
+let currentQuizQuestions = [];
+
 async function generateRealQuiz() {
     const topic = nameF || "مقرر جامعي عام";
 
     document.getElementById("aiLoading").style.display = "block";
-    document.getElementById("loadingText").innerText = "جاري توليد اختبار فعلي بالذكاء الاصطناعي...";
+    document.getElementById("loadingText").innerText = "جاري توليد اختبار تفاعلي بالذكاء الاصطناعي...";
 
     const result = await callGemini(`
-أنشئ اختبارًا قصيرًا باللغة العربية عن: ${topic}
-اكتب:
-- سؤالين اختيار من متعدد
-- الإجابة الصحيحة
-- تفسير مختصر لكل إجابة
-اجعل الإخراج منسقًا وواضحًا.
+أنشئ 3 أسئلة اختيار من متعدد باللغة العربية عن: ${topic}
+
+أعد النتيجة بصيغة JSON فقط بدون أي شرح إضافي:
+[
+  {
+    "question": "نص السؤال",
+    "options": ["الخيار الأول", "الخيار الثاني", "الخيار الثالث"],
+    "correct": 0,
+    "explanation": "تفسير مختصر للإجابة الصحيحة"
+  }
+]
 `);
 
     document.getElementById("aiLoading").style.display = "none";
-    document.getElementById("quizRes").style.display = "block";
-    document.getElementById("quizRes").innerHTML = `
-        <h4 style="color:var(--primary); margin-bottom:15px;">اختبار ذكي مولّد بالذكاء الاصطناعي</h4>
-        <div style="white-space:pre-line; font-size:0.85rem; line-height:1.8; color:#cbd5e1;">
-            ${result}
+
+    try {
+        currentQuizQuestions = JSON.parse(result.replace(/```json|```/g, "").trim());
+    } catch (e) {
+        currentQuizQuestions = [
+            {
+                question: "ما الهدف الأساسي من EduSync AI؟",
+                options: [
+                    "تحويل التعلم إلى تجربة تفاعلية ذكية",
+                    "عرض ملفات PDF فقط",
+                    "استبدال المحاضر بالكامل"
+                ],
+                correct: 0,
+                explanation: "المنصة تهدف لتحويل المحتوى إلى أدوات تعلم تفاعلية وتحفيزية."
+            }
+        ];
+    }
+
+    renderInteractiveQuiz();
+}
+
+function renderInteractiveQuiz() {
+    const quizRes = document.getElementById("quizRes");
+    quizRes.style.display = "block";
+
+    quizRes.innerHTML = `
+        <h4 style="color:var(--primary); margin-bottom:15px;">
+            اختبار ذكي تفاعلي
+        </h4>
+
+        <div class="smart-quiz-list">
+            ${currentQuizQuestions.map((q, qIndex) => `
+                <div class="smart-quiz-card">
+                    <div class="quiz-question">
+                        <small>سؤال ${qIndex + 1}</small>
+                        <h3>${q.question}</h3>
+                    </div>
+
+                    <div class="quiz-options">
+                        ${q.options.map((option, optIndex) => `
+                            <button onclick="checkQuizAnswer(this, ${qIndex}, ${optIndex})">
+                                ${option}
+                            </button>
+                        `).join("")}
+                    </div>
+
+                    <div class="quiz-feedback" id="quizFeedback${qIndex}"></div>
+                </div>
+            `).join("")}
         </div>
     `;
+}
 
-    addXP(50);
+function checkQuizAnswer(btn, qIndex, selectedIndex) {
+    const q = currentQuizQuestions[qIndex];
+    const feedback = document.getElementById("quizFeedback" + qIndex);
+    const buttons = btn.parentElement.querySelectorAll("button");
+
+    buttons.forEach(button => {
+        button.disabled = true;
+        button.classList.remove("correct", "wrong");
+    });
+
+    if (selectedIndex === q.correct) {
+        btn.classList.add("correct");
+        feedback.innerHTML = `
+            <div class="feedback-correct">
+                ✅ إجابة صحيحة
+                <p>${q.explanation}</p>
+            </div>
+        `;
+        addXP(50);
+    } else {
+        btn.classList.add("wrong");
+        buttons[q.correct].classList.add("correct");
+
+        feedback.innerHTML = `
+            <div class="feedback-wrong">
+                ❌ إجابة غير صحيحة
+                <p>الإجابة الصحيحة: <strong>${q.options[q.correct]}</strong></p>
+                <p>${q.explanation}</p>
+            </div>
+        `;
+    }
 }
 
 async function generateRealFlashcards() {
