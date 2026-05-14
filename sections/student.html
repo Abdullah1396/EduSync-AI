@@ -184,12 +184,29 @@
             </div>
         </div>
 
-        <div class="tools-grid" style="margin-top: 20px;">
-            <div class="tool-card" onclick="startPodcast()"><i class="fa-solid fa-headphones"></i>بودكاست</div>
-            <div class="tool-card" onclick="runAI('map')"><i class="fa-solid fa-diagram-project"></i>خرائط ذهنية</div>
-            <div <div class="tool-card" onclick="generateRealFlashcards()">
-            <div class="tool-card" onclick="generateRealQuiz()">
-        </div>
+        <div class="tools-grid" style="margin-top:20px;">
+
+    <div class="tool-card" onclick="startPodcast()">
+        <i class="fa-solid fa-headphones"></i>
+        <span>بودكاست</span>
+    </div>
+
+    <div class="tool-card" onclick="runAI('map')">
+        <i class="fa-solid fa-diagram-project"></i>
+        <span>خرائط ذهنية</span>
+    </div>
+
+    <div class="tool-card" onclick="generateRealFlashcards()">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>بطاقات</span>
+    </div>
+
+    <div class="tool-card" onclick="generateRealQuiz()">
+        <i class="fa-solid fa-spell-check"></i>
+        <span>اختبار</span>
+    </div>
+
+</div>
 
         <div id="aiLoading"><div class="loader"></div><div style="font-size:0.8rem; color:var(--primary); margin-top:5px;" id="loadingText">جاري المعالجة...</div></div>
 
