@@ -821,29 +821,41 @@ if (notice) {
 }
 
 async function callGemini(promptText) {
-    const response = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-goog-api-key": GEMINI_API_KEY
-            },
-            body: JSON.stringify({
-                contents: [
-                    {
-                        parts: [
-                            { text: promptText }
-                        ]
-                    }
-                ]
-            })
+    try {
+        const response = await fetch(
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-goog-api-key": GEMINI_API_KEY
+                },
+                body: JSON.stringify({
+                    contents: [
+                        {
+                            parts: [
+                                { text: promptText }
+                            ]
+                        }
+                    ]
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.log(data);
+            throw new Error(data.error?.message || "Gemini API Error");
         }
-    );
 
-    const data = await response.json();
-
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || "لم يتم توليد نتيجة.";
+        return data.candidates?.[0]?.content?.parts?.[0]?.text || "لم يتم توليد نتيجة.";
+    } catch (error) {
+        document.getElementById("aiLoading").style.display = "none";
+        alert("تعذر الاتصال بالذكاء الاصطناعي. تأكد من API Key أو اسم النموذج.");
+        console.error(error);
+        return "حدث خطأ أثناء توليد المحتوى.";
+    }
 }
 
 let currentQuizQuestions = [];
