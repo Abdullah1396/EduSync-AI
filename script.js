@@ -860,25 +860,42 @@ async function callGemini(promptText) {
 
 let currentQuizQuestions = [];
 
-async function generateRealQuiz() {
-    const topic = nameF || "مقرر جامعي عام";
-
-    document.getElementById("aiLoading").style.display = "block";
-    document.getElementById("loadingText").innerText = "جاري توليد اختبار تفاعلي بالذكاء الاصطناعي...";
-
-    const result = await callGemini(`
-أنشئ 3 أسئلة اختيار من متعدد باللغة العربية عن: ${topic}
-
-أعد النتيجة بصيغة JSON فقط بدون أي شرح إضافي:
-[
+currentQuizQuestions = [
   {
-    "question": "نص السؤال",
-    "options": ["الخيار الأول", "الخيار الثاني", "الخيار الثالث"],
-    "correct": 0,
-    "explanation": "تفسير مختصر للإجابة الصحيحة"
+    question: "ما الهدف الأساسي من EduSync AI؟",
+    options: [
+      "تحويل التعلم إلى تجربة تفاعلية ذكية",
+      "عرض ملفات PDF فقط",
+      "استبدال المحاضر بالكامل"
+    ],
+    correct: 0,
+    explanation: "EduSync AI يحول المحتوى الدراسي إلى أدوات تفاعلية مثل البطاقات والاختبارات والتحفيز."
+  },
+  {
+    question: "ما فائدة نظام XP في المنصة؟",
+    options: [
+      "زيادة حجم الملفات",
+      "تحفيز الطالب على الاستمرار",
+      "إلغاء دور المحاضر"
+    ],
+    correct: 1,
+    explanation: "نظام XP يستخدم التحفيز السلوكي لرفع استمرارية الطالب وتفاعله."
+  },
+  {
+    question: "لماذا نستخدم التوثيق الرقمي في EduSync AI؟",
+    options: [
+      "لتوثيق الإنجازات التعليمية",
+      "لتغيير ألوان الواجهة",
+      "لتقليل سرعة التطبيق"
+    ],
+    correct: 0,
+    explanation: "التوثيق الرقمي يساعد في حفظ الإنجازات والمهارات بشكل موثوق."
   }
-]
-`);
+];
+
+document.getElementById("aiLoading").style.display = "none";
+renderInteractiveQuiz();
+return;
 
     document.getElementById("aiLoading").style.display = "none";
 
