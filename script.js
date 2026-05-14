@@ -877,22 +877,60 @@ async function generateRealFlashcards() {
     const topic = nameF || "مقرر جامعي عام";
 
     document.getElementById("aiLoading").style.display = "block";
-    document.getElementById("loadingText").innerText = "جاري توليد بطاقات تعليمية فعلية بالذكاء الاصطناعي...";
+    document.getElementById("loadingText").innerText = "جاري تصميم بطاقات تعليمية ذكية...";
 
     const result = await callGemini(`
-أنشئ 5 بطاقات تعليمية باللغة العربية عن: ${topic}
-اكتب كل بطاقة بهذا الشكل:
-سؤال:
-إجابة:
-واجعلها مناسبة للمراجعة السريعة.
+أنشئ 5 بطاقات تعليمية قصيرة ومحفزة باللغة العربية عن: ${topic}
+
+أعد النتيجة بصيغة JSON فقط بدون شرح إضافي:
+[
+  {
+    "question": "سؤال قصير",
+    "answer": "إجابة مختصرة وواضحة"
+  }
+]
 `);
 
     document.getElementById("aiLoading").style.display = "none";
-    document.getElementById("flashRes").style.display = "block";
-    document.getElementById("flashRes").innerHTML = `
-        <h4 style="color:var(--primary); margin-bottom:15px;">بطاقات تعليمية مولّدة بالذكاء الاصطناعي</h4>
-        <div style="white-space:pre-line; font-size:0.85rem; line-height:1.8; color:#cbd5e1;">
-            ${result}
+
+    let cards;
+
+    try {
+        cards = JSON.parse(result.replace(/```json|```/g, "").trim());
+    } catch (e) {
+        cards = [
+            {
+                question: "ما الفكرة الأساسية في هذا الدرس؟",
+                answer: result
+            }
+        ];
+    }
+
+    const flashRes = document.getElementById("flashRes");
+    flashRes.style.display = "block";
+
+    flashRes.innerHTML = `
+        <h4 style="color:var(--primary); margin-bottom:15px;">
+            بطاقات مراجعة ذكية
+        </h4>
+
+        <div style="display:grid; gap:14px;">
+            ${cards.map((card, index) => `
+                <div class="smart-flash-card" onclick="this.classList.toggle('flipped')">
+                    <div class="smart-card-inner">
+                        <div class="smart-card-front">
+                            <small>بطاقة ${index + 1}</small>
+                            <h3>${card.question}</h3>
+                            <p>اضغط لعرض الإجابة</p>
+                        </div>
+
+                        <div class="smart-card-back">
+                            <small>الإجابة</small>
+                            <h3>${card.answer}</h3>
+                        </div>
+                    </div>
+                </div>
+            `).join("")}
         </div>
     `;
 
