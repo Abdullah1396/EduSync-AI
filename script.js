@@ -1,3 +1,4 @@
+const GEMINI_API_KEY = "AIzaSyBcnQi6-7qlhcK7p_NsWRDrH_3D-rEHGPQ";
 
 let points = parseInt(localStorage.getItem("xp") || "0");
 let balance = 0.00;
@@ -817,4 +818,83 @@ if (notice) {
     if (typeof speak === "function") {
         speak("تم دعم الإنجاز وإضافة عشر نقاط");
     }
+}
+
+async function callGemini(promptText) {
+    const response = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-goog-api-key": GEMINI_API_KEY
+            },
+            body: JSON.stringify({
+                contents: [
+                    {
+                        parts: [
+                            { text: promptText }
+                        ]
+                    }
+                ]
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || "لم يتم توليد نتيجة.";
+}
+
+async function generateRealQuiz() {
+    const topic = nameF || "مقرر جامعي عام";
+
+    document.getElementById("aiLoading").style.display = "block";
+    document.getElementById("loadingText").innerText = "جاري توليد اختبار فعلي بالذكاء الاصطناعي...";
+
+    const result = await callGemini(`
+أنشئ اختبارًا قصيرًا باللغة العربية عن: ${topic}
+اكتب:
+- سؤالين اختيار من متعدد
+- الإجابة الصحيحة
+- تفسير مختصر لكل إجابة
+اجعل الإخراج منسقًا وواضحًا.
+`);
+
+    document.getElementById("aiLoading").style.display = "none";
+    document.getElementById("quizRes").style.display = "block";
+    document.getElementById("quizRes").innerHTML = `
+        <h4 style="color:var(--primary); margin-bottom:15px;">اختبار ذكي مولّد بالذكاء الاصطناعي</h4>
+        <div style="white-space:pre-line; font-size:0.85rem; line-height:1.8; color:#cbd5e1;">
+            ${result}
+        </div>
+    `;
+
+    addXP(50);
+}
+
+async function generateRealFlashcards() {
+    const topic = nameF || "مقرر جامعي عام";
+
+    document.getElementById("aiLoading").style.display = "block";
+    document.getElementById("loadingText").innerText = "جاري توليد بطاقات تعليمية فعلية بالذكاء الاصطناعي...";
+
+    const result = await callGemini(`
+أنشئ 5 بطاقات تعليمية باللغة العربية عن: ${topic}
+اكتب كل بطاقة بهذا الشكل:
+سؤال:
+إجابة:
+واجعلها مناسبة للمراجعة السريعة.
+`);
+
+    document.getElementById("aiLoading").style.display = "none";
+    document.getElementById("flashRes").style.display = "block";
+    document.getElementById("flashRes").innerHTML = `
+        <h4 style="color:var(--primary); margin-bottom:15px;">بطاقات تعليمية مولّدة بالذكاء الاصطناعي</h4>
+        <div style="white-space:pre-line; font-size:0.85rem; line-height:1.8; color:#cbd5e1;">
+            ${result}
+        </div>
+    `;
+
+    addXP(120);
 }
