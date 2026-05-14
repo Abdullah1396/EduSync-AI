@@ -1044,3 +1044,43 @@ header {
     transform:rotateY(180deg);
     border-color:rgba(16,185,129,0.45);
 }
+
+.smart-flash-card{
+  position:relative !important;
+  height:220px !important;
+  perspective:1000px !important;
+  cursor:pointer !important;
+  margin-bottom:16px !important;
+}
+
+.smart-card-inner{
+  position:relative !important;
+  width:100% !important;
+  height:100% !important;
+  transition:transform .6s ease !important;
+  transform-style:preserve-3d !important;
+}
+
+.smart-flash-card.flipped .smart-card-inner{
+  transform:rotateY(180deg) !important;
+}
+
+.smart-card-front,
+.smart-card-back{
+  position:absolute !important;
+  inset:0 !important;
+  backface-visibility:hidden !important;
+  -webkit-backface-visibility:hidden !important;
+  border-radius:22px !important;
+  padding:20px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  border:1px solid rgba(34,211,238,.35) !important;
+  background:#020617 !important;
+}
+
+.smart-card-back{
+  transform:rotateY(180deg) !important;
+  border-color:rgba(16,185,129,.45) !important;
+}
