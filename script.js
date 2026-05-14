@@ -539,3 +539,37 @@ window.addEventListener("load", () => {
         el("upStatus").innerHTML = "✅ تم تحميل: " + savedFile;
     }
 });
+
+function goHome() {
+    window.location.href = "index.html";
+}
+
+function goStudent() {
+    window.location.href = "sections/student.html";
+}
+
+function goLecturer() {
+    window.location.href = "sections/lecturer.html";
+}
+
+function goWallet() {
+    window.location.href = "sections/wallet.html";
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar) {
+        sidebar.classList.toggle("active");
+    } else {
+        window.location.href = "sections/wallet.html";
+    }
+}
+
+function toggleAccessibility() {
+    document.body.classList.toggle("access-mode");
+    alert("تم تفعيل / إيقاف وضع الوصول الشامل");
+}
+
+function startVoiceRecognition() {
+    alert("المساعد الصوتي التجريبي مفعّل");
+}
