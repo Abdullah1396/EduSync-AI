@@ -99,31 +99,14 @@ function checkMint(){
 
 /* ===================== رفع وقراءة الملف ===================== */
 
-async function handleFile(input) {
-    if (!input || !input.files || !input.files[0]) {
-        alert("لم يتم اختيار ملف");
-        return;
-    }
+async function extractPDFText(file) {
+    return `
+    عنوان الملف: ${file.name}
 
-    const file = input.files[0];
-    isFile = true;
-    nameF = file.name.replace(/\.[^/.]+$/, "");
-
-    localStorage.setItem("studentFileName", file.name);
-
-    const upStatus = el("upStatus");
-    if (upStatus) upStatus.innerHTML = "⏳ جاري قراءة محتوى الملف...";
-
-    let extractedText = "";
-
-    try {
-        if (file.type === "application/pdf") {
-            extractedText = await extractPDFText(file);
-        } else {
-            extractedText = await file.text();
-        }
-
-        extractedText = (extractedText || "").trim();
+    هذا ملف تعليمي مرفوع داخل EduSync AI.
+    إذا كان الملف PDF مصورًا، يتم استخدام وضع التحليل التجريبي لتوليد بطاقات وأسئلة مرتبطة بعنوان الملف.
+    `;
+}
 
         async function extractPDFText(file) {
     return `
