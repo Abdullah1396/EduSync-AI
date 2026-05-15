@@ -117,20 +117,20 @@ async function handleFile(input) {
 
     try {
         if (file.type === "application/pdf") {
-            extractedText = await extractPDFText(file);
-        } else {
-            extractedText = await file.text();
-        }
+    extractedText = await extractPDFText(file);
+
+    if (!extractedText || extractedText.trim().length < 50) {
+        localStorage.setItem("courseContent", "");
+
+        if (el("upStatus")) {
+            el("upStatus").innerHTML = "⚠️ 
+} else {
+    extractedText = await file.text();
+}
 
         extractedText = (extractedText || "").trim();
 
-        if (extractedText.length < 30) {
-            localStorage.setItem("courseContent", "");
-            if (el("upStatus")) el("upStatus").innerHTML = "⚠️ تم رفع الملف لكن النص غير مقروء";
-            alert("الملف تم رفعه، لكن محتواه غير مقروء. غالبًا PDF مصور وليس نصي.");
-            return;
-        }
-
+        
         localStorage.setItem("courseContent", extractedText.slice(0, 12000));
 
         if (el("upStatus")) {
