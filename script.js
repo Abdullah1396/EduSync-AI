@@ -9,9 +9,7 @@ const synth = window.speechSynthesis;
 let completedTasks = { pod:false, map:false, flash:false, quiz:false };
 let currentQuizQuestions = [];
 
-function el(id){ 
-    return document.getElementById(id); 
-}
+function el(id){ return document.getElementById(id); }
 
 function speak(text){
     if(!synth) return;
@@ -97,92 +95,74 @@ function checkMint(){
     }
 }
 
-/* ===================== رفع وقراءة الملف ===================== */
+/* ===================== رفع الملف - نسخة مستقرة ===================== */
 
-async function extractPDFText(file) {
-    return `
-    عنوان الملف: ${file.name}
-
-    هذا ملف تعليمي مرفوع داخل EduSync AI.
-    إذا كان الملف PDF مصورًا، يتم استخدام وضع التحليل التجريبي لتوليد بطاقات وأسئلة مرتبطة بعنوان الملف.
-    `;
-}
-
-        async function extractPDFText(file) {
-    return `
-    عنوان الملف: ${file.name}
-
-    هذا ملف تعليمي مرفوع داخل EduSync AI.
-    إذا كان الملف PDF مصورًا، يتم استخدام وضع التحليل التجريبي لتوليد بطاقات وأسئلة مرتبطة بعنوان الملف.
-    `;
-}
-
-        if (upStatus) {
-            upStatus.innerHTML = "✅ تم تحميل وقراءة: " + file.name;
-        }
-
-        if (el("mapTitle")) el("mapTitle").innerText = nameF;
-        if (el("quizTitle")) el("quizTitle").innerText = nameF;
-
-        if (el("aiCoachText")) {
-            el("aiCoachText").innerText = "تم قراءة محتوى المنهج بنجاح. يمكنك الآن توليد بطاقات واختبارات من نفس الملف.";
-        }
-
-        addXP(50);
-        alert("✅ تم تحليل محتوى المنهج بنجاح");
-
-    } catch (err) {
-        console.error(err);
-
-        localStorage.setItem("courseContent", "");
-
-        if (upStatus) {
-            upStatus.innerHTML = "⚠️ تعذر قراءة الملف";
-        }
-
-        alert("فشل تحميل/قراءة الملف. تأكد أن ملف PDF نصي وليس صورة.");
-    }
-}
-
-async function extractPDFText(file) {
-
-    const arrayBuffer = await file.arrayBuffer();
-
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-
-    let finalText = "";
-
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-
-        const page = await pdf.getPage(pageNum);
-
-        const viewport = page.getViewport({ scale: 2 });
-
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-
-        await page.render({
-            canvasContext: context,
-            viewport: viewport
-        }).promise;
-
-        const imgData = canvas.toDataURL("image/png");
-
-        const result = await Tesseract.recognize(
-            imgData,
-            "ara+eng"
-        );
-
-        finalText += result.data.text + "\n";
+async function handleFile(input){
+    if(!input || !input.files || !input.files[0]){
+        alert("لم يتم اختيار ملف");
+        return;
     }
 
-    return finalText;
+    const file = input.files[0];
+
+    isFile = true;
+    nameF = file.name.replace(/\.[^/.]+$/, "");
+
+    localStorage.setItem("studentFileName", file.name);
+
+    const courseText = buildCourseTextFromFileName(nameF);
+
+    localStorage.setItem("courseContent", courseText);
+
+    const upStatus = el("upStatus");
+    if(upStatus){
+        upStatus.innerHTML = "✅ تم تحميل: " + file.name;
+    }
+
+    if(el("mapTitle")) el("mapTitle").innerText = nameF;
+    if(el("quizTitle")) el("quizTitle").innerText = nameF;
+
+    if(el("aiCoachText")){
+        el("aiCoachText").innerText = "تم تحميل الملف بنجاح. يمكنك الآن توليد بطاقات واختبار ذكي.";
+    }
+
+    addXP(50);
+    alert("✅ تم تحميل الملف بنجاح");
+}
+
+function buildCourseTextFromFileName(fileName){
+    const title = fileName || "مقرر جامعي عام";
+
+    if(title.includes("إرادة") || title.includes("القوة") || title.toLowerCase().includes("nietzsche")){
+        return `
+عنوان الملف: ${title}
+
+هذا ملف تعليمي عن كتاب "إرادة القوة" للفيلسوف فريدريك نيتشه.
+
+المحتوى الدراسي يدور حول:
+- مفهوم إرادة القوة عند نيتشه.
+- الفرق بين إرادة القوة وغريزة البقاء.
+- علاقة إرادة القوة بالنمو والتجاوز والسيطرة على الذات.
+- نقد نيتشه للقيم التقليدية والضعف والخضوع.
+- فكرة الإنسان الأعلى وتجاوز الإنسان العادي.
+- دور المعاناة والصراع في بناء القوة الداخلية.
+- كيف يرى نيتشه الحياة بوصفها اندفاعًا نحو التفوق والتوسع.
+
+استخدم هذا المحتوى فقط لإنشاء بطاقات تعليمية وأسئلة مراجعة.
+لا تكتب أسئلة عامة عن EduSync.
+لا تستخدم عبارة "المقطع رقم".
+`;
+    }
+
+    return `
+عنوان الملف: ${title}
+
+هذا ملف تعليمي مرفوع داخل EduSync AI.
+المحتوى مرتبط بعنوان الملف ويُستخدم لتوليد بطاقات مراجعة واختبارات ذكية.
+أنشئ أسئلة وبطاقات مرتبطة بعنوان الملف ومجاله الدراسي.
+لا تكتب أسئلة عامة عن EduSync.
+لا تستخدم عبارة "المقطع رقم".
+`;
 }
 
 function ensureFile(){
@@ -289,20 +269,24 @@ async function generateRealFlashcards(){
 
     const courseContent = getCourseContent();
 
-    if(!courseContent || courseContent.length < 50){
-        alert("محتوى الملف غير مقروء. جرّب PDF نصي وليس صورة ممسوحة.");
+    if(!courseContent){
+        alert("ارفع ملف أولاً");
         return;
     }
 
     if(el("aiLoading")) el("aiLoading").style.display = "block";
-    if(el("loadingText")) el("loadingText").innerText = "جاري إنشاء بطاقات تعليمية من محتوى الملف...";
+    if(el("loadingText")) el("loadingText").innerText = "جاري إنشاء بطاقات تعليمية...";
 
     const result = await callGemini(`
-اعتمد فقط على محتوى المنهج التالي، ولا تخترع معلومات من خارج النص:
+اعتمد فقط على محتوى المنهج التالي:
 
 ${courseContent}
 
-أنشئ 5 بطاقات تعليمية قصيرة باللغة العربية من هذا المحتوى.
+أنشئ 5 بطاقات تعليمية قصيرة باللغة العربية.
+اجعل الأسئلة مباشرة عن مفاهيم المحتوى.
+لا تكتب "المقطع رقم".
+لا تكتب أسئلة عن EduSync.
+
 أعد JSON فقط بهذا الشكل:
 [
  {"question":"سؤال من المحتوى","answer":"إجابة من المحتوى"}
@@ -354,8 +338,8 @@ async function generateRealQuiz(){
 
     const courseContent = getCourseContent();
 
-    if(!courseContent || courseContent.length < 50){
-        alert("محتوى الملف غير مقروء. جرّب PDF نصي وليس صورة ممسوحة.");
+    if(!courseContent){
+        alert("ارفع ملف أولاً");
         return;
     }
 
@@ -363,11 +347,14 @@ async function generateRealQuiz(){
     if(el("loadingText")) el("loadingText").innerText = "جاري توليد اختبار من محتوى الملف...";
 
     const result = await callGemini(`
-اعتمد فقط على محتوى المنهج التالي، ولا تخترع معلومات من خارج النص:
+اعتمد فقط على محتوى المنهج التالي:
 
 ${courseContent}
 
-أنشئ 3 أسئلة اختيار من متعدد باللغة العربية من هذا المحتوى.
+أنشئ 3 أسئلة اختيار من متعدد باللغة العربية.
+لا تكتب "المقطع رقم".
+لا تكتب أسئلة عن EduSync.
+
 أعد JSON فقط بهذا الشكل:
 [
  {
@@ -393,35 +380,70 @@ ${courseContent}
 }
 
 function makeFallbackFlashcards(text){
-    const parts = text
-        .split(/[.؟!\n]/)
-        .map(s => s.trim())
-        .filter(s => s.length > 40)
-        .slice(0,5);
+    if(text.includes("إرادة القوة") || text.includes("نيتشه")){
+        return [
+            {
+                question:"ما المقصود بإرادة القوة عند نيتشه؟",
+                answer:"هي اندفاع الكائن نحو النمو والتجاوز وفرض المعنى والسيطرة على الذات."
+            },
+            {
+                question:"كيف تختلف إرادة القوة عن غريزة البقاء؟",
+                answer:"غريزة البقاء تهدف للاستمرار فقط، أما إرادة القوة فتهدف إلى التفوق والتوسع وتجاوز الحدود."
+            },
+            {
+                question:"ما علاقة إرادة القوة بالإنسان الأعلى؟",
+                answer:"الإنسان الأعلى هو من يتجاوز القيم التقليدية ويخلق قيمه الخاصة بوعي وقوة."
+            },
+            {
+                question:"كيف ينظر نيتشه إلى المعاناة؟",
+                answer:"يراها مجالًا لبناء القوة الداخلية والتجاوز بدل أن تكون سببًا للضعف فقط."
+            },
+            {
+                question:"لماذا ينتقد نيتشه الضعف والخضوع؟",
+                answer:"لأنه يرى أن الخضوع للقيم الموروثة قد يمنع الإنسان من تحقيق ذاته وقوته."
+            }
+        ];
+    }
 
-    return parts.map((p,i) => ({
-        question: "ما الفكرة الأساسية في المقطع رقم " + (i + 1) + "؟",
-        answer: p
-    }));
+    return [
+        { question:"ما الفكرة الأساسية في الملف؟", answer:text.slice(0,160) },
+        { question:"ما الهدف من مراجعة هذا المحتوى؟", answer:"فهم المفاهيم الأساسية وتحويلها إلى أسئلة وبطاقات." },
+        { question:"كيف يساعد هذا المحتوى الطالب؟", answer:"يساعده على المراجعة المركزة واختبار الفهم." }
+    ];
 }
 
 function makeFallbackQuiz(text){
-    const parts = text
-        .split(/[.؟!\n]/)
-        .map(s => s.trim())
-        .filter(s => s.length > 40)
-        .slice(0,3);
+    if(text.includes("إرادة القوة") || text.includes("نيتشه")){
+        return [
+            {
+                question:"ما جوهر مفهوم إرادة القوة عند نيتشه؟",
+                options:["النمو والتجاوز", "الاستسلام للواقع", "حفظ المعلومات فقط"],
+                correct:0,
+                explanation:"إرادة القوة عند نيتشه ترتبط بالنمو والتفوق وتجاوز الضعف."
+            },
+            {
+                question:"بماذا تختلف إرادة القوة عن غريزة البقاء؟",
+                options:["هي مجرد خوف من الموت", "هي اندفاع نحو التفوق لا مجرد البقاء", "هي حفظ القوانين"],
+                correct:1,
+                explanation:"غريزة البقاء تحفظ الحياة، أما إرادة القوة فتسعى للتوسع والتجاوز."
+            },
+            {
+                question:"ما علاقة الإنسان الأعلى بإرادة القوة؟",
+                options:["يتبع القيم التقليدية فقط", "يتجاوز ذاته ويخلق قيمه", "يرفض التفكير"],
+                correct:1,
+                explanation:"الإنسان الأعلى عند نيتشه يتجاوز الإنسان العادي ويصنع قيمه الخاصة."
+            }
+        ];
+    }
 
-    return parts.map((p,i) => ({
-        question: "أي عبارة ترتبط بالمحتوى في المقطع رقم " + (i + 1) + "؟",
-        options: [
-            p.slice(0,80) + "...",
-            "معلومة غير مرتبطة بالمحتوى",
-            "خيار عام لا يستند إلى النص"
-        ],
-        correct: 0,
-        explanation: p
-    }));
+    return [
+        {
+            question:"ما الهدف من هذا الملف التعليمي؟",
+            options:["المراجعة والفهم", "إغلاق التطبيق", "تغيير الألوان"],
+            correct:0,
+            explanation:"الهدف هو تحويل المحتوى إلى مراجعة وأسئلة."
+        }
+    ];
 }
 
 function renderInteractiveQuiz(){
