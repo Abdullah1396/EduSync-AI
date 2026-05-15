@@ -253,33 +253,25 @@ flex-shrink:0;
 </style>
 
 <script>
-if ("scrollRestoration" in history) {
-    history.scrollRestoration = "manual";
-}
-
 window.addEventListener("load", function () {
     const intro = document.getElementById("introScreen");
 
-    function resetPage() {
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-        window.scrollTo(0, 0);
-        document.body.style.overflow = "auto";
-    }
+    if (!intro) return;
 
-    if (!intro) {
-        resetPage();
-        return;
-    }
-
+    document.body.classList.add("intro-playing");
     document.body.style.overflow = "hidden";
 
     setTimeout(function () {
         intro.style.opacity = "0";
 
         setTimeout(function () {
+            intro.classList.add("removed");
             intro.remove();
-            resetPage();
+
+            document.body.classList.remove("intro-playing");
+            document.body.style.overflow = "auto";
+
+            window.scrollTo(0, 0);
         }, 800);
 
     }, 5000);
