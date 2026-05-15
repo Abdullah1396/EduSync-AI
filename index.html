@@ -254,27 +254,33 @@ flex-shrink:0;
 
 <script>
 window.addEventListener("load", function () {
+
     const intro = document.getElementById("introScreen");
 
     if (!intro) return;
 
+    function removeIntro() {
+        intro.style.opacity = "0";
+
+        setTimeout(() => {
+            intro.remove();
+            document.body.style.overflow = "auto";
+        }, 800);
+    }
+
+    document.body.style.overflow = "hidden";
+
     if (sessionStorage.getItem("introSeen") === "true") {
-        intro.style.display = "none";
+        intro.remove();
+        document.body.style.overflow = "auto";
         return;
     }
 
     sessionStorage.setItem("introSeen", "true");
 
-    setTimeout(function () {
-        intro.style.opacity = "0";
+    setTimeout(removeIntro, 5000);
 
-        setTimeout(function () {
-            intro.style.display = "none";
-        }, 800);
-
-    }, 5000);
 });
 </script>
-
 </body>
 </html>
