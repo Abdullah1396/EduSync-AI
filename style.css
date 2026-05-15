@@ -1205,3 +1205,26 @@ header{
     margin-top: 0 !important;
     padding-top: 0 !important;
 }
+
+/* FIX HUGE TOP GAP */
+
+body,
+main,
+#home,
+.section,
+.container{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+header{
+    margin-bottom: 0 !important;
+}
+
+.container{
+    display: flow-root;
+}
+
+.container > *:first-child{
+    margin-top: 0 !important;
+}
