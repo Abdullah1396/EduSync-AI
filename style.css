@@ -1185,6 +1185,19 @@ body.intro-playing #voiceAssistant {
     padding-top: 0 !important;
 }
 
+
+
+#home,
+.section,
 .container{
-    transform: translateY(-55vh) !important;
+    min-height: auto !important;
+    height: auto !important;
+}
+
+.hero,
+.hero-section,
+.welcome-section{
+    min-height: auto !important;
+    height: auto !important;
+    padding-top: 20px !important;
 }
