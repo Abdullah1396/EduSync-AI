@@ -1184,3 +1184,7 @@ body.intro-playing #voiceAssistant {
     margin-top: 0 !important;
     padding-top: 0 !important;
 }
+
+.container{
+    transform: translateY(-55vh) !important;
+}
