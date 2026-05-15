@@ -1093,3 +1093,59 @@ header {
         font-size: 0.85rem !important;
     }
 }
+
+/* ===== الخلفية التقنية الصحيحة ===== */
+
+html,
+body {
+    background:
+        radial-gradient(circle at top, rgba(34,211,238,0.10), transparent 42%),
+        linear-gradient(180deg, #020617, #000814);
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* طبقة الشبكة */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(34, 211, 238, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.07) 1px, transparent 1px);
+    background-size: 38px 38px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* طبقة النقاط الخفيفة */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(rgba(34, 211, 238, 0.38) 1px, transparent 1px);
+    background-size: 72px 72px;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* طبقة الجسيمات المتحركة */
+#bg-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    background: transparent !important;
+}
+
+/* كل محتوى الصفحة فوق الخلفية */
+body > *:not(#bg-canvas) {
+    position: relative;
+    z-index: 2;
+}
