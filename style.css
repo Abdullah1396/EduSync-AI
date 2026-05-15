@@ -1081,150 +1081,121 @@ header {
     }
 }
 
-/* ===== الخلفية التقنية ===== */
+
+/* ===== FINAL CLEAN FIX: background + intro + top spacing ===== */
 
 html,
-body {
+body{
+    margin:0 !important;
+    padding:0 !important;
+    min-height:100vh;
+    overflow-x:hidden;
     background:
         radial-gradient(circle at top, rgba(34,211,238,0.10), transparent 42%),
-        linear-gradient(180deg, #020617, #000814);
-    color: white;
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
+        linear-gradient(180deg,#020617,#000814) !important;
+    color:#fff;
+    scroll-behavior:auto !important;
 }
 
-/* الشبكة */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
     background-image:
-        linear-gradient(rgba(34, 211, 238, 0.055) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.055) 1px, transparent 1px);
-    background-size: 38px 38px;
-    pointer-events: none;
-    z-index: 0;
+        linear-gradient(rgba(34,211,238,0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,211,238,0.055) 1px, transparent 1px);
+    background-size:38px 38px;
+    pointer-events:none;
+    z-index:0;
 }
 
-/* النقاط */
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-        radial-gradient(rgba(34, 211, 238, 0.35) 1px, transparent 1px);
-    background-size: 72px 72px;
-    opacity: 0.22;
-    pointer-events: none;
-    z-index: 0;
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:radial-gradient(rgba(34,211,238,0.35) 1px, transparent 1px);
+    background-size:72px 72px;
+    opacity:.22;
+    pointer-events:none;
+    z-index:0;
 }
 
-/* الجسيمات */
-#bg-canvas {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1;
-    pointer-events: none;
-    background: transparent !important;
+#bg-canvas{
+    position:fixed !important;
+    inset:0 !important;
+    width:100vw !important;
+    height:100vh !important;
+    z-index:1 !important;
+    pointer-events:none !important;
+    background:transparent !important;
 }
 
-/* المحتوى فوق الخلفية */
-body > *:not(#bg-canvas) {
-    position: relative;
-    z-index: 2;
+body > *:not(#bg-canvas):not(#introScreen){
+    position:relative;
+    z-index:2;
 }
 
-/* ===== URGENT INTRO + FLOAT BUTTON FIX ===== */
-
-/* الانتروا فوق كل شيء */
+/* intro is overlay only, never part of page layout */
 #introScreen{
-    position: fixed !important;
-    inset: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    z-index: 999999 !important;
-    background: #000 !important;
-    overflow: hidden !important;
+    position:fixed !important;
+    inset:0 !important;
+    width:100vw !important;
+    height:100vh !important;
+    background:#000 !important;
+    z-index:2147483647 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    overflow:hidden !important;
+    opacity:1;
+    transition:opacity .8s ease;
 }
 
 #introVideo{
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-}
-body.intro-playing #introScreen {
-    position: fixed !important;
-    inset: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    z-index: 9999999 !important;
-    background: #000 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    opacity: 1;
+    width:100vw !important;
+    height:100vh !important;
+    object-fit:cover !important;
 }
 
-/* الفيديو يغطي الشاشة */
-body.intro-playing #introVideo {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
+body:not(.intro-playing) #introScreen{
+    display:none !important;
 }
 
-/* إخفاء أزرار الوصول والمايك وقت الانتروا فقط */
+body.intro-playing{
+    overflow:hidden !important;
+}
+
 body.intro-playing .accessibility-float,
 body.intro-playing .chat-float,
 body.intro-playing .voice-float,
-body.intro-playing #voiceAssistant {
-    display: none !important;
+body.intro-playing #voiceAssistant{
+    display:none !important;
 }
 
-/* منع الفراغ بعد الانتروا */
-#introScreen.removed {
-    display: none !important;
-    height: 0 !important;
-    overflow: hidden !important;
+/* force home content to start right after header */
+header{
+    margin:0 !important;
 }
 
 .container{
-    padding: 20px !important;
-    margin: auto !important;
-    max-width: 520px;
-}
-
-header{
-    margin-bottom: 0 !important;
+    max-width:520px !important;
+    margin:0 auto !important;
+    padding:10px 20px 20px !important;
+    display:block !important;
 }
 
 #home,
 .section{
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    min-height:auto !important;
+    height:auto !important;
 }
 
-/* FIX HUGE TOP GAP */
-
-body,
-main,
-#home,
-.section,
-.container{
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+#home h3{
+    margin:6px 0 14px !important;
 }
 
-header{
-    margin-bottom: 0 !important;
-}
-
-.container{
-    display: flow-root;
-}
-
-.container > *:first-child{
-    margin-top: 0 !important;
+.info-card:first-of-type{
+    margin-top:0 !important;
 }
