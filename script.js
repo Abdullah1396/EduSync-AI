@@ -626,7 +626,35 @@ function openModal(id){
 }
 
 function openBadgeModal(type){
-    openModal("league");
+    let title = "";
+    let desc = "";
+    let icon = "";
+
+    if(type === "verified"){
+        title = "Verified Learner";
+        desc = "هذا توثيق تعليمي يثبت أن الطالب أنجز نشاطًا داخل EduSync AI، مع بصمة رقمية قابلة للتحقق.";
+        icon = "fa-certificate";
+    } else {
+        title = "7-Day Streak";
+        desc = "هذا الإنجاز يثبت استمرار الطالب في التعلم لمدة 7 أيام متتالية.";
+        icon = "fa-fire";
+    }
+
+    const html = `
+        <div style="text-align:center;">
+            <i class="fa-solid ${icon}" style="font-size:3rem; color:var(--gold); margin-bottom:15px;"></i>
+            <h3 style="color:var(--primary);">${title}</h3>
+            <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.8; margin-top:12px;">
+                ${desc}
+            </p>
+            <div style="margin-top:15px; padding:12px; border:1px dashed rgba(34,211,238,0.35); border-radius:14px; color:#10b981;">
+                ✅ Blockchain Proof جاهز للعرض التجريبي
+            </div>
+        </div>
+    `;
+
+    if(el("modalBody")) el("modalBody").innerHTML = html;
+    if(el("infoModal")) el("infoModal").style.display = "flex";
 }
 
 function simulateChain(){
