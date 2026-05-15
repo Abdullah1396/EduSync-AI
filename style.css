@@ -1276,3 +1276,32 @@ header{
     opacity:1 !important;
     visibility:visible !important;
 }
+
+/* remove remaining intro space completely */
+#introScreen,
+#introVideo,
+.intro-video,
+video {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* force page content to top */
+body,
+html {
+    overflow-x: hidden !important;
+}
+
+main,
+.section,
+.home-container,
+.hero-section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
