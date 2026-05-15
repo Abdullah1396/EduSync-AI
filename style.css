@@ -1174,3 +1174,13 @@ body.intro-playing #voiceAssistant {
     height: 0 !important;
     overflow: hidden !important;
 }
+
+.container{
+    margin-top: 0 !important;
+    padding-top: 24px !important;
+}
+
+#home{
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
