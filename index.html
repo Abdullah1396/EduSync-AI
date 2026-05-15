@@ -253,33 +253,36 @@ flex-shrink:0;
 </style>
 
 <script>
-window.addEventListener("load", function () {
+if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+}
 
+window.addEventListener("load", function () {
     const intro = document.getElementById("introScreen");
 
-    if (!intro) return;
+    function resetPage() {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.scrollTo(0, 0);
+        document.body.style.overflow = "auto";
+    }
 
-    function removeIntro() {
-        intro.style.opacity = "0";
-
-        setTimeout(() => {
-            intro.remove();
-            document.body.style.overflow = "auto";
-        }, 800);
+    if (!intro) {
+        resetPage();
+        return;
     }
 
     document.body.style.overflow = "hidden";
 
-    if (sessionStorage.getItem("introSeen") === "true") {
-        intro.remove();
-        document.body.style.overflow = "auto";
-        return;
-    }
+    setTimeout(function () {
+        intro.style.opacity = "0";
 
-    sessionStorage.setItem("introSeen", "true");
+        setTimeout(function () {
+            intro.remove();
+            resetPage();
+        }, 800);
 
-    setTimeout(removeIntro, 5000);
-
+    }, 5000);
 });
 </script>
 </body>
