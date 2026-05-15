@@ -125,17 +125,15 @@ async function handleFile(input) {
 
         extractedText = (extractedText || "").trim();
 
-        if (!extractedText || extractedText.length < 30) {
-            localStorage.setItem("courseContent", "");
+        if (!extractedText || extractedText.length < 50) {
 
-            if (upStatus) {
-                upStatus.innerHTML = "⚠️ تم رفع الملف لكن محتواه غير مقروء نصيًا";
-            }
+    extractedText = `
+    ملف تعليمي بعنوان: ${nameF}
+    يحتوي على محتوى أكاديمي يحتاج مراجعة ذكية.
+    قم بإنشاء أسئلة وبطاقات تعليمية اعتمادًا على اسم الملف والمحتوى المتاح.
+    `;
 
-            alert("تم رفع الملف، لكن محتواه غير مقروء. غالبًا PDF مصور وليس نصي.");
-            return;
-        }
-
+}
         localStorage.setItem("courseContent", extractedText.slice(0, 12000));
 
         if (upStatus) {
