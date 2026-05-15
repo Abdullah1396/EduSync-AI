@@ -174,10 +174,6 @@ async function handleFile(input) {
 }
 
 async function extractPDFText(file) {
-    if (typeof pdfjsLib === "undefined") {
-        alert("مكتبة قراءة PDF غير مضافة في student.html");
-        return "";
-    }
 
     const arrayBuffer = await file.arrayBuffer();
 
@@ -186,16 +182,36 @@ async function extractPDFText(file) {
 
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
-    let text = "";
+    let finalText = "";
 
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+
         const page = await pdf.getPage(pageNum);
-        const content = await page.getTextContent();
-        const pageText = content.items.map(item => item.str).join(" ");
-        text += pageText + "\n";
+
+        const viewport = page.getViewport({ scale: 2 });
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({
+            canvasContext: context,
+            viewport: viewport
+        }).promise;
+
+        const imgData = canvas.toDataURL("image/png");
+
+        const result = await Tesseract.recognize(
+            imgData,
+            "ara+eng"
+        );
+
+        finalText += result.data.text + "\n";
     }
 
-    return text;
+    return finalText;
 }
 
 function ensureFile(){
