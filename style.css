@@ -1229,3 +1229,13 @@ header{
 #introScreen{
     z-index: 9999999 !important;
 }
+
+
+
+.chat-float,
+.voice-float,
+#voiceAssistant,
+.accessibility-float{
+    position: fixed !important;
+    z-index: 99999999 !important;
+}
