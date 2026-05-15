@@ -111,30 +111,35 @@ async function handleFile(input) {
 
     localStorage.setItem("studentFileName", file.name);
 
-    if (el("upStatus")) el("upStatus").innerHTML = "⏳ جاري قراءة محتوى الملف...";
+    const upStatus = el("upStatus");
+    if (upStatus) upStatus.innerHTML = "⏳ جاري قراءة محتوى الملف...";
 
     let extractedText = "";
 
     try {
         if (file.type === "application/pdf") {
-    extractedText = await extractPDFText(file);
-
-    if (!extractedText || extractedText.trim().length < 50) {
-        localStorage.setItem("courseContent", "");
-
-        if (el("upStatus")) {
-            el("upStatus").innerHTML = "⚠️ 
-} else {
-    extractedText = await file.text();
-}
+            extractedText = await extractPDFText(file);
+        } else {
+            extractedText = await file.text();
+        }
 
         extractedText = (extractedText || "").trim();
 
-        
+        if (!extractedText || extractedText.length < 30) {
+            localStorage.setItem("courseContent", "");
+
+            if (upStatus) {
+                upStatus.innerHTML = "⚠️ تم رفع الملف لكن محتواه غير مقروء نصيًا";
+            }
+
+            alert("تم رفع الملف، لكن محتواه غير مقروء. غالبًا PDF مصور وليس نصي.");
+            return;
+        }
+
         localStorage.setItem("courseContent", extractedText.slice(0, 12000));
 
-        if (el("upStatus")) {
-            el("upStatus").innerHTML = "✅ تم تحميل وقراءة: " + file.name;
+        if (upStatus) {
+            upStatus.innerHTML = "✅ تم تحميل وقراءة: " + file.name;
         }
 
         if (el("mapTitle")) el("mapTitle").innerText = nameF;
@@ -149,8 +154,14 @@ async function handleFile(input) {
 
     } catch (err) {
         console.error(err);
-        if (el("upStatus")) el("upStatus").innerHTML = "⚠️ تم رفع الملف لكن تعذر قراءة المحتوى";
-        alert("تم رفع الملف، لكن قراءة PDF فشلت. جرّب ملف PDF نصي واضح.");
+
+        localStorage.setItem("courseContent", "");
+
+        if (upStatus) {
+            upStatus.innerHTML = "⚠️ تعذر قراءة الملف";
+        }
+
+        alert("فشل تحميل/قراءة الملف. تأكد أن ملف PDF نصي وليس صورة.");
     }
 }
 
