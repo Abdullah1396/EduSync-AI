@@ -1148,3 +1148,46 @@ main,
 .card {
     background: transparent !important;
 }
+
+/* ===== Sidebar / Dropdown visual fix ===== */
+
+#sidebar,
+.sidebar,
+.side-menu,
+.mobile-menu,
+.menu-panel {
+    background:
+        radial-gradient(circle at top left, rgba(34,211,238,0.16), transparent 35%),
+        linear-gradient(180deg, rgba(2,6,23,0.96), rgba(15,23,42,0.96)) !important;
+    border-left: 1px solid rgba(34,211,238,0.22) !important;
+    box-shadow: 0 0 35px rgba(34,211,238,0.12) !important;
+    backdrop-filter: blur(12px) !important;
+    overflow: hidden;
+}
+
+#sidebar::before,
+.sidebar::before,
+.side-menu::before,
+.mobile-menu::before,
+.menu-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(34,211,238,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,211,238,0.045) 1px, transparent 1px),
+        radial-gradient(rgba(34,211,238,0.35) 1px, transparent 1px);
+    background-size: 42px 42px, 42px 42px, 75px 75px;
+    opacity: 0.45;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#sidebar > *,
+.sidebar > *,
+.side-menu > *,
+.mobile-menu > *,
+.menu-panel > * {
+    position: relative;
+    z-index: 1;
+}
