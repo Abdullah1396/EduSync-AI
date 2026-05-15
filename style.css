@@ -69,20 +69,7 @@ body > *:not(#bg-canvas) {
     z-index: 1;
 }
 
-/* ===== إخفاء شاشة المقدمة بدون ترك فراغ ===== */
 
-#introScreen,
-#introVideo,
-.intro-video {
-    display: none !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    max-height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    opacity: 0 !important;
-    overflow: hidden !important;
-}
 
 /* ===== Header ===== */
 
@@ -1094,7 +1081,7 @@ header {
     }
 }
 
-/* ===== الخلفية التقنية الصحيحة ===== */
+/* ===== الخلفية التقنية ===== */
 
 html,
 body {
@@ -1107,33 +1094,33 @@ body {
     position: relative;
 }
 
-/* طبقة الشبكة */
+/* الشبكة */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
     background-image:
-        linear-gradient(rgba(34, 211, 238, 0.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.07) 1px, transparent 1px);
+        linear-gradient(rgba(34, 211, 238, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.055) 1px, transparent 1px);
     background-size: 38px 38px;
     pointer-events: none;
     z-index: 0;
 }
 
-/* طبقة النقاط الخفيفة */
+/* النقاط */
 body::after {
     content: "";
     position: fixed;
     inset: 0;
     background-image:
-        radial-gradient(rgba(34, 211, 238, 0.38) 1px, transparent 1px);
+        radial-gradient(rgba(34, 211, 238, 0.35) 1px, transparent 1px);
     background-size: 72px 72px;
-    opacity: 0.25;
+    opacity: 0.22;
     pointer-events: none;
     z-index: 0;
 }
 
-/* طبقة الجسيمات المتحركة */
+/* الجسيمات */
 #bg-canvas {
     position: fixed;
     inset: 0;
@@ -1144,7 +1131,7 @@ body::after {
     background: transparent !important;
 }
 
-/* كل محتوى الصفحة فوق الخلفية */
+/* المحتوى فوق الخلفية */
 body > *:not(#bg-canvas) {
     position: relative;
     z-index: 2;
