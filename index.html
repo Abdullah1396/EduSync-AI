@@ -257,24 +257,30 @@ if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
 }
 
+function hardTop() {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+}
+
 window.addEventListener("load", function () {
     const intro = document.getElementById("introScreen");
 
-    function resetPage() {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-        document.body.style.overflow = "auto";
-    }
+    hardTop();
 
-    if (!intro) {
-        resetPage();
-        return;
-    }
+    if (!intro) return;
 
     if (localStorage.getItem("introSeen") === "true") {
         intro.remove();
-        resetPage();
+        document.body.style.overflow = "auto";
+
+        let tries = 0;
+        const fix = setInterval(function () {
+            hardTop();
+            tries++;
+            if (tries > 12) clearInterval(fix);
+        }, 100);
+
         return;
     }
 
@@ -286,14 +292,27 @@ window.addEventListener("load", function () {
 
         setTimeout(function () {
             intro.remove();
-            resetPage();
+            document.body.style.overflow = "auto";
+
+            let tries = 0;
+            const fix = setInterval(function () {
+                hardTop();
+                tries++;
+                if (tries > 12) clearInterval(fix);
+            }, 100);
+
         }, 800);
 
     }, 5000);
 });
 
 window.addEventListener("pageshow", function () {
-    window.scrollTo(0, 0);
+    let tries = 0;
+    const fix = setInterval(function () {
+        hardTop();
+        tries++;
+        if (tries > 12) clearInterval(fix);
+    }, 100);
 });
 </script>
 </body>
