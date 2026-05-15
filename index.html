@@ -253,28 +253,47 @@ flex-shrink:0;
 </style>
 
 <script>
+if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+}
+
 window.addEventListener("load", function () {
     const intro = document.getElementById("introScreen");
 
-    if (!intro) return;
+    function resetPage() {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        document.body.style.overflow = "auto";
+    }
 
-    document.body.classList.add("intro-playing");
+    if (!intro) {
+        resetPage();
+        return;
+    }
+
+    if (localStorage.getItem("introSeen") === "true") {
+        intro.remove();
+        resetPage();
+        return;
+    }
+
     document.body.style.overflow = "hidden";
+    localStorage.setItem("introSeen", "true");
 
     setTimeout(function () {
         intro.style.opacity = "0";
 
         setTimeout(function () {
-            intro.classList.add("removed");
             intro.remove();
-
-            document.body.classList.remove("intro-playing");
-            document.body.style.overflow = "auto";
-
-            window.scrollTo(0, 0);
+            resetPage();
         }, 800);
 
     }, 5000);
+});
+
+window.addEventListener("pageshow", function () {
+    window.scrollTo(0, 0);
 });
 </script>
 </body>
