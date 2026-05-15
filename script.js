@@ -7,17 +7,11 @@ let nameF = localStorage.getItem("studentFileName") || "";
 const synth = window.speechSynthesis;
 
 let completedTasks = { pod:false, map:false, flash:false, quiz:false };
-let currentCardIndex = 0;
 let currentQuizQuestions = [];
 
-const flashcardsData = [
-    { q:"ما هي المهمة الأساسية لـ EduSync؟", a:"مزامنة المنهج مع قدرات الطالب باستخدام الذكاء الاصطناعي." },
-    { q:"كيف يتم ضمان ملكية المحتوى؟", a:"عن طريق تسجيل هاش الملف على البلوكشين." },
-    { q:"ما المقصود بـ Academic Vault؟", a:"هوية تعليمية رقمية تجمع النقاط والإنجازات والسمعة الأكاديمية." },
-    { q:"ما فائدة Soulbound Badge؟", a:"توثيق إنجاز الطالب بشكل غير قابل للنقل أو التلاعب." }
-];
-
-function el(id){ return document.getElementById(id); }
+function el(id){ 
+    return document.getElementById(id); 
+}
 
 function speak(text){
     if(!synth) return;
@@ -36,13 +30,10 @@ function saveVault(){
 function updateAllXP(){
     localStorage.setItem("xp", points);
 
-    const studentPoints = el("studentPoints");
-    if(studentPoints) studentPoints.innerText = points;
+    if(el("studentPoints")) el("studentPoints").innerText = points;
+    if(el("xpValue")) el("xpValue").innerText = points + " XP";
 
     document.querySelectorAll(".xpValue").forEach(x => x.innerText = points);
-
-    const xpValue = el("xpValue");
-    if(xpValue) xpValue.innerText = points + " XP";
 
     updateClaimButton();
     checkMint();
@@ -106,6 +97,8 @@ function checkMint(){
     }
 }
 
+/* ===================== رفع وقراءة الملف ===================== */
+
 async function handleFile(input) {
     if (!input || !input.files || !input.files[0]) {
         alert("لم يتم اختيار ملف");
@@ -118,8 +111,7 @@ async function handleFile(input) {
 
     localStorage.setItem("studentFileName", file.name);
 
-    const upStatus = document.getElementById("upStatus");
-    if (upStatus) upStatus.innerHTML = "⏳ جاري قراءة محتوى الملف...";
+    if (el("upStatus")) el("upStatus").innerHTML = "⏳ جاري قراءة محتوى الملف...";
 
     let extractedText = "";
 
@@ -130,23 +122,26 @@ async function handleFile(input) {
             extractedText = await file.text();
         }
 
+        extractedText = (extractedText || "").trim();
+
+        if (extractedText.length < 30) {
+            localStorage.setItem("courseContent", "");
+            if (el("upStatus")) el("upStatus").innerHTML = "⚠️ تم رفع الملف لكن النص غير مقروء";
+            alert("الملف تم رفعه، لكن محتواه غير مقروء. غالبًا PDF مصور وليس نصي.");
+            return;
+        }
+
         localStorage.setItem("courseContent", extractedText.slice(0, 12000));
 
-        if (upStatus) {
-            upStatus.innerHTML = "✅ تم تحميل وقراءة: " + file.name;
+        if (el("upStatus")) {
+            el("upStatus").innerHTML = "✅ تم تحميل وقراءة: " + file.name;
         }
 
-        if (document.getElementById("mapTitle")) {
-            document.getElementById("mapTitle").innerText = nameF;
-        }
+        if (el("mapTitle")) el("mapTitle").innerText = nameF;
+        if (el("quizTitle")) el("quizTitle").innerText = nameF;
 
-        if (document.getElementById("quizTitle")) {
-            document.getElementById("quizTitle").innerText = nameF;
-        }
-
-        const coach = document.getElementById("aiCoachText");
-        if (coach) {
-            coach.innerText = "تم قراءة محتوى المنهج بنجاح. يمكنك الآن توليد بطاقات واختبارات من نفس الملف.";
+        if (el("aiCoachText")) {
+            el("aiCoachText").innerText = "تم قراءة محتوى المنهج بنجاح. يمكنك الآن توليد بطاقات واختبارات من نفس الملف.";
         }
 
         addXP(50);
@@ -154,12 +149,17 @@ async function handleFile(input) {
 
     } catch (err) {
         console.error(err);
-        if (upStatus) upStatus.innerHTML = "⚠️ تم رفع الملف لكن تعذر قراءة المحتوى";
+        if (el("upStatus")) el("upStatus").innerHTML = "⚠️ تم رفع الملف لكن تعذر قراءة المحتوى";
         alert("تم رفع الملف، لكن قراءة PDF فشلت. جرّب ملف PDF نصي واضح.");
     }
 }
 
 async function extractPDFText(file) {
+    if (typeof pdfjsLib === "undefined") {
+        alert("مكتبة قراءة PDF غير مضافة في student.html");
+        return "";
+    }
+
     const arrayBuffer = await file.arrayBuffer();
 
     pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -186,6 +186,59 @@ function ensureFile(){
     }
     return true;
 }
+
+function getCourseContent(){
+    return (localStorage.getItem("courseContent") || "").trim();
+}
+
+/* ===================== Gemini ===================== */
+
+async function callGemini(promptText){
+    try{
+        const response = await fetch(
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json",
+                    "x-goog-api-key": GEMINI_API_KEY
+                },
+                body:JSON.stringify({
+                    contents:[{ parts:[{ text:promptText }] }]
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if(!response.ok) throw new Error(data.error?.message || "Gemini Error");
+
+        return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    } catch(e){
+        console.error(e);
+        return "";
+    }
+}
+
+function parseGeminiJSON(result){
+    if(!result) throw new Error("empty result");
+
+    let clean = result
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+    const start = clean.indexOf("[");
+    const end = clean.lastIndexOf("]");
+
+    if(start !== -1 && end !== -1){
+        clean = clean.slice(start, end + 1);
+    }
+
+    return JSON.parse(clean);
+}
+
+/* ===================== الأدوات التعليمية ===================== */
 
 function startPodcast(){
     if(!ensureFile()) return;
@@ -225,58 +278,37 @@ function runAI(type){
     if(type === "flash") generateRealFlashcards();
 }
 
-async function callGemini(promptText){
-    try{
-        const response = await fetch(
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent",
-            {
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json",
-                    "x-goog-api-key": GEMINI_API_KEY
-                },
-                body:JSON.stringify({
-                    contents:[{ parts:[{ text:promptText }] }]
-                })
-            }
-        );
-
-        const data = await response.json();
-
-        if(!response.ok) throw new Error(data.error?.message || "Gemini Error");
-
-        return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    } catch(e){
-        console.error(e);
-        return "";
-    }
-}
-
 async function generateRealFlashcards(){
     if(!ensureFile()) return;
 
+    const courseContent = getCourseContent();
+
+    if(!courseContent || courseContent.length < 50){
+        alert("محتوى الملف غير مقروء. جرّب PDF نصي وليس صورة ممسوحة.");
+        return;
+    }
+
     if(el("aiLoading")) el("aiLoading").style.display = "block";
-    if(el("loadingText")) el("loadingText").innerText = "جاري إنشاء بطاقات تعليمية...";
+    if(el("loadingText")) el("loadingText").innerText = "جاري إنشاء بطاقات تعليمية من محتوى الملف...";
 
     const result = await callGemini(`
-أنشئ 5 بطاقات تعليمية قصيرة باللغة العربية عن ${nameF}.
-أعد JSON فقط:
+اعتمد فقط على محتوى المنهج التالي، ولا تخترع معلومات من خارج النص:
+
+${courseContent}
+
+أنشئ 5 بطاقات تعليمية قصيرة باللغة العربية من هذا المحتوى.
+أعد JSON فقط بهذا الشكل:
 [
- {"question":"سؤال","answer":"إجابة"}
+ {"question":"سؤال من المحتوى","answer":"إجابة من المحتوى"}
 ]
 `);
 
     let cards;
 
     try{
-        cards = JSON.parse(result.replace(/```json|```/g,"").trim());
+        cards = parseGeminiJSON(result);
     } catch{
-        cards = [
-            {question:"ما الفكرة الأساسية في EduSync AI؟", answer:"تحويل المنهج إلى تجربة تعلم تفاعلية ذكية."},
-            {question:"ما فائدة XP؟", answer:"تحفيز الطالب على الاستمرار وإنجاز المهام."},
-            {question:"ما فائدة البطاقات؟", answer:"مراجعة سريعة ومركزة للمفاهيم."},
-            {question:"ما معنى التوثيق الرقمي؟", answer:"حفظ إنجازات الطالب وبصمتها التعليمية."}
-        ];
+        cards = makeFallbackFlashcards(courseContent);
     }
 
     if(el("aiLoading")) el("aiLoading").style.display = "none";
@@ -286,7 +318,7 @@ async function generateRealFlashcards(){
 
     flashRes.style.display = "block";
     flashRes.innerHTML = `
-        <h4 style="color:var(--primary); margin-bottom:15px;">بطاقات مراجعة ذكية</h4>
+        <h4 style="color:var(--primary); margin-bottom:15px;">بطاقات مراجعة من المنهج</h4>
         <div style="display:grid; gap:14px;">
             ${cards.map((card,i)=>`
                 <div class="smart-flash-card" onclick="this.classList.toggle('flipped')">
@@ -314,44 +346,37 @@ async function generateRealFlashcards(){
 async function generateRealQuiz(){
     if(!ensureFile()) return;
 
+    const courseContent = getCourseContent();
+
+    if(!courseContent || courseContent.length < 50){
+        alert("محتوى الملف غير مقروء. جرّب PDF نصي وليس صورة ممسوحة.");
+        return;
+    }
+
     if(el("aiLoading")) el("aiLoading").style.display = "block";
-    if(el("loadingText")) el("loadingText").innerText = "جاري توليد اختبار ذكي...";
+    if(el("loadingText")) el("loadingText").innerText = "جاري توليد اختبار من محتوى الملف...";
 
     const result = await callGemini(`
 اعتمد فقط على محتوى المنهج التالي، ولا تخترع معلومات من خارج النص:
 
 ${courseContent}
 
-أنشئ 5 بطاقات تعليمية قصيرة باللغة العربية من هذا المحتوى.
-أعد JSON فقط:
+أنشئ 3 أسئلة اختيار من متعدد باللغة العربية من هذا المحتوى.
+أعد JSON فقط بهذا الشكل:
 [
- {"question":"سؤال","answer":"إجابة"}
+ {
+   "question":"السؤال",
+   "options":["الخيار الأول","الخيار الثاني","الخيار الثالث"],
+   "correct":0,
+   "explanation":"شرح مختصر من محتوى المنهج"
+ }
 ]
 `);
 
     try{
-        currentQuizQuestions = JSON.parse(result.replace(/```json|```/g,"").trim());
+        currentQuizQuestions = parseGeminiJSON(result);
     } catch{
-        currentQuizQuestions = [
-            {
-                question:"ما الهدف الأساسي من EduSync AI؟",
-                options:["تحويل التعلم إلى تجربة تفاعلية","عرض ملفات فقط","إلغاء دور المحاضر"],
-                correct:0,
-                explanation:"المنصة تحول المحتوى إلى أدوات تعلم تفاعلية ومحفزة."
-            },
-            {
-                question:"ما فائدة نظام XP؟",
-                options:["زيادة حجم الملفات","تحفيز الطالب على الاستمرار","إغلاق المنصة"],
-                correct:1,
-                explanation:"XP يحفز السلوك التعليمي ويزيد الاستمرارية."
-            },
-            {
-                question:"لماذا نستخدم التوثيق الرقمي؟",
-                options:["لتوثيق الإنجازات","لتغيير الألوان","لتقليل سرعة التطبيق"],
-                correct:0,
-                explanation:"التوثيق الرقمي يحفظ إنجازات الطالب."
-            }
-        ];
+        currentQuizQuestions = makeFallbackQuiz(courseContent);
     }
 
     if(el("aiLoading")) el("aiLoading").style.display = "none";
@@ -361,13 +386,45 @@ ${courseContent}
     saveToMemory("quiz", "اختبار ذكي", "تم إنشاء اختبار من ملف: " + nameF);
 }
 
+function makeFallbackFlashcards(text){
+    const parts = text
+        .split(/[.؟!\n]/)
+        .map(s => s.trim())
+        .filter(s => s.length > 40)
+        .slice(0,5);
+
+    return parts.map((p,i) => ({
+        question: "ما الفكرة الأساسية في المقطع رقم " + (i + 1) + "؟",
+        answer: p
+    }));
+}
+
+function makeFallbackQuiz(text){
+    const parts = text
+        .split(/[.؟!\n]/)
+        .map(s => s.trim())
+        .filter(s => s.length > 40)
+        .slice(0,3);
+
+    return parts.map((p,i) => ({
+        question: "أي عبارة ترتبط بالمحتوى في المقطع رقم " + (i + 1) + "؟",
+        options: [
+            p.slice(0,80) + "...",
+            "معلومة غير مرتبطة بالمحتوى",
+            "خيار عام لا يستند إلى النص"
+        ],
+        correct: 0,
+        explanation: p
+    }));
+}
+
 function renderInteractiveQuiz(){
     const quizRes = el("quizRes");
     if(!quizRes) return;
 
     quizRes.style.display = "block";
     quizRes.innerHTML = `
-        <h4 style="color:var(--primary); margin-bottom:15px;">اختبار ذكي تفاعلي</h4>
+        <h4 style="color:var(--primary); margin-bottom:15px;">اختبار ذكي من المنهج</h4>
         <div class="smart-quiz-list">
             ${currentQuizQuestions.map((q,qIndex)=>`
                 <div class="smart-quiz-card">
@@ -408,6 +465,8 @@ function checkQuizAnswer(btn,qIndex,selectedIndex){
         }
     }
 }
+
+/* ===================== الذاكرة والدعم والمحفظة ===================== */
 
 function saveToMemory(type,title,description){
     let memory = JSON.parse(localStorage.getItem("edusyncMemory") || "[]");
@@ -524,6 +583,8 @@ function awardPoints(amount, element){
     markTaskDone("quiz");
 }
 
+/* ===================== نوافذ وأزرار عامة ===================== */
+
 function openModal(id){
     const data = {
         privacy:"<h3>الخصوصية 🔒</h3><p>نستخدم التشفير والتوثيق الرقمي لحماية بياناتك.</p>",
@@ -546,11 +607,13 @@ function simulateChain(){
 
 function toggleAccessibility(){
     document.body.classList.toggle("access-mode");
+    alert("تم تفعيل / إيقاف وضع الوصول الشامل");
 }
 
 function toggleSidebar(){
     const side = el("sidebar");
     if(side) side.classList.toggle("active");
+    else goWallet();
 }
 
 function showSection(id){
@@ -566,7 +629,7 @@ function handleDocUpload(input){
 }
 
 function startVoiceRecognition(){
-    alert("ميزة الصوت التجريبية مفعلة");
+    alert("المساعد الصوتي التجريبي مفعّل");
 }
 
 function generateLecturerRecommendation(){
@@ -580,6 +643,22 @@ function initParticles(){
     if(!canvas) return;
 }
 
+function goHome() {
+    window.location.href = location.pathname.includes("/sections/") ? "../index.html" : "index.html";
+}
+
+function goStudent() {
+    window.location.href = location.pathname.includes("/sections/") ? "student.html" : "sections/student.html";
+}
+
+function goLecturer() {
+    window.location.href = location.pathname.includes("/sections/") ? "lecturer.html" : "sections/lecturer.html";
+}
+
+function goWallet() {
+    window.location.href = location.pathname.includes("/sections/") ? "wallet.html" : "sections/wallet.html";
+}
+
 window.addEventListener("load", () => {
     updateAllXP();
 
@@ -590,37 +669,3 @@ window.addEventListener("load", () => {
         el("upStatus").innerHTML = "✅ تم تحميل: " + savedFile;
     }
 });
-
-function goHome() {
-    window.location.href = "index.html";
-}
-
-function goStudent() {
-    window.location.href = "sections/student.html";
-}
-
-function goLecturer() {
-    window.location.href = "sections/lecturer.html";
-}
-
-function goWallet() {
-    window.location.href = "sections/wallet.html";
-}
-
-function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    if (sidebar) {
-        sidebar.classList.toggle("active");
-    } else {
-        window.location.href = "sections/wallet.html";
-    }
-}
-
-function toggleAccessibility() {
-    document.body.classList.toggle("access-mode");
-    alert("تم تفعيل / إيقاف وضع الوصول الشامل");
-}
-
-function startVoiceRecognition() {
-    alert("المساعد الصوتي التجريبي مفعّل");
-}
