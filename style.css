@@ -1167,3 +1167,35 @@ body > *{
 #voiceAssistant{
     z-index:99999 !important;
 }
+
+/* ===== Tech Grid Background ===== */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+        linear-gradient(rgba(34,211,238,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,211,238,.055) 1px, transparent 1px);
+    background-size:38px 38px;
+    pointer-events:none;
+    z-index:-1;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+        radial-gradient(rgba(34,211,238,.45) 1px, transparent 1px);
+    background-size:72px 72px;
+    opacity:.32;
+    pointer-events:none;
+    z-index:-1;
+}
+
+#bg-canvas{
+    background:
+        radial-gradient(circle at top, rgba(34,211,238,.12), transparent 42%),
+        linear-gradient(180deg,#020617,#000814) !important;
+}
