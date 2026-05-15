@@ -1140,6 +1140,21 @@ body > *:not(#bg-canvas) {
 /* ===== URGENT INTRO + FLOAT BUTTON FIX ===== */
 
 /* الانتروا فوق كل شيء */
+#introScreen{
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 999999 !important;
+    background: #000 !important;
+    overflow: hidden !important;
+}
+
+#introVideo{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
 body.intro-playing #introScreen {
     position: fixed !important;
     inset: 0 !important;
