@@ -9,10 +9,10 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="style.css?v=7000">
+<link rel="stylesheet" href="style.css?v=9000">
 </head>
 
-<body>
+<body class="intro-playing">
 
 <div id="introScreen">
   <video id="introVideo" autoplay muted playsinline>
@@ -125,14 +125,13 @@ flex-shrink:0;
 </div>
 
   
-    </div>
 
    
 
 <div class="container">
 
     <div id="home" class="section active">
-        <h3 style="text-align: center; margin: 25px 0;">مرحباً بك في EduSync 🚀</h3>
+        <h3 style="text-align: center; margin: 6px 0 14px;">مرحباً بك في EduSync 🚀</h3>
 
         <div class="info-card">
             <h4 style="color: var(--primary); margin-bottom: 20px; text-align: center;">لماذا EduSync AI؟ ✨</h4>
@@ -228,92 +227,60 @@ flex-shrink:0;
    
     
 
+</div>
+
 <div class="chat-float" id="voiceAssistant" onclick="startVoiceRecognition()">
     <i class="fa-solid fa-microphone"></i>
 </div>
 <script src="script.js?v=12000"></script>
 
-<style>
-#introScreen{
-    position: fixed;
-    inset: 0;
-    background: black;
-    z-index: 999999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.8s ease;
-}
 
-#introVideo{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-</style>
 
 <script>
-if ("scrollRestoration" in history) {
-    history.scrollRestoration = "manual";
-}
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
 function hardTop() {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 }
 
+window.addEventListener("DOMContentLoaded", hardTop);
+
 window.addEventListener("load", function () {
-    const intro = document.getElementById("introScreen");
+  const intro = document.getElementById("introScreen");
 
+  if (!intro) {
+    document.body.classList.remove("intro-playing");
     hardTop();
+    return;
+  }
 
-    if (!intro) return;
+  if (localStorage.getItem("introSeen") === "true") {
+    intro.remove();
+    document.body.classList.remove("intro-playing");
+    document.body.style.overflow = "auto";
+    hardTop();
+    return;
+  }
 
-    if (localStorage.getItem("introSeen") === "true") {
-        intro.remove();
-        document.body.style.overflow = "auto";
+  document.body.classList.add("intro-playing");
+  document.body.style.overflow = "hidden";
+  localStorage.setItem("introSeen", "true");
 
-        let tries = 0;
-        const fix = setInterval(function () {
-            hardTop();
-            tries++;
-            if (tries > 12) clearInterval(fix);
-        }, 100);
-
-        return;
-    }
-
-    document.body.style.overflow = "hidden";
-    localStorage.setItem("introSeen", "true");
-
+  setTimeout(function () {
+    intro.style.opacity = "0";
     setTimeout(function () {
-        intro.style.opacity = "0";
-
-        setTimeout(function () {
-            intro.remove();
-            document.body.style.overflow = "auto";
-
-            let tries = 0;
-            const fix = setInterval(function () {
-                hardTop();
-                tries++;
-                if (tries > 12) clearInterval(fix);
-            }, 100);
-
-        }, 800);
-
-    }, 5000);
+      intro.remove();
+      document.body.classList.remove("intro-playing");
+      document.body.style.overflow = "auto";
+      hardTop();
+    }, 800);
+  }, 5000);
 });
 
-window.addEventListener("pageshow", function () {
-    let tries = 0;
-    const fix = setInterval(function () {
-        hardTop();
-        tries++;
-        if (tries > 12) clearInterval(fix);
-    }, 100);
-});
+window.addEventListener("pageshow", hardTop);
 </script>
+
 </body>
 </html>
