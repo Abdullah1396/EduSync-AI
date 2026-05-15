@@ -1191,3 +1191,18 @@ main,
     position: relative;
     z-index: 1;
 }
+
+/* FIX: background canvas must not create page space */
+#bg-canvas {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+    display: block !important;
+}
+
+/* keep real page content above canvas */
+body > *:not(#bg-canvas) {
