@@ -1136,3 +1136,41 @@ body > *:not(#bg-canvas) {
     position: relative;
     z-index: 2;
 }
+
+/* ===== URGENT INTRO + FLOAT BUTTON FIX ===== */
+
+/* الانتروا فوق كل شيء */
+body.intro-playing #introScreen {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 9999999 !important;
+    background: #000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 1;
+}
+
+/* الفيديو يغطي الشاشة */
+body.intro-playing #introVideo {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+/* إخفاء أزرار الوصول والمايك وقت الانتروا فقط */
+body.intro-playing .accessibility-float,
+body.intro-playing .chat-float,
+body.intro-playing .voice-float,
+body.intro-playing #voiceAssistant {
+    display: none !important;
+}
+
+/* منع الفراغ بعد الانتروا */
+#introScreen.removed {
+    display: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
